@@ -30,7 +30,7 @@ Template.registerform.events({
     $('#id01').show();
   },
 
-  'input .validateInput'() { validateFormular(); },
+  'input .validateInput'() { validateFormular($(this)); },
   'change input[type=radio]'() { validateFormular(); }
 });
 
@@ -51,7 +51,7 @@ Template.formular.events({
 });
 */
 
-function validateFormular() {
+function validateFormular(elem) {
 
   var valid = false;
   var prog = 0;
@@ -62,7 +62,7 @@ function validateFormular() {
     b3 = $('#eMail').val().length > 0,
     b4 = $('input[name=gender]:checked').length > 0;
 
-  prog = b1 ? prog + 25 : prog + 0;
+  prog = b1 ? prog = isValid(prog) : prog + 0;
   prog = b2 ? prog + 25 : prog + 0;
   prog = b3 ? prog + 25 : prog + 0;
   prog = b4 ? prog + 25 : prog + 0;
@@ -73,6 +73,11 @@ function validateFormular() {
 
   $('#submitBtn').prop('disabled', !valid);
   $('#progress').text(prog + "%").css("width", prog + "%");
+
+}
+
+function isValid(val) {
+  return val + 25;
 
 }
 
