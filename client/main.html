@@ -18,14 +18,56 @@
       </div>
       <div class="w3-container">
         <p>
-          <label class="me-txtlila"><b>Vorname</b></label>
-          <input id="firstName" class="w3-input w3-border w3-sand" name="first" type="text"></p>
+          <label class="me-txtlila">
+            <b>Vorname</b>
+          </label>
+          <input id="firstName" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
+        </p>
         <p>
-          <label class="me-txtlila"><b>Nachname</b></label>
-          <input id="lastName" class="w3-input w3-border w3-sand" name="last" type="text"></p>
+          <label class="me-txtlila">
+            <b>Nachname</b>
+          </label>
+          <input id="lastName" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
+        </p>
         <p>
-          <button id="submitBtn" class="w3-btn me-bglila">Anmelden</button></p>
-        </div>
+          <label class="me-txtlila">
+            <b>eMail</b>
+          </label>
+          <input id="eMail" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="email">
+        </p>
+        <p>
+          <input class="validateInput w3-radio" type="radio" name="gender" value="female">
+          <label class="me-txtlila">
+            <b>weiblich</b>
+          </label>
+
+          <input class="validateInput w3-radio" type="radio" name="gender" value="male">
+          <label class="me-txtlila">
+            <b>männlich</b>
+          </label>
+        </p>
+        <p>
+          <button id="submitBtn" class="w3-btn me-bglila" disabled>Anmelden</button>
+        </p>
+      </div>
     </div>
   </div>
+
+
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-teal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <h2>Du bist vorgemerkt als <span id="runnersCount"></span> Teilnehmer! </h2>
+      </header>
+      <div class="w3-container">
+        <p>Bitte überweisen</p>
+        <p>Some text..</p>
+      </div>
+      <footer class="w3-container w3-teal">
+        <p>Zahlungsbedingungen</p>
+      </footer>
+    </div>
+  </div>
+
 </template>
