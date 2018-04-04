@@ -1,1 +1,13 @@
-/* CSS declarations go here */
+.me-bglila{
+    background-color: #0f102d !important;
+    color: #fff !important;
+  }
+  
+  .me-bggray{
+    background-color: #3a4b53;
+  }
+  
+  .me-txtlila{
+    background-color: #fffd;
+    color: #0f102d;
+  }

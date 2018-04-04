@@ -1,25 +1,31 @@
 <head>
-  <title>madeast-onlineanmeldung</title>
+  <title>MadEast 2018 - Online Anmeldung</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
 
-  {{> hello}}
-  {{> info}}
+  {{> registerform}}
+
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template>
-
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
+<template name="registerform">
+  <div class="w3-container w3-margin">
+    <div class="w3-card-4">
+      <div class="w3-container me-bglila">
+        <h2>Ich will mitfahren! </h2>
+      </div>
+      <div class="w3-container">
+        <p>
+          <label class="me-txtlila"><b>Vorname</b></label>
+          <input id="firstName" class="w3-input w3-border w3-sand" name="first" type="text"></p>
+        <p>
+          <label class="me-txtlila"><b>Nachname</b></label>
+          <input id="lastName" class="w3-input w3-border w3-sand" name="last" type="text"></p>
+        <p>
+          <button id="submitBtn" class="w3-btn me-bglila">Anmelden</button></p>
+        </div>
+    </div>
+  </div>
 </template>
