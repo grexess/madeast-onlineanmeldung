@@ -54,13 +54,25 @@ Template.formular.events({
 function validateFormular() {
 
   var valid = false;
+  var prog = 0;
 
-  if ($('#firstName').val().length > 0 && $('#lastName').val().length > 0 && $('#eMail').val().length > 0 && $('input[name=gender]:checked').val().length > 0) {
+  var
+    b1 = $('#firstName').val().length > 0,
+    b2 = $('#lastName').val().length > 0,
+    b3 = $('#eMail').val().length > 0,
+    b4 = $('input[name=gender]:checked').length > 0;
+
+  prog = b1 ? prog + 25 : prog + 0;
+  prog = b2 ? prog + 25 : prog + 0;
+  prog = b3 ? prog + 25 : prog + 0;
+  prog = b4 ? prog + 25 : prog + 0;
+
+  if (b1 && b2 && b3 && b4) {
     valid = true;
   }
 
-
   $('#submitBtn').prop('disabled', !valid);
+  $('#progress').text(prog + "%").css("width", prog + "%");
 
 }
 
