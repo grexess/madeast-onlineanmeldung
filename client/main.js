@@ -1,10 +1,16 @@
-
 //import { Template } from 'meteor/templating';
 //import { ReactiveVar } from 'meteor/reactive-var';
 
-import { Runners } from '../imports/api/runners.js';
+import {
+  Runners
+} from '../imports/api/runners.js';
 
 //import './main.html';
+
+import '../imports/ui/templates/verify.html';
+import '../imports/ui/templates/birthday.html';
+import '../imports/ui/templates/register.html';
+
 
 Template.registerform.onCreated(function helloOnCreated() {
   console.log("Form created");
@@ -12,44 +18,92 @@ Template.registerform.onCreated(function helloOnCreated() {
   //this.counter = new ReactiveVar(0);
 });
 
+Template.emailVerification.onCreated(function () {
+  console.log("Verify Page created");
+  Meteor.subscribe('runners');
+});
+
 Template.registerform.events({
 
-  'click #submitBtn'(event) {
+  'click #submitBtn' (event) {
     event.preventDefault();
 
-    console.log($('#firstName').val());
-    console.log($('#lastName').val());
+    var firstName = htmlEscape($('#firstName').val());
+    var email = htmlEscape($('#eMail').val());
+    var birthday = birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+
+    var randomizer = require('random-token');
+    var token = randomizer(16);
 
     Runners.insert({
-      firstName: htmlEscape($('#firstName').val()),
+      firstName: firstName,
       lastName: htmlEscape($('#lastName').val()),
-      createdAt: new Date()
+      email: email,
+      team: htmlEscape($('#team').val()),
+      gender: htmlEscape($('input[name=gender]:checked').val()),
+      birthday: birthday,
+      createdAt: new Date(),
+      verified: false,
+      payed: false,
+      token: token
     });
+
+    Meteor.call('sendEmail',
+      'grexess@googlemail.com',
+      'madeast.registration@madcross.de',
+      'MadEast 2018 Online-Anmeldung',
+      'Hallo ' + firstName + '! Bitte folgenden Link zur Adressprüfung anklicken: ' + $(document).context.URL + 'verify?otp=' + token + '&email=' + email);
 
     $("#runnersCount").text(Runners.find({}).fetch().length);
     $('#id01').show();
   },
 
-  'input .validateInput'() { validateFormular($(this)); },
-  'change input[type=radio]'() { validateFormular(); }
+  'input .validateInput' () {
+    validateFormular($(this));
+  },
+  'change input[type=radio]' () {
+    validateFormular();
+  }
 });
 
 
+Template.emailVerification.helpers({
+  /*check if OTP and email are correct */
+  verifyToken() {
+    var test = Meteor.runners;
 
-/*
-Template.formular.helpers({
-  counter() {
-    return Template.instance().counter.get();
+    var email = FlowRouter.getQueryParam("email");
+
+    var bOkay = true;
+
+    //find element with email
+    var record = Runners.find({
+      "email": email
+    }).fetch()[0];
+
+    //get token of this element
+
+    //compare tokens
+
+    if (bOkay) {
+      return "<H1>True</H1>";
+    } else {
+      return "<H1>FALSE</H1>";
+    }
+    //alert(FlowRouter.getQueryParam("otp"));
+    //alert(FlowRouter.getQueryParam("email"));
   },
 });
 
-Template.formular.events({
-  'click button'(event, instance) {
+/*
+Template.registerform.events({
+  'click button' (event, instance) {
     // increment the counter when button is clicked
     instance.counter.set(instance.counter.get() + 1);
   },
 });
 */
+
 
 function validateFormular(elem) {
 
@@ -82,10 +136,28 @@ function isValid(val) {
 }
 
 function htmlEscape(str) {
-  return str
-    .replace(/&/g, '&amp;')
+  return str.replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
+
+// ROUTES
+FlowRouter.route('/', {
+  name: 'Start',
+  action() {
+    BlazeLayout.render('registerform', {
+      main: 'Register_Page'
+    });
+  }
+});
+
+FlowRouter.route('/verify/', {
+  name: 'Verify',
+  action() {
+    BlazeLayout.render('emailVerification', {
+      main: 'Verification_Page'
+    });
+  }
+});
