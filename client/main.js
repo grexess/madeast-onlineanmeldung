@@ -25,45 +25,55 @@ Template.emailVerification.onCreated(function () {
 
 Template.registerform.events({
 
-  'click #submitBtn' (event) {
-    event.preventDefault();
+  'focusout #eMail' () {
 
-    var firstName = htmlEscape($('#firstName').val());
-    var email = htmlEscape($('#eMail').val());
-    var birthday = birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(String($('#eMail').val()).toLowerCase())) {
+      alert(true);
+    } else {
+      alert(false);
+    }
+},
 
-    var randomizer = require('random-token');
-    var token = randomizer(16);
+'click #submitBtn' (event) {
+  event.preventDefault();
 
-    Runners.insert({
-      firstName: firstName,
-      lastName: htmlEscape($('#lastName').val()),
-      email: email,
-      team: htmlEscape($('#team').val()),
-      gender: htmlEscape($('input[name=gender]:checked').val()),
-      birthday: birthday,
-      createdAt: new Date(),
-      verified: false,
-      payed: false,
-      token: token
-    });
+  var firstName = htmlEscape($('#firstName').val());
+  var email = htmlEscape($('#eMail').val());
+  var birthday = birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
 
-    Meteor.call('sendEmail',
-      'grexess@googlemail.com',
-      'madeast.registration@madcross.de',
-      'MadEast 2018 Online-Anmeldung',
-      'Hallo ' + firstName + '! Bitte folgenden Link zur Adressprüfung anklicken: ' + $(document).context.URL + 'verify?otp=' + token + '&email=' + email);
+  var randomizer = require('random-token');
+  var token = randomizer(16);
 
-    $("#runnersCount").text(Runners.find({}).fetch().length);
-    $('#id01').show();
-  },
+  Runners.insert({
+    firstName: firstName,
+    lastName: htmlEscape($('#lastName').val()),
+    email: email,
+    team: htmlEscape($('#team').val()),
+    gender: htmlEscape($('input[name=gender]:checked').val()),
+    birthday: birthday,
+    createdAt: new Date(),
+    verified: false,
+    payed: false,
+    token: token
+  });
 
-  'input .validateInput' () {
-    validateFormular($(this));
-  },
-  'change input[type=radio]' () {
-    validateFormular();
-  }
+  Meteor.call('sendEmail',
+    'grexess@googlemail.com',
+    'madeast.registration@madcross.de',
+    'MadEast 2018 Online-Anmeldung',
+    'Hallo ' + firstName + '! Bitte folgenden Link zur Adressprüfung anklicken: ' + $(document).context.URL + 'verify?otp=' + token + '&email=' + email);
+
+  $("#runnersCount").text(Runners.find({}).fetch().length);
+  $('#id01').show();
+},
+
+'input .validateInput' () {
+  validateFormular($(this));
+},
+'change input[type=radio]' () {
+  validateFormular();
+}
 });
 
 
@@ -117,18 +127,18 @@ function validateFormular(elem) {
     b3 = $('#eMail').val().length > 0,
     b4 = $('input[name=gender]:checked').length > 0;
 
-    //birthday
-    b5 = $('#dob-day').val();
-    b6 = $('#dob-month').val();
-    b7 = $('#dob-year').val();
+  //birthday
+  b5 = $('#dob-day').val();
+  b6 = $('#dob-month').val();
+  b7 = $('#dob-year').val();
 
-  prog = b1 ? prog = Math.round(100/7) : prog + 0;
-  prog = b2 ? prog + Math.round(100/7) : prog + 0;
-  prog = b3 ? prog + Math.round(100/7) : prog + 0;
-  prog = b4 ? prog + Math.round(100/7) : prog + 0;
-  prog = b5 ? prog + Math.round(100/7) : prog + 0;
-  prog = b6 ? prog + Math.round(100/7) : prog + 0;
-  prog = b7 ? prog + Math.round(100/7) : prog + 0;
+  prog = b1 ? prog = Math.round(100 / 7) : prog + 0;
+  prog = b2 ? prog + Math.round(100 / 7) : prog + 0;
+  prog = b3 ? prog + Math.round(100 / 7) : prog + 0;
+  prog = b4 ? prog + Math.round(100 / 7) : prog + 0;
+  prog = b5 ? prog + Math.round(100 / 7) : prog + 0;
+  prog = b6 ? prog + Math.round(100 / 7) : prog + 0;
+  prog = b7 ? prog + Math.round(100 / 7) : prog + 0;
 
   if (b1 && b2 && b3 && b4 && b5 && b6 && b7) {
     valid = true;
