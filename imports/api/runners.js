@@ -7,10 +7,7 @@ if (Meteor.isServer) {
 
     console.log('isServer1');
 
-    Meteor.publish('runners', function () {
-        
-        var myRunners =Runners.find({});
-        console.log(myRunners.fetch());
-        return myRunners;
+    Meteor.publish('runners', function () {    
+        return Runners.find({});
     });
 }

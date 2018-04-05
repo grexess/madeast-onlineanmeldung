@@ -70,9 +70,10 @@ Template.registerform.events({
 Template.emailVerification.helpers({
   /*check if OTP and email are correct */
   verifyToken() {
-    var test = Meteor.runners;
 
     var email = FlowRouter.getQueryParam("email");
+
+    var x = Runners.find(email).fetch();
 
     var bOkay = true;
 
@@ -116,22 +117,26 @@ function validateFormular(elem) {
     b3 = $('#eMail').val().length > 0,
     b4 = $('input[name=gender]:checked').length > 0;
 
-  prog = b1 ? prog = isValid(prog) : prog + 0;
-  prog = b2 ? prog + 25 : prog + 0;
-  prog = b3 ? prog + 25 : prog + 0;
-  prog = b4 ? prog + 25 : prog + 0;
+    //birthday
+    b5 = $('#dob-day').val();
+    b6 = $('#dob-month').val();
+    b7 = $('#dob-year').val();
 
-  if (b1 && b2 && b3 && b4) {
+  prog = b1 ? prog = Math.round(100/7) : prog + 0;
+  prog = b2 ? prog + Math.round(100/7) : prog + 0;
+  prog = b3 ? prog + Math.round(100/7) : prog + 0;
+  prog = b4 ? prog + Math.round(100/7) : prog + 0;
+  prog = b5 ? prog + Math.round(100/7) : prog + 0;
+  prog = b6 ? prog + Math.round(100/7) : prog + 0;
+  prog = b7 ? prog + Math.round(100/7) : prog + 0;
+
+  if (b1 && b2 && b3 && b4 && b5 && b6 && b7) {
     valid = true;
+    prog = 100;
   }
 
   $('#submitBtn').prop('disabled', !valid);
   $('#progress').text(prog + "%").css("width", prog + "%");
-
-}
-
-function isValid(val) {
-  return val + 25;
 
 }
 

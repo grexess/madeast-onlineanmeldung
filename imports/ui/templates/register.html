@@ -1,81 +1,93 @@
-
 <template name="registerform">
-    <div class="w3-container w3-margin">
-      <div class="w3-card-4">
-        <div class="w3-container me-bglila">
-          <h2>Ich will mitfahren! </h2>
-        </div>
-        <div class="w3-container">
-          <p>
-            <label class="me-txtlila">
-              <b>Vorname<span style="color:red">*</span></b>
-            </label>
-            <input id="firstName" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
-          </p>
-          <p>
-            <label class="me-txtlila">
-              <b>Nachname<span style="color:red">*</span></b>
-            </label>
-            <input id="lastName" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
-          </p>
-          <p>
-            <label class="me-txtlila">
-              <b>eMail<span style="color:red">*</span></b>
-            </label>
-            <input id="eMail" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
-          </p>
-          <p>
-            <label class="me-txtlila">
-              <b>Geburtsdatum<span style="color:red">*</span></b>
-            </label>
-            <input id="date" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
-          </p>
-          <p>
+  <div class="w3-container w3-margin">
+    <div class="w3-card-4">
+      <div class="w3-container me-bglila">
+        <h2>Ich will mitfahren! </h2>
+      </div>
+      <div class="w3-container">
+        <p>
+          <label class="me-txtlila">
+            <b>Vorname
+              <span style="color:red">*</span>
+            </b>
+          </label>
+          <input id="firstName" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%"
+            type="text">
+        </p>
+        <p>
+          <label class="me-txtlila">
+            <b>Nachname
+              <span style="color:red">*</span>
+            </b>
+          </label>
+          <input id="lastName" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%"
+            type="text">
+        </p>
+        <p>
+          <label class="me-txtlila">
+            <b>eMail
+              <span style="color:red">*</span>
+            </b>
+          </label>
+          <input id="eMail" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%"
+            type="text">
+        </p>
+        {{> birthSelection}}
+
+        <div class="w3-row w3-margin-bottom">
+
+          <div class="w3-quarter">
             <input class="validateInput w3-radio" type="radio" name="gender" value="female">
             <label class="me-txtlila">
-              <b>weiblich<span style="color:red">*</span></b>
+              <b>weiblich
+                <span style="color:red">*</span>
+              </b>
             </label>
-  
+          </div>
+          <div class="w3-quarter">
             <input class="validateInput w3-radio" type="radio" name="gender" value="male">
             <label class="me-txtlila">
-              <b>männlich<span style="color:red">*</span></b>
+              <b>männlich
+                <span style="color:red">*</span>
+              </b>
             </label>
-          </p>
-          <p>
-            <label class="me-txtlila">
-              <b>Team/Verein</b>
-            </label>
-            <input id="team" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%" type="text">
-          </p>
-  
-          {{> birthSelection}}
-  
-          <div class="w3-light-grey w3-round-xlarge">
-            <div id="progress" class="w3-container w3-blue w3-round-xlarge" style="width:0%">0%</div>
           </div>
-  
-          <p>
-            <button id="submitBtn" class="w3-btn me-bglila" disabled>Anmelden</button>
-          </p>
         </div>
+        <p>
+          <label class="me-txtlila">
+            <b>Team/Verein</b>
+          </label>
+          <input id="team" class="validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" style="width:50%"
+            type="text">
+        </p>
+
+        <div class="w3-light-grey w3-round-xlarge">
+          <div id="progress" class="w3-container w3-blue w3-round-xlarge" style="width:0%">0%</div>
+        </div>
+
+        <p>
+          <button id="submitBtn" class="w3-btn me-bglila" disabled>Anmelden</button>
+        </p>
       </div>
     </div>
-  
-  
-    <div id="id01" class="w3-modal">
-      <div class="w3-modal-content w3-card-4">
-        <header class="w3-container w3-teal">
-          <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-          <h2>Du bist vorgemerkt als <span id="runnersCount"></span> Teilnehmer! </h2>
-        </header>
-        <div class="w3-container">
-          <p>Bitte überweisen</p>
-          <p>Some text..</p>
-        </div>
-        <footer class="w3-container w3-teal">
-          <p>Zahlungsbedingungen</p>
-        </footer>
+  </div>
+
+
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-teal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <h2>Du bist vorgemerkt als
+          <span id="runnersCount"></span> Teilnehmer! </h2>
+      </header>
+      <div class="w3-container">
+        <p>Bitte überweisen</p>
+        <p>Some text..</p>
       </div>
+      <footer class="w3-container w3-teal">
+        <p>Zahlungsbedingungen</p>
+      </footer>
     </div>
-  
-  </template>
+  </div>
+
+</template>
