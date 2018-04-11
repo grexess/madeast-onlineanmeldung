@@ -14,6 +14,7 @@ import '../imports/ui/templates/register.html';
 
 Template.registerform.onCreated(function helloOnCreated() {
   console.log("Form created");
+  Meteor.subscribe('runners');
   // counter starts at 0
   //this.counter = new ReactiveVar(0);
 });
@@ -25,84 +26,109 @@ Template.emailVerification.onCreated(function () {
 
 Template.registerform.events({
 
-  'focusout #eMail' () {
+  'focusout #eMail'() {
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(String($('#eMail').val()).toLowerCase())) {
-      alert(true);
+      //alert(true);
     } else {
-      alert(false);
+      $('#errorMsg').text("eMail-Adresse hat kein gültiges Format");
+      $('#id02').show();
     }
-},
+  },
 
-'click #submitBtn' (event) {
-  event.preventDefault();
+  'click #submitBtn'(event) {
+    event.preventDefault();
 
-  var firstName = htmlEscape($('#firstName').val());
-  var email = htmlEscape($('#eMail').val());
-  var birthday = birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+    var firstName = htmlEscape($('#firstName').val());
+    var email = htmlEscape($('#eMail').val());
 
-  var randomizer = require('random-token');
-  var token = randomizer(16);
+    if (Runners.findOne({ email: email })) {
+      $('#errorMsg').text("eMail-Adresse ist bereits angemeldet");
+      $('#id02').show();
+      return;
+    }
 
-  Runners.insert({
-    firstName: firstName,
-    lastName: htmlEscape($('#lastName').val()),
-    email: email,
-    team: htmlEscape($('#team').val()),
-    gender: htmlEscape($('input[name=gender]:checked').val()),
-    birthday: birthday,
-    createdAt: new Date(),
-    verified: false,
-    payed: false,
-    token: token
-  });
+    var countAll = Runners.find({}).fetch().length;
+    //console.log("already registered");
 
-  Meteor.call('sendEmail',
-    'grexess@googlemail.com',
-    'madeast.registration@madcross.de',
-    'MadEast 2018 Online-Anmeldung',
-    'Hallo ' + firstName + '! Bitte folgenden Link zur Adressprüfung anklicken: ' + $(document).context.URL + 'verify?otp=' + token + '&email=' + email);
+    var birthday = birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+    var randomizer = require('random-token');
+    var token = randomizer(16);
 
-  $("#runnersCount").text(Runners.find({}).fetch().length);
-  $('#id01').show();
-},
+    Runners.insert({
+      firstName: firstName,
+      lastName: htmlEscape($('#lastName').val()),
+      email: email,
+      team: htmlEscape($('#team').val()),
+      gender: htmlEscape($('input[name=gender]:checked').val()),
+      birthday: birthday,
+      createdAt: new Date(),
+      verified: false,
+      payed: false,
+      token: token
+    });
 
-'input .validateInput' () {
-  validateFormular($(this));
-},
-'change input[type=radio]' () {
-  validateFormular();
-}
+    Meteor.call('sendEmail',
+      'grexess@googlemail.com',
+      'madeast.registration@madcross.de',
+      'MadEast 2018 Online-Anmeldung',
+      'Hallo ' + firstName + '! Bitte folgenden Link zur Adressprüfung anklicken: ' + $(document).context.URL + 'verify?otp=' + token + '&email=' + email);
+
+    $("#runnersCount").text(countAll + 1);
+    $('#id01').show();
+
+  },
+
+  'input .validateInput'() {
+    validateFormular($(this));
+  },
+  'change input[type=radio]'() {
+    validateFormular();
+  }
 });
 
 
 Template.emailVerification.helpers({
+
   /*check if OTP and email are correct */
   verifyToken() {
 
-    var email = FlowRouter.getQueryParam("email");
+    var bOkay;
+    var msg;
+    var sucess = false;
 
-    var x = Runners.find(email).fetch();
 
-    var bOkay = true;
+    Meteor.call('checkToken', FlowRouter.getQueryParam("email"), FlowRouter.getQueryParam("otp"), function (error, result) {
+      bOkay = result;
+      switch (result) {
+        case 0:
+          msg = "Du bist erfolgreich registriert!"
+          sucess = true;
+          break;
+        case 1:
+          msg = "eMail bereits registiert!"
+          break;
+        case 2:
+          msg = "Registrierungstoken ungültig!"
+          break;
+        case 3:
+          msg = "eMail-Adresse ungültig!"
+          break;
+      }
 
-    //find element with email
-    var record = Runners.find({
-      "email": email
-    }).fetch()[0];
+      if (sucess) {
+        $("#successMsg").text(msg);
+        $("#verificationTrue").show();
+       }
+      else {
+        $("#errorMsg").text(msg);
+        $("#verificationFalse").show();
+      }
+    });
 
-    //get token of this element
+    //var bOkay = Meteor.call('checkToken', FlowRouter.getQueryParam("email"), FlowRouter.getQueryParam("otp"));;
 
-    //compare tokens
-
-    if (bOkay) {
-      return "<H1>True</H1>";
-    } else {
-      return "<H1>FALSE</H1>";
-    }
-    //alert(FlowRouter.getQueryParam("otp"));
-    //alert(FlowRouter.getQueryParam("email"));
   },
 });
 

@@ -1,3 +1,31 @@
 <template name="emailVerification">
-   <div>{{verifyToken}}</div>
+    {{verifyToken}}
+    <div id="verificationFalse" class="w3-modal">
+        <div class="w3-modal-content w3-card-4">
+          <header class="w3-container w3-red">
+            <span onclick="document.getElementById('verificationFalse').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>Fehler</h2>
+          </header>
+          <div class="w3-container">
+            <p id="errorMsg"></p>
+          </div>
+          <footer class="w3-container w3-red">
+            <p></p>
+          </footer>
+        </div>
+      </div>
+      <div id="verificationTrue" class="w3-modal">
+          <div class="w3-modal-content w3-card-4">
+            <header class="w3-container w3-green">
+              <span onclick="document.getElementById('verificationTrue').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+              <h2>Hurra!</h2>
+            </header>
+            <div class="w3-container">
+              <p id="successMsg"></p>
+            </div>
+            <footer class="w3-container w3-green">
+              <p>Zahlungsbedingungen zum Überweisen</p>
+            </footer>
+          </div>
+        </div>
   </template>

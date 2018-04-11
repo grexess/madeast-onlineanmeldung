@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
 import '../imports/api/runners.js';
 
+import {
+  Runners
+} from '../imports/api/runners.js';
+
 Meteor.startup(() => {
   // code to run on server at startup
 });
@@ -20,5 +24,31 @@ Meteor.methods({
       subject: subject,
       text: text
     });
-  }
+  },
+
+  checkToken: function (email, token) {
+
+    var x = Runners.find({ email: email }).fetch();
+
+    if (x.length === 1) {
+      if (x[0].token === token) {
+        if (x[0].verified) {
+          //already verified
+          return 1;
+        } else {
+          //okay
+          //update registration status
+          Runners.update({_id: x[0]._id}, {$set: {verified: true}})
+          return 0;
+        }
+      } else {
+        //wrong token
+        return 2;
+      }
+    }
+    else {
+      //mail not unique or not existing
+      return 3;
+    }
+  },
 });
