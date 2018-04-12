@@ -10,7 +10,8 @@ import {
 import '../imports/ui/templates/verify.html';
 import '../imports/ui/templates/birthday.html';
 import '../imports/ui/templates/register.html';
-
+import '../imports/ui/templates/private/runnersList.html';
+import '../imports/ui/templates/private/runnersList.js';
 
 Template.registerform.onCreated(function helloOnCreated() {
   console.log("Form created");
@@ -21,6 +22,11 @@ Template.registerform.onCreated(function helloOnCreated() {
 
 Template.emailVerification.onCreated(function () {
   console.log("Verify Page created");
+  Meteor.subscribe('runners');
+});
+
+Template.runnersListTemplate.onCreated(function () {
+  console.log("List Page created");
   Meteor.subscribe('runners');
 });
 
@@ -207,10 +213,10 @@ FlowRouter.route('/verify/', {
   }
 });
 
-FlowRouter.route('/ListRunners/', {
+FlowRouter.route('/listrunners/', {
   name: 'List',
   action() {
-    BlazeLayout.render('listRunners', {
+    BlazeLayout.render('runnersListTemplate', {
       main: 'List_Page'
     });
   }
