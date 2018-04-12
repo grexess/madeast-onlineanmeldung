@@ -1,5 +1,9 @@
-import { Meteor } from 'meteor/meteor';
-import { Email } from 'meteor/email';
+import {
+  Meteor
+} from 'meteor/meteor';
+import {
+  Email
+} from 'meteor/email';
 import '../imports/api/runners.js';
 
 import {
@@ -8,6 +12,14 @@ import {
 
 Meteor.startup(() => {
   // code to run on server at startup
+});
+
+Runners.allow({
+  'insert': function (userId,doc) {
+    /* user and doc checks ,
+    return true to allow insert */
+    return true; 
+  }
 });
 
 Meteor.methods({
@@ -28,7 +40,13 @@ Meteor.methods({
 
   checkToken: function (email, token) {
 
-    var x = Runners.find({ email: email }).fetch();
+    console.log("Verify email [" + email + "] and token [" + token + "]");
+
+    var x = Runners.find({
+      email: email
+    }).fetch();
+
+    console.log("email count:" + x.length);
 
     if (x.length === 1) {
       if (x[0].token === token) {
@@ -38,15 +56,20 @@ Meteor.methods({
         } else {
           //okay
           //update registration status
-          Runners.update({_id: x[0]._id}, {$set: {verified: true}})
+          Runners.update({
+            _id: x[0]._id
+          }, {
+            $set: {
+              verified: true
+            }
+          })
           return 0;
         }
       } else {
         //wrong token
         return 2;
       }
-    }
-    else {
+    } else {
       //mail not unique or not existing
       return 3;
     }

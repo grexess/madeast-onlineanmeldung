@@ -5,7 +5,7 @@ export const Runners = new Mongo.Collection('runners');
 
 if (Meteor.isServer) {
 
-    console.log('isServer1');
+    console.log('Meteor act as Server');
 
     Meteor.publish('runners', function () {    
         return Runners.find({});

@@ -26,7 +26,7 @@ Template.emailVerification.onCreated(function () {
 
 Template.registerform.events({
 
-  'focusout #eMail'() {
+  'focusout #eMail' () {
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(String($('#eMail').val()).toLowerCase())) {
@@ -37,13 +37,15 @@ Template.registerform.events({
     }
   },
 
-  'click #submitBtn'(event) {
+  'click #submitBtn' (event) {
     event.preventDefault();
 
     var firstName = htmlEscape($('#firstName').val());
     var email = htmlEscape($('#eMail').val());
 
-    if (Runners.findOne({ email: email })) {
+    if (Runners.findOne({
+        email: email
+      })) {
       $('#errorMsg').text("eMail-Adresse ist bereits angemeldet");
       $('#id02').show();
       return;
@@ -67,6 +69,9 @@ Template.registerform.events({
       verified: false,
       payed: false,
       token: token
+    }, function (error, result) {
+      if (error) console.log(error); //info about what went wrong
+      if (result) console.log(result); //the _id of new object if successful);
     });
 
     Meteor.call('sendEmail',
@@ -80,10 +85,10 @@ Template.registerform.events({
 
   },
 
-  'input .validateInput'() {
+  'input .validateInput' () {
     validateFormular($(this));
   },
-  'change input[type=radio]'() {
+  'change input[type=radio]' () {
     validateFormular();
   }
 });
@@ -120,8 +125,7 @@ Template.emailVerification.helpers({
       if (sucess) {
         $("#successMsg").text(msg);
         $("#verificationTrue").show();
-       }
-      else {
+      } else {
         $("#errorMsg").text(msg);
         $("#verificationFalse").show();
       }
@@ -199,6 +203,15 @@ FlowRouter.route('/verify/', {
   action() {
     BlazeLayout.render('emailVerification', {
       main: 'Verification_Page'
+    });
+  }
+});
+
+FlowRouter.route('/ListRunners/', {
+  name: 'List',
+  action() {
+    BlazeLayout.render('listRunners', {
+      main: 'List_Page'
     });
   }
 });
