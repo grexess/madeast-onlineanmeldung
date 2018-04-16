@@ -9,16 +9,23 @@ prevClick = null;
 if (Meteor.isClient) {
 
     Template.runnersListTemplate.helpers({
+
         runners() {
             return Runners.find({});
+        },
+
+        formatBoolean(value) {
+            if (value) {
+                return "checked";
+            } else { return ""; }
+        },
+
+        formatGender(value, check) {
+            if (value == check) {
+                return "selected";
+            } else { return ""; }
         }
-    });
 
-    Template.registerHelper('formatBoolean', function (value) {
-
-        if (value) {
-            return "checked";
-        } else { return ""; }
     });
 
     Template.runnersListTemplate.onCreated(function () {
@@ -36,13 +43,14 @@ if (Meteor.isClient) {
                     saveRunner(event.currentTarget.dataset.rowid)
                     break;
                 case "delete":
-                deleteRunner(event.currentTarget.dataset.rowid)
+                    deleteRunner(event.currentTarget.dataset.rowid)
+                    break;
+                case "create":
+                    createRunner()
                     break;
                 default:
                     break;
             }
-
-
         },
 
         'click .evtBtn'(event) {
@@ -52,50 +60,16 @@ if (Meteor.isClient) {
 
             var action = event.currentTarget.dataset.target;
 
-            if (action === "deleteR") {
-                if (selId) {
-                    Runners.remove(selId, function (error, result) {
-                        if (error) console.log(error); //info about what went wrong
-                        if (result) console.log(result); //the _id of new object if successful);
-                    });
-                    Bert.alert("Runner removed", 'info');
-                } else {
-                    Bert.alert("No Runner selected", 'danger');
-                }
-            }
-
-
             if (action === "createR") {
-                $('#overlay').show();
+
+                //create a new row with disabled save button
+                createNewRow();
+                // enable save button if anything is filled
+
+                //save the record
             }
-
-            if (action === "createUser") {
-
-                //const gender = Meteor.call('htmlEscape',{str: $('input[name="gender"]:checked').val()}());
-                //const birthday = Meteor.call('htmlEscape',{str: $('#dob-day :selected').val() + "." + instance.$('#dob-month :selected').val() + "." + instance.$('#dob-year :selected').val());
-                //const group = Meteor.call('htmlEscape',{str:(calculateGroup(instance.$('#dob-day :selected').val(), instance.$('#dob-month :selected').val(), instance.$('#dob-year :selected').val(), gender));
-
-                Runners.insert({
-                    firstName: htmlEscape($('#firstName').val()),
-                    lastName: htmlEscape($('#lastName').val()),
-                    club: htmlEscape($('#club').val()),
-                    //	gender: gender,
-                    //	birthday: birthday,
-                    //	group: group,
-                    createdAt: new Date()
-                });
-
-                $('#overlay').hide();
-                $('#addRunnerForm')[0].reset();
-                Bert.alert("Runner created", 'info');
-            }
-
-            if (action === "cancelCreation") {
-                $('#overlay').hide();
-                Bert.alert("Action canceled", 'info');
-            }
-
         },
+
         'change input[type=radio][name=nRunner]'(event) {
             event.preventDefault();
 
@@ -106,7 +80,11 @@ if (Meteor.isClient) {
             prevClick = event.target.value;
 
             changeInput(event.target.value, true)
-        }
+            
+            
+            $("#newRecord").remove();
+
+        },
 
     });
 }
@@ -139,8 +117,6 @@ function changeInput(selId, isInput) {
     } else {
         selRow.find("#action").remove();
     }
-
-
 }
 
 function removeInput(parent) {
@@ -175,6 +151,8 @@ function saveRunner(selID) {
         if (error) Bert.alert(selRow.find("input")[3].value + " nicht gespeichert!", 'danger');
         if (result) {
             Bert.alert(selRow.find("input")[3].value + " gespeichert!", 'success');
+            $('input[name=nRunner]').removeAttr('checked');
+            prevClick = null;
             changeInput(selID, false);
         };
     });
@@ -191,4 +169,52 @@ function deleteRunner(selID) {
                 Bert.alert("Teilnehmer gelöscht", 'success');
             };
         });
+    prevClick = null;
+}
+
+
+function createNewRow() {
+    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
+    $(".rTable").append(newRow);
+}
+
+function verifyNewInput() {
+
+}
+
+function createRunner() {
+
+    var isValid = true;
+
+    $("#newRecord").find("input")[1].value.length == 0 ? isValid = false : isValid = true;
+    $("#newRecord").find("input")[2].value.length == 0 ? isValid = false : isValid = true;
+    $("#newRecord").find("input")[3].value.length == 0 ? isValid = false : isValid = true;
+    $("#newRecord").find("input")[5].value.length == 0 ? isValid = false : isValid = true;
+
+    if (!isValid) {
+        Bert.alert("Mussfelder ausfüllen", 'danger');
+    } else {
+        Runners.insert({
+            firstName: htmlEscape($("#newRecord").find("input")[1].value),
+            lastName: htmlEscape($("#newRecord").find("input")[2].value),
+            email: htmlEscape($("#newRecord").find("input")[3].value),
+            team: htmlEscape($("#newRecord").find("input")[4].value),
+            gender: htmlEscape($("#newRecord").find("select option:selected").text()),
+            birthday: htmlEscape($("#newRecord").find("input")[5].value),
+            createdAt: new Date(),
+            verified: $("#newRecord").find(":checkbox")[0].checked,
+            payed: $("#newRecord").find(":checkbox")[1].checked,
+            token: "0"
+        }, function (error, result) {
+            if (error) {
+                console.log(error);
+                Bert.alert("Fehler beim Anlegen", 'danger');
+            } //info about what went wrong
+            if (result){
+                Bert.alert("Benutzer erfolgreich angelegt", 'success');
+                $("#newRecord").remove();
+
+            } 
+        });
+    };
 }
