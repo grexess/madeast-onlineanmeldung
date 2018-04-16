@@ -61,6 +61,10 @@
             type="text">
         </p>
 
+        <p>
+          <input id="tb" class="w3-check" type="checkbox">
+          <label>Ich bestätige die Teilnahmebedingungen</label></p>
+
         <div class="w3-light-grey w3-round-xlarge">
           <div id="progress" class="w3-container w3-blue w3-round-xlarge" style="width:0%">0%</div>
         </div>
@@ -101,6 +105,19 @@
       <footer class="w3-container w3-red">
         <p>Bitte nochmal versuchen</p>
       </footer>
+    </div>
+  </div>
+
+  <div id="conditions" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container me-bglila">
+        <h2>Teilnahmebedingungen</h2>
+      </header>
+      <div class="w3-container">
+        <p id="txt">Teilnahmebedingungen</p>
+        <p><button id="disagreeBtn" class="w3-button w3-border w3-hover-pale-red">Nö</button></p>
+        <p><button id="agreeBtn" class="w3-button w3-border w3-hover-pale-yellow">Is klar</button></p>
+      </div>
     </div>
   </div>
 

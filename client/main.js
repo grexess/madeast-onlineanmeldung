@@ -32,7 +32,7 @@ Template.runnersListTemplate.onCreated(function () {
 
 Template.registerform.events({
 
-  'focusout #eMail' () {
+  'focusout #eMail'() {
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(String($('#eMail').val()).toLowerCase())) {
@@ -43,15 +43,26 @@ Template.registerform.events({
     }
   },
 
-  'click #submitBtn' (event) {
+  'click #agreeBtn'(event) {
+    event.preventDefault();
+    agreeCond();
+  },
+
+  'click #disagreeBtn'(event) {
+    event.preventDefault();
+    disagreeCond();
+  },
+
+
+  'click #submitBtn'(event) {
     event.preventDefault();
 
     var firstName = htmlEscape($('#firstName').val());
     var email = htmlEscape($('#eMail').val());
 
     if (Runners.findOne({
-        email: email
-      })) {
+      email: email
+    })) {
       $('#errorMsg').text("eMail-Adresse ist bereits angemeldet");
       $('#id02').show();
       return;
@@ -91,11 +102,15 @@ Template.registerform.events({
 
   },
 
-  'input .validateInput' () {
+  'input .validateInput'() {
     validateFormular($(this));
   },
-  'change input[type=radio]' () {
+  'change input[type=radio]'() {
     validateFormular();
+  },
+  'change input[type=checkbox]'() {
+    validateFormular();
+    if($('#tb')[0].checked) $('#conditions').show();
   }
 });
 
@@ -168,6 +183,9 @@ function validateFormular(elem) {
   b6 = $('#dob-month').val();
   b7 = $('#dob-year').val();
 
+  //Teilnahmebedingungen
+  b8 = $('#tb')[0].checked;
+
   prog = b1 ? prog = Math.round(100 / 7) : prog + 0;
   prog = b2 ? prog + Math.round(100 / 7) : prog + 0;
   prog = b3 ? prog + Math.round(100 / 7) : prog + 0;
@@ -175,8 +193,9 @@ function validateFormular(elem) {
   prog = b5 ? prog + Math.round(100 / 7) : prog + 0;
   prog = b6 ? prog + Math.round(100 / 7) : prog + 0;
   prog = b7 ? prog + Math.round(100 / 7) : prog + 0;
+  prog = b8 ? prog + Math.round(100 / 8) : prog + 0;
 
-  if (b1 && b2 && b3 && b4 && b5 && b6 && b7) {
+  if (b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
     valid = true;
     prog = 100;
   }
@@ -221,3 +240,14 @@ FlowRouter.route('/listrunners/', {
     });
   }
 });
+
+function disagreeCond(){
+  document.getElementById('conditions').style.display='none';
+  $( "#tb" ).attr( "checked", false );
+  validateFormular();
+}
+
+function agreeCond(){
+  document.getElementById('conditions').style.display='none';
+}
+

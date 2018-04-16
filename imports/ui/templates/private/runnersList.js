@@ -81,9 +81,8 @@ if (Meteor.isClient) {
 
             changeInput(event.target.value, true)
             
-            
-            $("#newRecord").remove();
 
+            $("#newRecord").remove();
         },
 
     });
