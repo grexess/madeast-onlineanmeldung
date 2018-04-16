@@ -4,6 +4,8 @@ import {
     Runners
 } from '../../../api/runners.js';
 
+prevClick = null;
+
 if (Meteor.isClient) {
 
     Template.runnersListTemplate.helpers({
@@ -13,12 +15,37 @@ if (Meteor.isClient) {
     });
 
     Template.registerHelper('formatBoolean', function (value) {
-        return value.toString();
+
+        if (value) {
+            return "checked";
+        } else { return ""; }
     });
+
+    Template.runnersListTemplate.onCreated(function () {
+
+    });
+
 
     Template.runnersListTemplate.events({
 
-        'click .evtBtn' (event) {
+        'click .actBtn'(event) {
+            event.preventDefault();
+
+            switch (event.currentTarget.dataset.action) {
+                case "save":
+                    saveRunner(event.currentTarget.dataset.rowid)
+                    break;
+                case "delete":
+                deleteRunner(event.currentTarget.dataset.rowid)
+                    break;
+                default:
+                    break;
+            }
+
+
+        },
+
+        'click .evtBtn'(event) {
             event.preventDefault();
 
             var selId = ($('input[name=nRunner]:checked', '.rTable').val());
@@ -37,25 +64,6 @@ if (Meteor.isClient) {
                 }
             }
 
-            if (action === "changeR") {
-                if (selId) {
-                    //$('#overlay').show();
-                    changeToInput(selId);
-                    //set the values
-                    var record = Runners.find({
-                        "_id": selId
-                    }).fetch()[0];
-                    $('#firstName').val(record.firstName);
-                    $('#lastName').val(record.lastName);
-                    $('#club').val(record.club);
-
-
-
-                    $('#addRunnerForm')[0].reset();
-                } else {
-                    Bert.alert("No Runner selected", 'danger');
-                }
-            }
 
             if (action === "createR") {
                 $('#overlay').show();
@@ -87,7 +95,19 @@ if (Meteor.isClient) {
                 Bert.alert("Action canceled", 'info');
             }
 
+        },
+        'change input[type=radio][name=nRunner]'(event) {
+            event.preventDefault();
+
+            if (prevClick) {
+                //reset the previous row 
+                changeInput(prevClick, false);
+            }
+            prevClick = event.target.value;
+
+            changeInput(event.target.value, true)
         }
+
     });
 }
 
@@ -100,15 +120,75 @@ function htmlEscape(str) {
         .replace(/>/g, '&gt;');
 }
 
-function changeToInput(selId){
-    selRow= $("#"+ selId);
+function changeInput(selId, isInput) {
 
-    var elem = selRow.find("div")[1];
-    var txt = $(elem).text();
-    $(elem).text("");
+    var selRow = $("#" + selId);
 
-    var $inp = $( "<input value='"+ "Hallo" +"'>" );
+    for (i = 1; i <= 5; i++) {
+        if (isInput) {
+            createInput(selRow.find("div")[i]);
+        } else {
+            removeInput(selRow.find("div")[i]);
+        }
+    }
+    selRow.find(":checkbox").prop("disabled", !isInput)
+    selRow.find("select").prop("disabled", !isInput)
 
-    elem.append($inp);
+    if (isInput) {
+        selRow.append($("<div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"save\" data-rowid=" + selId + "></i><i class=\"fa fa-trash w3-xlarge w3-padding-small actBtn\" data-action=\"delete\" data-rowid=" + selId + "></i></div>"));
+    } else {
+        selRow.find("#action").remove();
+    }
 
+
+}
+
+function removeInput(parent) {
+    var txt = $(parent).find("input")[0].value
+    $(parent).empty();
+    $(parent).text(txt);
+}
+
+
+function createInput(parent) {
+    var $inp = $("<input value='" + $(parent).text() + "'>");
+    $(parent).text("");
+    parent.append($inp[0]);
+}
+
+function saveRunner(selID) {
+
+    var selRow = $("#" + selID);
+
+    Runners.update(selID, {
+        $set: {
+            firstName: selRow.find("input")[1].value,
+            lastName: selRow.find("input")[2].value,
+            email: selRow.find("input")[3].value,
+            team: selRow.find("input")[4].value,
+            birthday: selRow.find("input")[5].value,
+            gender: selRow.find("select option:selected").text(),
+            verified: $(selRow.find(":checkbox")[0])[0].checked,
+            payed: $(selRow.find(":checkbox")[1])[0].checked
+        },
+    }, function (error, result) {
+        if (error) Bert.alert(selRow.find("input")[3].value + " nicht gespeichert!", 'danger');
+        if (result) {
+            Bert.alert(selRow.find("input")[3].value + " gespeichert!", 'success');
+            changeInput(selID, false);
+        };
+    });
+}
+
+function deleteRunner(selID) {
+
+    var selRow = $("#" + selID);
+
+    Runners.remove(selID
+        , function (error, result) {
+            if (error) Bert.alert(selRow.find("input")[3].value + " nicht gelöscht!", 'danger');
+            if (result) {
+                Bert.alert("Teilnehmer gelöscht", 'success');
+            };
+        });
 }
