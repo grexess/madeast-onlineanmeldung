@@ -62,6 +62,7 @@ Template.registerform.events({
 
     var oRunner = {};
 
+    oRunner.event = htmlEscape($('#event').val());
     oRunner.firstname = htmlEscape($('#firstName').val());
     oRunner.email = htmlEscape($('#eMail').val());
     oRunner.birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
@@ -87,6 +88,7 @@ Template.registerform.events({
     var token = randomizer(16);
 
     Runners.insert({
+      event: oRunner.event,
       firstName: oRunner.firstname,
       lastName: oRunner.lastname,
       email: oRunner.email,
@@ -103,7 +105,7 @@ Template.registerform.events({
     });
 
     Meteor.call('sendEmail',
-      'grexess@googlemail.com',
+      oRunner.email,
       'madeast.registration@madcross.de',
       'MadEast 2018 Online-Anmeldung',
       oRunner);
@@ -184,6 +186,7 @@ function validateFormular(elem) {
   var prog = 0;
 
   var
+    b0 = $('#event').val(),
     b1 = $('#firstName').val().length > 0,
     b2 = $('#lastName').val().length > 0,
     b3 = $('#eMail').val().length > 0,
@@ -197,16 +200,17 @@ function validateFormular(elem) {
   //Teilnahmebedingungen
   b8 = $('#tb')[0].checked;
 
-  prog = b1 ? prog = Math.round(100 / 7) : prog + 0;
-  prog = b2 ? prog + Math.round(100 / 7) : prog + 0;
-  prog = b3 ? prog + Math.round(100 / 7) : prog + 0;
-  prog = b4 ? prog + Math.round(100 / 7) : prog + 0;
-  prog = b5 ? prog + Math.round(100 / 7) : prog + 0;
-  prog = b6 ? prog + Math.round(100 / 7) : prog + 0;
-  prog = b7 ? prog + Math.round(100 / 7) : prog + 0;
-  prog = b8 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b0 ? prog = Math.round(100 / 9) : prog + 0;
+  prog = b1 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b2 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b3 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b4 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b5 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b6 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b7 ? prog + Math.round(100 / 9) : prog + 0;
+  prog = b8 ? prog + Math.round(100 / 9) : prog + 0;
 
-  if (b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
+  if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
     valid = true;
     prog = 100;
   }

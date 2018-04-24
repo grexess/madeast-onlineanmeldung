@@ -5,6 +5,24 @@
         <h2>Ich will mitfahren! </h2>
       </div>
       <div class="w3-container">
+
+        <p>
+          <label class="me-txtlila">
+            <b>Veranstaltung
+              <span style="color:red">*</span>
+            </b>
+          </label>
+          <br>
+          <select name="event" id="dob-day" class="validateInput w3-select w3-border w3-sand w3-quarter w3-margin-bottom w3-margin-right"
+            style="width:50%">
+            <option value="" disabled selected>Bitte auswählen</option>
+            <option value="1">MAD Enduro</option>
+            <option value="2">MAD Laufradrennen</option>
+            <option value="3">MAD Nachwuchs</option>
+            <option value="4">MAD Crosscountry</option>
+          </select>
+        </p>
+       <br><hr>
         <p>
           <label class="me-txtlila">
             <b>Vorname
@@ -63,7 +81,8 @@
 
         <p>
           <input id="tb" class="w3-check" type="checkbox">
-          <label>Ich bestätige die Teilnahmebedingungen</label></p>
+          <label>Ich bestätige die Teilnahmebedingungen</label>
+        </p>
 
         <div class="w3-light-grey w3-round-xlarge">
           <div id="progress" class="w3-container w3-blue w3-round-xlarge" style="width:0%">0%</div>
@@ -82,7 +101,7 @@
       <header class="w3-container w3-teal">
         <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
         <h2>Du bist vorgemerkt als
-          <span id="runnersCount"></span> Teilnehmer! </h2>
+          <span id="runnersCount"></span>. Teilnehmer! </h2>
       </header>
       <div class="w3-container">
         <p>Bitte Mails prüfen und Registrierung abschliessen</p>
@@ -111,12 +130,16 @@
   <div id="conditions" class="w3-modal">
     <div class="w3-modal-content w3-card-4">
       <header class="w3-container me-bglila">
-        <h2>Teilnahmebedingungen ???</h2>
+        <h2>Teilnahmebedingungen</h2>
       </header>
       <div class="w3-container">
-        <p id="txt">Teilnahmebedingungen</p>
-        <p><button id="disagreeBtn" class="w3-button w3-border w3-hover-pale-red">Nö</button></p>
-        <p><button id="agreeBtn" class="w3-button w3-border w3-hover-pale-yellow">Is klar</button></p>
+        <p id="txt">Teilnahmebedingungen ????</p>
+        <p>
+          <button id="disagreeBtn" class="w3-button w3-border w3-hover-pale-red">Nö</button>
+        </p>
+        <p>
+          <button id="agreeBtn" class="w3-button w3-border w3-hover-pale-yellow">Is klar</button>
+        </p>
       </div>
     </div>
   </div>
