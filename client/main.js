@@ -11,7 +11,10 @@ import '../imports/ui/templates/verify.html';
 import '../imports/ui/templates/birthday.html';
 import '../imports/ui/templates/register.html';
 import '../imports/ui/templates/private/runnersList.html';
+import '../imports/ui/templates/private/login.html';
 import '../imports/ui/templates/private/runnersList.js';
+
+import '../imports/startup/accounts-config.js';
 
 Template.registerform.onCreated(function helloOnCreated() {
   console.log("Form created");
