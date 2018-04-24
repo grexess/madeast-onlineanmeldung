@@ -15,25 +15,25 @@ Meteor.startup(() => {
 });
 
 Runners.allow({
-  'insert': function (userId,doc) {
+  'insert': function (userId, doc) {
     /* user and doc checks ,
     return true to allow insert */
-    return true; 
+    return true;
   },
-  'remove': function (userId,doc) {
+  'remove': function (userId, doc) {
     /* user and doc checks ,
     return true to allow insert */
-    return true; 
+    return true;
   },
-  'update': function (userId,doc) {
+  'update': function (userId, doc) {
     /* user and doc checks ,
     return true to allow insert */
-    return true; 
+    return true;
   }
 });
 
 Meteor.methods({
-  sendEmail: function (to, from, subject, text) {
+  sendEmail: function (to, from, subject, oRunner) {
     //check([to, from, subject, text], [String]);
 
     // Let other method calls from the same client start running,
@@ -44,7 +44,7 @@ Meteor.methods({
       to: to,
       from: from,
       subject: subject,
-      text: text
+      text: buildEmailText(oRunner)
     });
   },
 
@@ -69,10 +69,10 @@ Meteor.methods({
           Runners.update({
             _id: x[0]._id
           }, {
-            $set: {
-              verified: true
-            }
-          })
+              $set: {
+                verified: true
+              }
+            })
           return 0;
         }
       } else {
@@ -85,3 +85,11 @@ Meteor.methods({
     }
   },
 });
+
+function buildEmailText(obj) {
+
+  var text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus " + obj.firstname + ", vielen Dank f\u00FCr deine Anmeldung.\n\nStrecke: \u0009MAD ENDURO\nStartgeld:\u000940\u20AC\n\nVorname:\u0009" + obj.firstname + "\nName:\u0009\u0009" + obj.lastname + "\n\n\nEmail: \u0009\u0009" + obj.email + "\nGeschlecht:\u0009" + obj.gender + "\n\nGeburtsdatum: \u000902.03.1988\nTeam/Verein: \u0009" + obj.team + "\n\nBitte \u00FCberweise das Startgeld auf unser Bankkonto.\n\n\u00BB Mad East Challenge e.V.\n\u00BB Osts\u00E4chsische Sparkasse Dresden\n\u00BB IBAN: DE56 8505 0300 1225 2129 83\n\u00BB BIC: OSDDDE81XXX\n\u00BB Verwendungszweck: Startgeld, \"Gew\u00E4hlte Strecke\", Name, Vorname\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
+
+  console.log("emailText: " + text);
+  return text;
+}

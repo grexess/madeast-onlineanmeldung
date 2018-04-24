@@ -60,31 +60,39 @@ Template.registerform.events({
   'click #submitBtn'(event) {
     event.preventDefault();
 
-    var firstName = htmlEscape($('#firstName').val());
-    var email = htmlEscape($('#eMail').val());
+    var oRunner = {};
 
+    oRunner.firstname = htmlEscape($('#firstName').val());
+    oRunner.email = htmlEscape($('#eMail').val());
+    oRunner.birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+    oRunner.team = htmlEscape($('#team').val());
+    oRunner.lastname = htmlEscape($('#lastName').val());
+    oRunner.gender = htmlEscape($('input[name=gender]:checked').val());
+
+    /* check if email already exist
+    
     if (Runners.findOne({
-      email: email
+      email: oRunner.email
     })) {
       $('#errorMsg').text("eMail-Adresse ist bereits angemeldet");
       $('#id02').show();
       return;
     }
 
-    var countAll = Runners.find({}).fetch().length;
-    //console.log("already registered");
+    */
 
-    var birthday = birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+    var countAll = Runners.find({}).fetch().length;
+
     var randomizer = require('random-token');
     var token = randomizer(16);
 
     Runners.insert({
-      firstName: firstName,
-      lastName: htmlEscape($('#lastName').val()),
-      email: email,
-      team: htmlEscape($('#team').val()),
-      gender: htmlEscape($('input[name=gender]:checked').val()),
-      birthday: birthday,
+      firstName: oRunner.firstname,
+      lastName: oRunner.lastname,
+      email: oRunner.email,
+      team: oRunner.team,
+      gender: oRunner.gender,
+      birthday: oRunner.birthday,
       createdAt: new Date(),
       verified: false,
       payed: false,
@@ -98,7 +106,7 @@ Template.registerform.events({
       'grexess@googlemail.com',
       'madeast.registration@madcross.de',
       'MadEast 2018 Online-Anmeldung',
-      'Hallo ' + firstName + '! Bitte folgenden Link zur Adressprüfung anklicken: ' + $(document).context.URL + 'verify?otp=' + token + '&email=' + email);
+      oRunner);
 
     $("#runnersCount").text(countAll + 1);
     $('#id01').show();
@@ -113,7 +121,7 @@ Template.registerform.events({
   },
   'change input[type=checkbox]'() {
     validateFormular();
-    if($('#tb')[0].checked) $('#conditions').show();
+    if ($('#tb')[0].checked) $('#conditions').show();
   }
 });
 
@@ -244,13 +252,13 @@ FlowRouter.route('/listrunners/', {
   }
 });
 
-function disagreeCond(){
-  document.getElementById('conditions').style.display='none';
-  $( "#tb" ).attr( "checked", false );
+function disagreeCond() {
+  document.getElementById('conditions').style.display = 'none';
+  $("#tb").attr("checked", false);
   validateFormular();
 }
 
-function agreeCond(){
-  document.getElementById('conditions').style.display='none';
+function agreeCond() {
+  document.getElementById('conditions').style.display = 'none';
 }
 

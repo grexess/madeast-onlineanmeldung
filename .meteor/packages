@@ -24,3 +24,5 @@ kadira:blaze-layout
 fourseven:scss
 themeteorchef:bert
 accounts-base
+accounts-password
+accounts-ui
