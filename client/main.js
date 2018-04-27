@@ -62,7 +62,7 @@ Template.registerform.events({
 
     var oRunner = {};
 
-    oRunner.event = htmlEscape($('#event').val());
+    oRunner.event = parseInt($('#event').val());
     oRunner.firstname = htmlEscape($('#firstName').val());
     oRunner.email = htmlEscape($('#eMail').val());
     oRunner.birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
@@ -211,7 +211,15 @@ function validateFormular(elem) {
   prog = b8 ? prog + Math.round(100 / 9) : prog + 0;
 
   if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
-    valid = true;
+
+    var dateStr = b7 + "-" + b6 + "-" + b5;
+    if (moment(dateStr).isValid()) {
+      valid = true;
+    } else {
+      $('#errorMsg').text("Dein Geburtsdatum [" + b5 + "." + b6 + "." + b7 + "] gibt es nicht!", 'danger');
+      $('#id02').show();
+      $('#dob-day').val("");
+    }
     prog = 100;
   }
 

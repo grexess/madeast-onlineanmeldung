@@ -18,6 +18,7 @@
                 <div class="rTableHead">Club</div>
                 <div class="rTableHead">Geburtstag</div>
                 <div class="rTableHead">m/w</div>
+                <div class="rTableHead">Event</div>
                 <div class="rTableHead">Bestätigt</div>
                 <div class="rTableHead">Überwiesen</div>
                 <div class="rTableHead"></div>
@@ -36,8 +37,16 @@
                 <div class="rTableCell">{{birthday}}</div>
                 <div class="rTableCell">
                     <select class="w3-select" name="gender" disabled>
-                        <option value="Mädchen" {{formatGender gender "Mädchen"}}>Mädchen</option>
-                        <option value="Junge" {{formatGender gender "Junge"}}>Junge</option>
+                        <option value="female" {{formatValue gender "female"}}>Mädchen</option>
+                        <option value="male" {{formatValue gender "male"}}>Junge</option>
+                    </select>
+                </div>
+                <div class="rTableCell">
+                    <select class="w3-select" name="gender" disabled>
+                        <option value="1" {{formatValue event "1"}}>MAD Enduro</option>
+                        <option value="2" {{formatValue event "2"}}>MAD Laufradrennen</option>
+                        <option value="3" {{formatValue event "3"}}>MAD Nachwuchs</option>
+                        <option value="4" {{formatValue event "4"}}>MAD Crosscountry</option>
                     </select>
                 </div>
                 <div class="rTableCell">
@@ -56,7 +65,7 @@
     <div id="logout" class="prvCntDiv" style="display:none">logout</div>
 
     {{else}}
-    <!-- <div class="privBox">{{> loginButtons}}</div> -->
+     <!--<div class="privBox">{{> loginButtons}}</div> -->
 
     <div class="privLoginBox">{{> login}}</div>
 

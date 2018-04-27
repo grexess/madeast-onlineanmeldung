@@ -20,11 +20,11 @@ if (Meteor.isClient) {
             } else { return ""; }
         },
 
-        formatGender(value, check) {
-            if (value == check) {
-                return "selected";
-            } else { return ""; }
-        }
+       formatValue(value, check) {
+        if (value == check) {
+            return "selected";
+        } else { return ""; }
+    }
 
     });
 
