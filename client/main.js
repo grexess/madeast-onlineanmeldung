@@ -13,9 +13,11 @@ import '../imports/ui/templates/footer.html';
 import '../imports/ui/templates/verify.html';
 import '../imports/ui/templates/birthday.html';
 import '../imports/ui/templates/register.html';
+import '../imports/ui/templates/registerlist.html';
 import '../imports/ui/templates/private/runnersList.html';
 import '../imports/ui/templates/private/login.html';
 import '../imports/ui/templates/private/runnersList.js';
+import '../imports/ui/templates/registerlist.js';
 
 import '../imports/startup/accounts-config.js';
 
@@ -60,9 +62,22 @@ Template.registerform.events({
     }
   },
 
+  'click .navElem': function (event, instance) {
+    event.preventDefault();
+    instance.$('.prvCntDiv').hide();
+    instance.$('.navElem').removeClass("w3-green");
+    instance.$(event.currentTarget).addClass("w3-green");
+    instance.$('#' + event.currentTarget.dataset.target).show();
+
+    if(event.currentTarget.dataset.target == "lists"){
+      $("#registerUL").trigger( "click" );
+    }
+
+  },
+
   'change #event'(event) {
     event.preventDefault();
-    var selId = parseInt(event.target.selectedOptions[0].value);
+    var selId = parseInt($("#event option:selected").val());
     var wid, msg;
     switch (selId) {
       case 1:
@@ -311,4 +326,5 @@ function disagreeCond() {
 function agreeCond() {
   document.getElementById('conditions').style.display = 'none';
 }
+
 

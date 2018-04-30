@@ -5,11 +5,13 @@
   <div class="w3-container w3-margin">&nbsp;</div>
 
   <div class="w3-container w3-margin">
-    <div class="w3-card w3-padding w3-margin">
-      <b>Ich will mitfahren!</b>
 
+    <div class="w3-bar w3-blue">
+      <a href="#" class="w3-bar-item w3-button w3-mobile navElem w3-green" data-target="register">Ich will mitfahren!</a>
+      <a href="#" class="w3-bar-item w3-button w3-mobile navElem" data-target="lists">Anmeldungen</a>
+    </div>
 
-
+    <div id="register" class="w3-card w3-padding w3-margin prvCntDiv">
       <div class="w3-container">
 
         <p>
@@ -104,6 +106,12 @@
         <p>
           <button id="submitBtn" class="w3-btn me-bglila" disabled>Anmelden</button>
         </p>
+      </div>
+    </div>
+
+    <div id="lists" class="w3-padding w3-margin prvCntDiv" style="display:none">
+      <div class="w3-container">
+        {{> registerlist}} 
       </div>
     </div>
   </div>

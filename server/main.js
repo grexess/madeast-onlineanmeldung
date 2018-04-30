@@ -62,12 +62,13 @@ Meteor.methods({
     switch (eventID) {
       case 1:
         cnt = Runners.find({ event: eventID }).count();
+        console.log("x" +Runners.find({ event: eventID }).count())
         var cntadd = Runners.find({ event: 5 }).count();
 
         var all = cnt + cntadd;
 
         obj.msg = "Noch " + (100 - all) + " von 100 Plätzen verfügbar";
-        obj.wid =  Math.round(((100 - all) * 100)/100) * "%";
+        obj.wid =  Math.round(((100 - all) * 100)/100) + "%";
         break;
       case 5:
         cnt = Runners.find({ event: eventID }).count();
@@ -75,6 +76,19 @@ Meteor.methods({
         obj.wid = Math.round(((32 - cnt) * 100)/32) + "%";
         break;
     }
+    return obj;
+  },
+
+  getEventStatus: function(){
+
+    var obj = []
+    var subObj;
+
+    obj.push([Runners.find({ event: 1 }).count(),Runners.find({ event: 1, payed: true }).count()]);
+    obj.push([Runners.find({ event: 5 }).count(),Runners.find({ event: 5, payed: true }).count()]);
+    obj.push([Runners.find({ event: 3 }).count(),Runners.find({ event: 3, payed: true }).count()]);
+    obj.push([Runners.find({ event: 4 }).count(),Runners.find({ event: 4, payed: true }).count()]);
+    
     return obj;
   },
 

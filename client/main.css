@@ -8,6 +8,9 @@
   color: #fff;
 }
 
+.me-regist{
+  width: 50% !important;
+}
 
 @media (min-width:640px) {
   .me-input{

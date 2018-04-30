@@ -20,11 +20,11 @@ if (Meteor.isClient) {
             } else { return ""; }
         },
 
-       formatValue(value, check) {
-        if (value == check) {
-            return "selected";
-        } else { return ""; }
-    }
+        formatValue(value, check) {
+            if (value == check) {
+                return "selected";
+            } else { return ""; }
+        }
 
     });
 
@@ -80,7 +80,7 @@ if (Meteor.isClient) {
             prevClick = event.target.value;
 
             changeInput(event.target.value, true)
-            
+
 
             $("#newRecord").remove();
         },
@@ -173,7 +173,7 @@ function deleteRunner(selID) {
 
 
 function createNewRow() {
-    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
+    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
     $(".rTable").append(newRow);
 }
 
@@ -198,7 +198,8 @@ function createRunner() {
             lastName: htmlEscape($("#newRecord").find("input")[2].value),
             email: htmlEscape($("#newRecord").find("input")[3].value),
             team: htmlEscape($("#newRecord").find("input")[4].value),
-            gender: htmlEscape($("#newRecord").find("select option:selected").text()),
+            gender: htmlEscape($("#newRecord").find("select[name='gender'] option:selected").text()),
+            event: parseInt($("#newRecord").find("select[name='event'] option:selected").val()),
             birthday: htmlEscape($("#newRecord").find("input")[5].value),
             createdAt: new Date(),
             verified: $("#newRecord").find(":checkbox")[0].checked,
@@ -209,11 +210,11 @@ function createRunner() {
                 console.log(error);
                 Bert.alert("Fehler beim Anlegen", 'danger');
             } //info about what went wrong
-            if (result){
+            if (result) {
                 Bert.alert("Benutzer erfolgreich angelegt", 'success');
                 $("#newRecord").remove();
 
-            } 
+            }
         });
     };
 }
