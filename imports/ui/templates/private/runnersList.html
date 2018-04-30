@@ -44,9 +44,12 @@
                 <div class="rTableCell">
                     <select class="w3-select" name="gender" disabled>
                         <option value="1" {{formatValue event "1"}}>MAD Enduro</option>
+                        <!--
                         <option value="2" {{formatValue event "2"}}>MAD Laufradrennen</option>
+                        -->
                         <option value="3" {{formatValue event "3"}}>MAD Nachwuchs</option>
                         <option value="4" {{formatValue event "4"}}>MAD Crosscountry</option>
+                        <option value="5" {{formatValue event "5"}}>MAD Enduro + MAD HALL4X</option>
                     </select>
                 </div>
                 <div class="rTableCell">
@@ -65,9 +68,11 @@
     <div id="logout" class="prvCntDiv" style="display:none">logout</div>
 
     {{else}}
-     <!--<div class="privBox">{{> loginButtons}}</div> -->
+    <div class="privBox">{{> loginButtons}}</div>
+    
 
-    <div class="privLoginBox">{{> login}}</div>
+    <!-- wrongloginform
+        <div class="privLoginBox">{{> login}}</div>-->
 
     {{/if}}
 

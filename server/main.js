@@ -46,17 +46,43 @@ Meteor.methods({
       subject: subject,
       text: buildEmailText(oRunner)
     });
+
+    Email.send({
+      to: "administrator@madcross.de",
+      from: from,
+      subject: "[INFO] Neue MadEast-Anmeldung",
+      text: buildEmailText(oRunner)
+    });
+  },
+
+  getEventCounts: function (eventID) {
+
+    var obj = {}, cnt;
+
+    switch (eventID) {
+      case 1:
+        cnt = Runners.find({ event: eventID }).count();
+        var cntadd = Runners.find({ event: 5 }).count();
+
+        var all = cnt + cntadd;
+
+        obj.msg = "Noch " + (100 - all) + " von 100 Plätzen verfügbar";
+        obj.wid =  Math.round(((100 - all) * 100)/100) * "%";
+        break;
+      case 5:
+        cnt = Runners.find({ event: eventID }).count();
+        obj.msg = "Noch " + (32 - cnt) + " von 32 Plätzen verfügbar";
+        obj.wid = Math.round(((32 - cnt) * 100)/32) + "%";
+        break;
+    }
+    return obj;
   },
 
   checkToken: function (email, token) {
 
-    console.log("Verify email [" + email + "] and token [" + token + "]");
-
     var x = Runners.find({
       email: email
     }).fetch();
-
-    console.log("email count:" + x.length);
 
     if (x.length === 1) {
       if (x[0].token === token) {
@@ -106,6 +132,10 @@ function buildEmailText(obj) {
       event = "MAD Crosscountry"
       cost = "10€";
       break;
+    case 5:
+      event = "MAD Enduro + MAD HALL4X"
+      cost = "25€";
+      break;
   }
 
   var gender = "";
@@ -113,6 +143,5 @@ function buildEmailText(obj) {
 
   var text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus " + obj.firstname + ", vielen Dank f\u00FCr deine Anmeldung.\n\nStrecke: \u0009" + event + "\nStartgeld:\u0009" + cost + "\n\nVorname:\u0009" + obj.firstname + "\nName:\u0009\u0009" + obj.lastname + "\n\n\nEmail: \u0009\u0009" + obj.email + "\nGeschlecht:\u0009" + gender + "\n\nGeburtsdatum: \u0009" + obj.birthday + "\nTeam/Verein: \u0009" + obj.team + "\n\nBitte \u00FCberweise das Startgeld auf unser Bankkonto.\n\n\u00BB Mad East Challenge e.V.\n\u00BB Osts\u00E4chsische Sparkasse Dresden\n\u00BB IBAN: DE56 8505 0300 1225 2129 83\n\u00BB BIC: OSDDDE81XXX\n\u00BB Verwendungszweck: Startgeld, \"Gew\u00E4hlte Strecke\", Name, Vorname\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
 
-  console.log("emailText: " + text);
   return text;
 }

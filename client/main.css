@@ -1,3 +1,33 @@
+.me-font{
+  font-family: 'PT Sans', sans-serif !important;
+  color: #212333;
+}
+
+.me-progress{
+  background-color: #212333;
+  color: #fff;
+}
+
+
+@media (min-width:640px) {
+  .me-input{
+    width:50%;
+  }
+}
+
+@media (max-width: 640px) {
+  .me-input{
+    width:90%;
+  }
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
 .me-bglila{
     background-color: #0f102d !important;
     color: #fff !important;

@@ -7,6 +7,9 @@ import {
 
 //import './main.html';
 
+import '../imports/ui/templates/header.html';
+import '../imports/ui/templates/footer.html';
+
 import '../imports/ui/templates/verify.html';
 import '../imports/ui/templates/birthday.html';
 import '../imports/ui/templates/register.html';
@@ -33,6 +36,17 @@ Template.runnersListTemplate.onCreated(function () {
   Meteor.subscribe('runners');
 });
 
+/*
+Template.registerform.helpers({
+  enduroCount: function() {
+    return Products.find().count()
+  },
+  hallCount:function() {
+    return Products.find().count()
+  }
+});
+*/
+
 Template.registerform.events({
 
   'focusout #eMail'() {
@@ -46,6 +60,31 @@ Template.registerform.events({
     }
   },
 
+  'change #event'(event) {
+    event.preventDefault();
+    var selId = parseInt(event.target.selectedOptions[0].value);
+    var wid, msg;
+    switch (selId) {
+      case 1:
+        Meteor.call('getEventCounts', selId, function (error, result) {
+          $("#countmsg").text(result.msg);
+          $("#count").css("width", result.wid);
+          $("#availCount").show();
+        });
+        break;
+      case 5:
+        Meteor.call('getEventCounts', selId, function (error, result) {
+          $("#countmsg").text(result.msg);
+          $("#count").css("width", result.wid);
+          $("#availCount").show();
+        });
+        break;
+      default:
+        $("#availCount").hide();
+        break;
+    }
+  },
+
   'click #agreeBtn'(event) {
     event.preventDefault();
     agreeCond();
@@ -55,7 +94,6 @@ Template.registerform.events({
     event.preventDefault();
     disagreeCond();
   },
-
 
   'click #submitBtn'(event) {
     event.preventDefault();
