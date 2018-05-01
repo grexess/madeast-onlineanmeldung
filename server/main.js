@@ -55,6 +55,37 @@ Meteor.methods({
     });
   },
 
+  getRunners: function (){
+
+   var eventlist =  [
+      {
+          event: 'MAD Enduro',
+          registr: Runners.find({ event: 1 }).count(),
+          payed: Runners.find({ event: 1, payed: true }).count(),
+          runners: Runners.find({ event: 1, payed: true }).fetch(),
+      },
+      {
+          event: 'MAD HALL4X',
+          registr: Runners.find({ event: 5 }).count(),
+          payed: Runners.find({ event: 5, payed: true }).count(),
+          runners: Runners.find({ event: 5, payed: true }).fetch(),
+      },
+      {
+          event: 'MAD Nachwuchs',
+          registr: Runners.find({ event: 3 }).count(),
+          payed: Runners.find({ event: 3, payed: true }).count(),
+          runners: Runners.find({ event: 3, payed: true }).fetch(),
+      },
+      {
+          event: 'MAD Crosscountry',
+          registr: Runners.find({ event: 4 }).count(),
+          payed: Runners.find({ event: 4, payed: true }).count(),
+          runners: Runners.find({ event: 4, payed: true }).fetch(),
+      }
+  ];
+  return eventlist;
+  },
+
   getEventCounts: function (eventID) {
 
     var obj = {}, cnt;
@@ -62,7 +93,6 @@ Meteor.methods({
     switch (eventID) {
       case 1:
         cnt = Runners.find({ event: eventID }).count();
-        console.log("x" +Runners.find({ event: eventID }).count())
         var cntadd = Runners.find({ event: 5 }).count();
 
         var all = cnt + cntadd;

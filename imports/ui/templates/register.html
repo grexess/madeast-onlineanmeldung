@@ -14,7 +14,22 @@
     <div id="register" class="w3-card w3-padding w3-margin prvCntDiv">
       <div class="w3-container">
 
+        <div id="max1" class="w3-panel w3-red w3-display-container w3-animate-left" style="display:none">
+          <span onclick="this.parentElement.style.display='none'" class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+          <p>Für
+            <b>MAD Enduro</b> ist das Registrierungs-Limit von <span id="max1Cnt"></span> Plätzen leider erreicht. Bitte schaue in in ein paar Tagen nochmal vorbei,
+            ob wieder freie Plätze durch fehlende Überweisungen oder Abmeldungen verfügbar sind.</p>
+        </div>
+
+        <div id="max5" class="w3-panel w3-red w3-display-container w3-animate-left" style="display:none">
+          <span onclick="this.parentElement.style.display='none'" class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+          <p>Für
+            <b>MAD Enduro + MADHALL4X</b> ist das Registrierungs-Limit von <span id="max5Cnt"></span> Plätzen leider erreicht. Bitte schaue in in ein paar Tagen nochmal
+            vorbei, ob wieder freie Plätze durch fehlende Überweisungen oder Abmeldungen verfügbar sind.</p>
+        </div>
+
         <p>
+
           <label class="me-txtlila">
             <b>Veranstaltung
               <span style="color:red">*</span>
@@ -111,7 +126,7 @@
 
     <div id="lists" class="w3-padding w3-margin prvCntDiv" style="display:none">
       <div class="w3-container">
-        {{> registerlist}} 
+        {{> registerlist}}
       </div>
     </div>
   </div>

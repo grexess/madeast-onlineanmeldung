@@ -9,14 +9,20 @@ eventList = [
 
 Template.registerlist.helpers({
 
+    eventlist: function () {
+
+        var x = ReactiveMethod.call("getRunners");
+        return x;
+    }
 }),
 
-Template.registerlist.onCreated(function () {
+    Template.registerlist.onCreated(function () {
 
-});
+    });
 
 Template.registerlist.events({
 
+    /*
     'click #registerUL'(event) {
         event.preventDefault();
         //clear list
@@ -33,16 +39,13 @@ Template.registerlist.events({
             }
         });
     },
+*/
 
-    'click .me-listitem' (event) {
-
+    'click .me-listitem'(event) {
+        /* display/hide*/
         event.preventDefault();
         $('#registerUL').find('.member').hide('slow');
-
-        //add the users here
-
         $(event.currentTarget).next().show('slow');
-        //$('.member').removeClass('me-hidemember').addClass('me-showmember');
         event.stopImmediatePropagation();
     }
 

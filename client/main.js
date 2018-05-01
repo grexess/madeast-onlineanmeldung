@@ -1,6 +1,10 @@
 //import { Template } from 'meteor/templating';
 //import { ReactiveVar } from 'meteor/reactive-var';
 
+/*  GLOBAL VARIABLES */
+maxMadENDURO = 100;
+maxMadENDUROHALL4X = 32;
+
 import {
   Runners
 } from '../imports/api/runners.js';
@@ -28,6 +32,22 @@ Template.registerform.onCreated(function helloOnCreated() {
   //this.counter = new ReactiveVar(0);
 });
 
+Template.registerform.onRendered(function () {
+  /* Check if maximum of registrations are exceeded */
+  Meteor.call('getEventStatus', function (error, result) {
+    if (result[0][0] > maxMadENDURO) {
+      $('#event option[value=1]').attr('disabled', 'disabled');
+      $('#max1Cnt').text(maxMadENDURO);
+      $('#max1').show();
+    }
+    if (result[1][0] > maxMadENDUROHALL4X) {
+      $('#event option[value=5]').attr('disabled', 'disabled');
+      $('#max5Cnt').text(maxMadENDUROHALL4X);
+      $('#max5').show();
+    }
+  });
+});
+
 Template.emailVerification.onCreated(function () {
   console.log("Verify Page created");
   Meteor.subscribe('runners');
@@ -37,17 +57,6 @@ Template.runnersListTemplate.onCreated(function () {
   console.log("List Page created");
   Meteor.subscribe('runners');
 });
-
-/*
-Template.registerform.helpers({
-  enduroCount: function() {
-    return Products.find().count()
-  },
-  hallCount:function() {
-    return Products.find().count()
-  }
-});
-*/
 
 Template.registerform.events({
 
@@ -69,8 +78,8 @@ Template.registerform.events({
     instance.$(event.currentTarget).addClass("w3-green");
     instance.$('#' + event.currentTarget.dataset.target).show();
 
-    if(event.currentTarget.dataset.target == "lists"){
-      $("#registerUL").trigger( "click" );
+    if (event.currentTarget.dataset.target == "lists") {
+      $("#registerUL").trigger("click");
     }
 
   },

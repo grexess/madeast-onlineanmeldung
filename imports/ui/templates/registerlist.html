@@ -1,7 +1,33 @@
 <template name="registerlist">
 
-    <ul id="registerUL" class="w3-ul w3-card-4 w3-hoverable">
-      
-    </ul>
 
+    <ul id="registerUL" class="w3-ul w3-card-4 w3-hoverable">
+
+        {{#each eventlist}}
+
+        <li class="w3-bar me-listitem">
+            <div>
+                <b>{{event}}</b>
+            </div>
+            <div class="me-regist w3-bar-item">
+                <span class="w3-badge w3-red">{{registr}}</span> Registrierungen</div>
+            <div class="w3-bar-item">
+                <span class="w3-badge w3-green">{{payed}}</span> bestätigte Überweisungen</div>
+        </li>
+        <li style="display:none" class="w3-bar member">
+            <div>
+                <b>Bestätigte Teilnehmer</b>
+                <ul class="w3-ul w3-card-4 w3-hoverable">
+                    {{#each runners}}
+                    <li class="w3-bar me-listitem">
+                        <div class="w3-bar-item">{{firstName}}</div>
+                        <div class="w3-bar-item">{{lastName}}</div>
+                        <div class="w3-bar-item">{{team}}</div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
 </template>

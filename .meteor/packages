@@ -27,3 +27,4 @@ accounts-base
 accounts-password
 accounts-ui
 momentjs:moment
+simple:reactive-method
