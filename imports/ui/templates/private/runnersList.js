@@ -173,12 +173,11 @@ function deleteRunner(selID) {
 
 
 function createNewRow() {
-    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
+    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input value=\"\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
     $(".rTable").append(newRow);
 }
 
 function verifyNewInput() {
-
 }
 
 function createRunner() {
@@ -202,8 +201,9 @@ function createRunner() {
             event: parseInt($("#newRecord").find("select[name='event'] option:selected").val()),
             birthday: htmlEscape($("#newRecord").find("input")[5].value),
             createdAt: new Date(),
-            verified: $("#newRecord").find(":checkbox")[0].checked,
-            payed: $("#newRecord").find(":checkbox")[1].checked,
+            //verified: $("#newRecord").find(":checkbox")[0].checked,
+            payed: $("#newRecord").find(":checkbox")[0].checked,
+            startnumber: htmlEscape($("#newRecord").find("input")[6].value),
             token: "0"
         }, function (error, result) {
             if (error) {

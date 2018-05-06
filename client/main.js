@@ -18,10 +18,15 @@ import '../imports/ui/templates/verify.html';
 import '../imports/ui/templates/birthday.html';
 import '../imports/ui/templates/register.html';
 import '../imports/ui/templates/registerlist.html';
+import '../imports/ui/templates/results.html';
 import '../imports/ui/templates/private/runnersList.html';
 import '../imports/ui/templates/private/login.html';
 import '../imports/ui/templates/private/runnersList.js';
 import '../imports/ui/templates/registerlist.js';
+import '../imports/ui/templates/results.js';
+
+import '../imports/ui/templates/statistics.js';
+import '../imports/ui/templates/statistics.html';
 
 import '../imports/startup/accounts-config.js';
 

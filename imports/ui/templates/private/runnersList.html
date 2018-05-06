@@ -19,8 +19,11 @@
                 <div class="rTableHead">Geburtstag</div>
                 <div class="rTableHead">m/w</div>
                 <div class="rTableHead">Event</div>
+                <!--
                 <div class="rTableHead">Bestätigt</div>
+                -->
                 <div class="rTableHead">Überwiesen</div>
+                <div class="rTableHead">Startnummer</div>
                 <div class="rTableHead"></div>
             </div>
 
@@ -52,12 +55,15 @@
                         <option value="5" {{formatValue event "5"}}>MAD Enduro + MAD HALL4X</option>
                     </select>
                 </div>
+                <!--
                 <div class="rTableCell">
                     <input class="w3-check" type="checkbox" {{formatBoolean verified}} disabled>
                 </div>
+            -->
                 <div class="rTableCell">
                     <input class="w3-check" type="checkbox" {{formatBoolean payed}} disabled>
                 </div>
+                <div class="rTableCell">{{startnumber}}</div>
             </div>
 
             {{/each}}
@@ -69,7 +75,7 @@
 
     {{else}}
     <div class="privBox">{{> loginButtons}}</div>
-    
+
 
     <!-- wrongloginform
         <div class="privLoginBox">{{> login}}</div>-->

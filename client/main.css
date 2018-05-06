@@ -102,4 +102,11 @@
     width: 50%;
     margin: 1% auto;
   }
+
+ /*charts */
+ #chart {
+  height: 200px;
+  width: 200px;
+}
+
   
