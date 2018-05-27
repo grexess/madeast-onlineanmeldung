@@ -4,7 +4,8 @@ eventList = [
     "MAD Enduro",
     "MAD HALL4X",
     "MAD Nachwuchs",
-    "MAD Crosscountry"
+    "MAD Crosscountry",
+    "MAD 4er Team"
 ]
 
 Template.registerlist.helpers({

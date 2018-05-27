@@ -93,6 +93,11 @@ Template.registerform.events({
     event.preventDefault();
     var selId = parseInt($("#event option:selected").val());
     var wid, msg;
+
+    $("#formdata").show();
+    $("#availCount").hide();
+    $("#teamdata").hide();
+
     switch (selId) {
       case 1:
         Meteor.call('getEventCounts', selId, function (error, result) {
@@ -107,6 +112,10 @@ Template.registerform.events({
           $("#count").css("width", result.wid);
           $("#availCount").show();
         });
+        break;
+      case 6:
+        $("#formdata").hide();
+        $("#teamdata").show();
         break;
       default:
         $("#availCount").hide();
