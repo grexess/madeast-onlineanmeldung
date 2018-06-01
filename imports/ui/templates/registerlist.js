@@ -11,8 +11,11 @@ eventList = [
 Template.registerlist.helpers({
 
     eventlist: function () {
-
         var x = ReactiveMethod.call("getRunners");
+        return x;
+    },
+    teamlist: function () {
+        var x = ReactiveMethod.call("getTeams");
         return x;
     }
 }),

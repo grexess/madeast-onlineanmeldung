@@ -5,10 +5,15 @@ import {
   Email
 } from 'meteor/email';
 import '../imports/api/runners.js';
+import '../imports/api/team.js';
 
 import {
   Runners
 } from '../imports/api/runners.js';
+
+import {
+  Team
+} from '../imports/api/team.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -32,9 +37,27 @@ Runners.allow({
   }
 });
 
+
+Team.allow({
+  'insert': function (userId, doc) {
+    /* user and doc checks ,
+    return true to allow insert */
+    return true;
+  },
+  'remove': function (userId, doc) {
+    /* user and doc checks ,
+    return true to allow insert */
+    return true;
+  },
+  'update': function (userId, doc) {
+    /* user and doc checks ,
+    return true to allow insert */
+    return true;
+  }
+});
+
 Meteor.methods({
-  sendEmail: function (to, from, subject, oRunner) {
-    //check([to, from, subject, text], [String]);
+  sendEmail: function (type, to, from, subject, oRunner) {
 
     // Let other method calls from the same client start running,
     // without waiting for the email sending to complete.
@@ -44,46 +67,60 @@ Meteor.methods({
       to: to,
       from: from,
       subject: subject,
-      text: buildEmailText(oRunner)
+      text: buildEmailText(type, oRunner)
     });
 
     Email.send({
       to: "administrator@madcross.de",
       from: from,
       subject: "[INFO] Neue MadEast-Anmeldung",
-      text: buildEmailText(oRunner)
+      text: buildEmailText(type, oRunner)
     });
   },
 
-  getRunners: function (){
+  getTeams: function () {
 
-   var eventlist =  [
+    var teamlist = [
       {
-          event: 'MAD Enduro',
-          registr: Runners.find({ event: 1 }).count(),
-          payed: Runners.find({ event: 1, payed: true }).count(),
-          runners: Runners.find({ event: 1, payed: true }).fetch(),
-      },
-      {
-          event: 'MAD HALL4X',
-          registr: Runners.find({ event: 5 }).count(),
-          payed: Runners.find({ event: 5, payed: true }).count(),
-          runners: Runners.find({ event: 5, payed: true }).fetch(),
-      },
-      {
-          event: 'MAD Nachwuchs',
-          registr: Runners.find({ event: 3 }).count(),
-          payed: Runners.find({ event: 3, payed: true }).count(),
-          runners: Runners.find({ event: 3, payed: true }).fetch(),
-      },
-      {
-          event: 'MAD Crosscountry',
-          registr: Runners.find({ event: 4 }).count(),
-          payed: Runners.find({ event: 4, payed: true }).count(),
-          runners: Runners.find({ event: 4, payed: true }).fetch(),
+        event: 'MAD 4er Team',
+        registr: Team.find().count(),
+        payed: Team.find({ payed: true }).count(),
+        teams: Team.find({ payed: true }).fetch(),
       }
-  ];
-  return eventlist;
+    ];
+    return teamlist;
+  },
+
+
+  getRunners: function () {
+
+    var eventlist = [
+      {
+        event: 'MAD Enduro',
+        registr: Runners.find({ event: 1 }).count(),
+        payed: Runners.find({ event: 1, payed: true }).count(),
+        runners: Runners.find({ event: 1, payed: true }).fetch(),
+      },
+      {
+        event: 'MAD HALL4X',
+        registr: Runners.find({ event: 5 }).count(),
+        payed: Runners.find({ event: 5, payed: true }).count(),
+        runners: Runners.find({ event: 5, payed: true }).fetch(),
+      },
+      {
+        event: 'MAD Nachwuchs',
+        registr: Runners.find({ event: 3 }).count(),
+        payed: Runners.find({ event: 3, payed: true }).count(),
+        runners: Runners.find({ event: 3, payed: true }).fetch(),
+      },
+      {
+        event: 'MAD Crosscountry',
+        registr: Runners.find({ event: 4 }).count(),
+        payed: Runners.find({ event: 4, payed: true }).count(),
+        runners: Runners.find({ event: 4, payed: true }).fetch(),
+      }
+    ];
+    return eventlist;
   },
 
   getEventCounts: function (eventID) {
@@ -98,27 +135,27 @@ Meteor.methods({
         var all = cnt + cntadd;
 
         obj.msg = "Noch " + (100 - all) + " von 100 Plätzen verfügbar";
-        obj.wid =  Math.round(((100 - all) * 100)/100) + "%";
+        obj.wid = Math.round(((100 - all) * 100) / 100) + "%";
         break;
       case 5:
         cnt = Runners.find({ event: eventID }).count();
         obj.msg = "Noch " + (32 - cnt) + " von 32 Plätzen verfügbar";
-        obj.wid = Math.round(((32 - cnt) * 100)/32) + "%";
+        obj.wid = Math.round(((32 - cnt) * 100) / 32) + "%";
         break;
     }
     return obj;
   },
 
-  getEventStatus: function(){
+  getEventStatus: function () {
 
     var obj = []
     var subObj;
 
-    obj.push([Runners.find({ event: 1 }).count(),Runners.find({ event: 1, payed: true }).count()]);
-    obj.push([Runners.find({ event: 5 }).count(),Runners.find({ event: 5, payed: true }).count()]);
-    obj.push([Runners.find({ event: 3 }).count(),Runners.find({ event: 3, payed: true }).count()]);
-    obj.push([Runners.find({ event: 4 }).count(),Runners.find({ event: 4, payed: true }).count()]);
-    
+    obj.push([Runners.find({ event: 1 }).count(), Runners.find({ event: 1, payed: true }).count()]);
+    obj.push([Runners.find({ event: 5 }).count(), Runners.find({ event: 5, payed: true }).count()]);
+    obj.push([Runners.find({ event: 3 }).count(), Runners.find({ event: 3, payed: true }).count()]);
+    obj.push([Runners.find({ event: 4 }).count(), Runners.find({ event: 4, payed: true }).count()]);
+
     return obj;
   },
 
@@ -156,7 +193,9 @@ Meteor.methods({
   },
 });
 
-function buildEmailText(obj) {
+function buildEmailText(type, obj) {
+
+  var text;
 
   var cost = "", event = "";
   switch (obj.event) {
@@ -180,12 +219,25 @@ function buildEmailText(obj) {
       event = "MAD Enduro + MAD HALL4X"
       cost = "25€";
       break;
+    case 6:
+      event = "MAD 4er Team"
+      cost = "25€";
+      break;
   }
 
   var gender = "";
   obj.gender == "male" ? gender = "männlich" : gender = "weiblich";
 
-  var text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus " + obj.firstname + ", vielen Dank f\u00FCr deine Anmeldung.\n\nStrecke: \u0009" + event + "\nStartgeld:\u0009" + cost + "\n\nVorname:\u0009" + obj.firstname + "\nName:\u0009\u0009" + obj.lastname + "\n\n\nEmail: \u0009\u0009" + obj.email + "\nGeschlecht:\u0009" + gender + "\n\nGeburtsdatum: \u0009" + obj.birthday + "\nTeam/Verein: \u0009" + obj.team + "\n\nBitte \u00FCberweise das Startgeld auf unser Bankkonto.\n\n\u00BB Mad East Challenge e.V.\n\u00BB Osts\u00E4chsische Sparkasse Dresden\n\u00BB IBAN: DE56 8505 0300 1225 2129 83\n\u00BB BIC: OSDDDE81XXX\n\u00BB Verwendungszweck: Startgeld, \"Gew\u00E4hlte Strecke\", Name, Vorname\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
+  switch (type) {
+    case 1:
+      text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus Team  " + obj.teamname + ", vielen Dank f\u00FCr Eure Anmeldung am 4er Teamrennen.\n\nStartgeld:\u0009" + "Knobeln wir noch aus und informieren Euch." + "\n\nStarter 1:\u0009" + obj.starter1 + "\nStarter 1:\u0009" + obj.starter2 + "\nStarter 3:\u0009" + obj.starter3 + "\nStarter 4:\u0009" + obj.starter4 + "\n\n\nEmail: \u0009\u0009" + obj.teamemail + "\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
+      break;
+
+    default:
+      text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus " + obj.firstname + ", vielen Dank f\u00FCr deine Anmeldung.\n\nStrecke: \u0009" + event + "\nStartgeld:\u0009" + cost + "\n\nVorname:\u0009" + obj.firstname + "\nName:\u0009\u0009" + obj.lastname + "\n\n\nEmail: \u0009\u0009" + obj.email + "\nGeschlecht:\u0009" + gender + "\n\nGeburtsdatum: \u0009" + obj.birthday + "\nTeam/Verein: \u0009" + obj.team + "\n\nBitte \u00FCberweise das Startgeld auf unser Bankkonto.\n\n\u00BB Mad East Challenge e.V.\n\u00BB Osts\u00E4chsische Sparkasse Dresden\n\u00BB IBAN: DE56 8505 0300 1225 2129 83\n\u00BB BIC: OSDDDE81XXX\n\u00BB Verwendungszweck: Startgeld, \"Gew\u00E4hlte Strecke\", Name, Vorname\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
+      break;
+  }
+
 
   return text;
 }

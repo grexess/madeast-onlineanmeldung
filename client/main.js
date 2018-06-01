@@ -9,6 +9,10 @@ import {
   Runners
 } from '../imports/api/runners.js';
 
+import {
+  Team
+} from '../imports/api/team.js';
+
 //import './main.html';
 
 import '../imports/ui/templates/header.html';
@@ -23,6 +27,7 @@ import '../imports/ui/templates/private/runnersList.html';
 import '../imports/ui/templates/private/login.html';
 import '../imports/ui/templates/private/runnersList.js';
 import '../imports/ui/templates/registerlist.js';
+import '../imports/ui/templates/register.js';
 import '../imports/ui/templates/results.js';
 
 import '../imports/ui/templates/statistics.js';
@@ -33,6 +38,7 @@ import '../imports/startup/accounts-config.js';
 Template.registerform.onCreated(function helloOnCreated() {
   console.log("Form created");
   Meteor.subscribe('runners');
+  Meteor.subscribe('team');
   // counter starts at 0
   //this.counter = new ReactiveVar(0);
 });
@@ -69,6 +75,17 @@ Template.registerform.events({
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(String($('#eMail').val()).toLowerCase())) {
+      //alert(true);
+    } else {
+      $('#errorMsg').text("eMail-Adresse hat kein gültiges Format");
+      $('#id02').show();
+    }
+  },
+
+  'focusout #teamEmail'() {
+
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(String($('#teamEmail').val()).toLowerCase())) {
       //alert(true);
     } else {
       $('#errorMsg').text("eMail-Adresse hat kein gültiges Format");
@@ -136,59 +153,14 @@ Template.registerform.events({
   'click #submitBtn'(event) {
     event.preventDefault();
 
-    var oRunner = {};
-
-    oRunner.event = parseInt($('#event').val());
-    oRunner.firstname = htmlEscape($('#firstName').val());
-    oRunner.email = htmlEscape($('#eMail').val());
-    oRunner.birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
-    oRunner.team = htmlEscape($('#team').val());
-    oRunner.lastname = htmlEscape($('#lastName').val());
-    oRunner.gender = htmlEscape($('input[name=gender]:checked').val());
-
-    /* check if email already exist
-    
-    if (Runners.findOne({
-      email: oRunner.email
-    })) {
-      $('#errorMsg').text("eMail-Adresse ist bereits angemeldet");
-      $('#id02').show();
-      return;
+    switch (parseInt($('#event').val())) {
+      case 6:
+        saveTeam();
+        break;
+      default:
+        saveRunner();
+        break;
     }
-
-    */
-
-    var countAll = Runners.find({}).fetch().length;
-
-    var randomizer = require('random-token');
-    var token = randomizer(16);
-
-    Runners.insert({
-      event: oRunner.event,
-      firstName: oRunner.firstname,
-      lastName: oRunner.lastname,
-      email: oRunner.email,
-      team: oRunner.team,
-      gender: oRunner.gender,
-      birthday: oRunner.birthday,
-      createdAt: new Date(),
-      verified: false,
-      payed: false,
-      token: token
-    }, function (error, result) {
-      if (error) console.log(error); //info about what went wrong
-      if (result) console.log(result); //the _id of new object if successful);
-    });
-
-    Meteor.call('sendEmail',
-      oRunner.email,
-      'madeast.registration@madcross.de',
-      'MadEast 2018 Online-Anmeldung',
-      oRunner);
-
-    $("#runnersCount").text(countAll + 1);
-    $('#id01').show();
-
   },
 
   'input .validateInput'() {
@@ -255,47 +227,193 @@ Template.registerform.events({
 });
 */
 
+function saveTeam() {
+
+  var oTeam = {};
+
+  oTeam.teamname = htmlEscape($('#teamName').val());
+  oTeam.teamemail = htmlEscape($('#teamEmail').val());
+  oTeam.starter1 = htmlEscape($('#starter1').val());
+  oTeam.starter2 = htmlEscape($('#starter2').val());
+  oTeam.starter3 = htmlEscape($('#starter3').val());
+  oTeam.starter4 = htmlEscape($('#starter4').val());
+
+  //check if TeamName already exists
+  if (Team.findOne({
+    teamname: oTeam.teamname
+  })) {
+    $('#errorMsg').text("Team " + oTeam.teamname + " ist bereits angemeldet");
+    $('#id02').show();
+    return;
+  }
+
+  var countAll = Team.find({}).fetch().length;
+
+  Team.insert({
+    teamname: oTeam.teamname,
+    teamemail: oTeam.teamemail,
+    starter1: oTeam.starter1,
+    starter2: oTeam.starter2,
+    starter3: oTeam.starter3,
+    starter4: oTeam.starter4,
+    createdAt: new Date(),
+    payed: false,
+  }, function (error, result) {
+    if (error) console.log(error); //info about what went wrong
+    if (result) console.log(result); //the _id of new object if successful);
+  });
+
+  Meteor.call('sendEmail',
+  1,
+  oTeam.teamemail,
+  'madeast.registration@madcross.de',
+  'MadEast 2018 Online-Anmeldung',
+  oTeam);
+
+  $("#teamCount").text(countAll + 1);
+  $('#id03').show();
+
+}
+
+function saveRunner() {
+  var oRunner = {};
+
+  oRunner.event = parseInt($('#event').val());
+  oRunner.firstname = htmlEscape($('#firstName').val());
+  oRunner.email = htmlEscape($('#eMail').val());
+  oRunner.birthday = htmlEscape($('#dob-day :selected').val() + "." + $('#dob-month :selected').val() + "." + $('#dob-year :selected').val());
+  oRunner.team = htmlEscape($('#team').val());
+  oRunner.lastname = htmlEscape($('#lastName').val());
+  oRunner.gender = htmlEscape($('input[name=gender]:checked').val());
+
+  /* check if email already exist
+  
+  if (Runners.findOne({
+    email: oRunner.email
+  })) {
+    $('#errorMsg').text("eMail-Adresse ist bereits angemeldet");
+    $('#id02').show();
+    return;
+  }
+
+  */
+
+  var countAll = Runners.find({}).fetch().length;
+
+  var randomizer = require('random-token');
+  var token = randomizer(16);
+
+  Runners.insert({
+    event: oRunner.event,
+    firstName: oRunner.firstname,
+    lastName: oRunner.lastname,
+    email: oRunner.email,
+    team: oRunner.team,
+    gender: oRunner.gender,
+    birthday: oRunner.birthday,
+    createdAt: new Date(),
+    verified: false,
+    payed: false,
+    token: token
+  }, function (error, result) {
+    if (error) console.log(error); //info about what went wrong
+    if (result) console.log(result); //the _id of new object if successful);
+  });
+
+  Meteor.call('sendEmail',
+    0,
+    oRunner.email,
+    'madeast.registration@madcross.de',
+    'MadEast 2018 Online-Anmeldung',
+    oRunner);
+
+  $("#runnersCount").text(countAll + 1);
+  $('#id01').show();
+}
+
 
 function validateFormular(elem) {
+
+  var selId = parseInt($("#event option:selected").val());
+
+  if (selId == 6) {
+    validateTeamRunForm();
+  } else {
+
+    var valid = false;
+    var prog = 0;
+
+    var
+      b0 = $('#event').val(),
+      b1 = $('#firstName').val().length > 0,
+      b2 = $('#lastName').val().length > 0,
+      b3 = $('#eMail').val().length > 0,
+      b4 = $('input[name=gender]:checked').length > 0;
+
+    //birthday
+    b5 = $('#dob-day').val();
+    b6 = $('#dob-month').val();
+    b7 = $('#dob-year').val();
+
+    //Teilnahmebedingungen
+    b8 = $('#tb')[0].checked;
+
+    prog = b0 ? prog = Math.round(100 / 9) : prog + 0;
+    prog = b1 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b2 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b3 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b4 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b5 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b6 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b7 ? prog + Math.round(100 / 9) : prog + 0;
+    prog = b8 ? prog + Math.round(100 / 9) : prog + 0;
+
+    if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
+
+      var dateStr = b7 + "-" + b6 + "-" + b5;
+      if (moment(dateStr).isValid()) {
+        valid = true;
+      } else {
+        $('#errorMsg').text("Dein Geburtsdatum [" + b5 + "." + b6 + "." + b7 + "] gibt es nicht!", 'danger');
+        $('#id02').show();
+        $('#dob-day').val("");
+      }
+      prog = 100;
+    }
+
+    $('#submitBtn').prop('disabled', !valid);
+    $('#progress').text(prog + "%").css("width", prog + "%");
+  }
+}
+
+/* validate the TeamRunFormular */
+function validateTeamRunForm() {
 
   var valid = false;
   var prog = 0;
 
   var
     b0 = $('#event').val(),
-    b1 = $('#firstName').val().length > 0,
-    b2 = $('#lastName').val().length > 0,
-    b3 = $('#eMail').val().length > 0,
-    b4 = $('input[name=gender]:checked').length > 0;
+    b1 = $('#teamName').val().length > 0,
+    b2 = $('#teamEmail').val().length > 0,
+    b3 = $('#starter1').val().length > 0,
+    b4 = $('#starter2').val().length > 0,
+    b5 = $('#starter3').val().length > 0,
+    b6 = $('#starter4').val().length > 0,
+    //Teilnahmebedingungen
+    b7 = $('#tb')[0].checked;
 
-  //birthday
-  b5 = $('#dob-day').val();
-  b6 = $('#dob-month').val();
-  b7 = $('#dob-year').val();
+  prog = b0 ? prog = Math.round(100 / 8) : prog + 0;
+  prog = b1 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b2 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b3 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b4 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b5 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b6 ? prog + Math.round(100 / 8) : prog + 0;
+  prog = b7 ? prog + Math.round(100 / 8) : prog + 0;
 
-  //Teilnahmebedingungen
-  b8 = $('#tb')[0].checked;
-
-  prog = b0 ? prog = Math.round(100 / 9) : prog + 0;
-  prog = b1 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b2 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b3 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b4 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b5 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b6 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b7 ? prog + Math.round(100 / 9) : prog + 0;
-  prog = b8 ? prog + Math.round(100 / 9) : prog + 0;
-
-  if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
-
-    var dateStr = b7 + "-" + b6 + "-" + b5;
-    if (moment(dateStr).isValid()) {
-      valid = true;
-    } else {
-      $('#errorMsg').text("Dein Geburtsdatum [" + b5 + "." + b6 + "." + b7 + "] gibt es nicht!", 'danger');
-      $('#id02').show();
-      $('#dob-day').val("");
-    }
+  if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7) {
+    valid = true;
     prog = 100;
   }
 

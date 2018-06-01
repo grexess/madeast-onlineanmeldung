@@ -9,8 +9,10 @@
     <div class="w3-bar w3-blue">
       <a href="#" class="w3-bar-item w3-button w3-mobile navElem w3-green" data-target="register">Ich will mitfahren!</a>
       <a href="#" class="w3-bar-item w3-button w3-mobile navElem" data-target="lists">Anmeldungen</a>
+      <!--
       <a href="#" class="w3-bar-item w3-button w3-mobile navElem" data-target="statistic">Statistik</a>
       <a href="#" class="w3-bar-item w3-button w3-mobile navElem" data-target="results">Ergebnisse</a>
+      -->
     </div>
 
     <div id="register" class="w3-card w3-padding w3-margin prvCntDiv">
@@ -92,7 +94,7 @@
                     <span style="color:red">*</span>
                   </b>
                 </label>
-                <input id="teamEmail" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
+                <input id="starter1" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
               </div>
               <div class="w3-col w3-quarter w3-padding">
                 <label class="me-txtlila">
@@ -100,7 +102,7 @@
                     <span style="color:red">*</span>
                   </b>
                 </label>
-                <input id="teamEmail" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
+                <input id="starter2" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
               </div>
               <div class="w3-col w3-quarter w3-padding">
                 <label class="me-txtlila">
@@ -108,7 +110,7 @@
                     <span style="color:red">*</span>
                   </b>
                 </label>
-                <input id="teamEmail" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
+                <input id="starter3" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
               </div>
               <div class="w3-col w3-quarter w3-padding">
                 <label class="me-txtlila">
@@ -116,7 +118,7 @@
                     <span style="color:red">*</span>
                   </b>
                 </label>
-                <input id="teamEmail" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
+                <input id="starter4" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
               </div>
             </div>
           </p>
@@ -176,16 +178,17 @@
             </label>
             <input id="team" class="me-input validateInput w3-input w3-border w3-round w3-hover-blue w3-animate-input w3-sand" type="text">
           </p>
-
-          <p>
-            <input id="tb" class="w3-check" type="checkbox">
-            <label>Ich bestätige die Teilnahmebedingungen</label>
-          </p>
-
-          <div class="w3-light-grey w3-round-xlarge">
-            <div id="progress" class="w3-container me-progress w3-round-xlarge" style="width:0%">0%</div>
-          </div>
         </div>
+
+        <p>
+          <input id="tb" class="w3-check" type="checkbox">
+          <label>Ich bestätige die Teilnahmebedingungen</label>
+        </p>
+
+        <div class="w3-light-grey w3-round-xlarge">
+          <div id="progress" class="w3-container me-progress w3-round-xlarge" style="width:0%">0%</div>
+        </div>
+
         <p>
           <button id="submitBtn" class="w3-btn me-bglila" disabled>Anmelden</button>
         </p>
@@ -239,6 +242,21 @@
       </div>
       <footer class="w3-container w3-red">
         <p>Bitte nochmal versuchen</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="id03" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-teal">
+        <h2>Team vorgemerkt als
+          <span id="teamCount"></span>. Teilnehmer! </h2>
+      </header>
+      <div class="w3-container">
+        <p>Bitte Mails prüfen und Registrierung abschliessen</p>
+      </div>
+      <footer class="w3-container w3-teal">
+        <button onclick="window.open('https://www.madcross.de/events/madeast.html','_self')" class="w3-margin w3-button w3-border w3-hover-pale-red">Cool!</button>
       </footer>
     </div>
   </div>

@@ -30,5 +30,37 @@
             </div>
         </li>
         {{/each}}
+
+        {{#each teamlist}}
+
+        <li class="w3-bar me-listitem">
+            <div>
+                <b>{{event}}</b>
+            </div>
+           
+            <div class="me-regist w3-bar-item">
+                <span class="w3-badge w3-red">{{registr}}</span> Registrierungen</div>
+            <div class="w3-bar-item">
+                <span class="w3-badge w3-green">{{payed}}</span> bestätigte Überweisungen</div>
+        </li>
+        <li style="display:none" class="w3-bar member">
+            <div>
+                <b>Bestätigte Teams</b>
+                <ul class="w3-ul w3-card-4 w3-hoverable">
+                    {{#each teams}}
+                    <li class="w3-bar me-listitem">
+                        <div class="w3-bar-item"><b>{{teamname}}</b></div>
+                        <div class="w3-bar-item">{{starter1}}</div>
+                        <div class="w3-bar-item">{{starter2}}</div>
+                        <div class="w3-bar-item">{{starter3}}</div>
+                        <div class="w3-bar-item">{{starter4}}</div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+        {{/each}}
+
+
     </ul>
 </template>
