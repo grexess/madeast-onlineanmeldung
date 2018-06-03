@@ -111,6 +111,16 @@ function changeInput(selId, isInput) {
     selRow.find(":checkbox").prop("disabled", !isInput)
     selRow.find("select").prop("disabled", !isInput)
 
+    //additional input
+    for (i = 9; i <= 10; i++) {
+        if (isInput) {
+            createInput(selRow.find("div")[i]);
+        } else {
+            removeInput(selRow.find("div")[i]);
+        }
+    }
+
+
     if (isInput) {
         selRow.append($("<div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"save\" data-rowid=" + selId + "></i><i class=\"fa fa-trash w3-xlarge w3-padding-small actBtn\" data-action=\"delete\" data-rowid=" + selId + "></i></div>"));
     } else {
@@ -143,8 +153,8 @@ function saveRunner(selID) {
             team: selRow.find("input")[4].value,
             birthday: selRow.find("input")[5].value,
             gender: selRow.find("select option:selected").text(),
-            verified: $(selRow.find(":checkbox")[0])[0].checked,
-            payed: $(selRow.find(":checkbox")[1])[0].checked
+            //verified: $(selRow.find(":checkbox")[0])[0].checked,
+            payed: $(selRow.find(":checkbox")[0])[0].checked
         },
     }, function (error, result) {
         if (error) Bert.alert(selRow.find("input")[3].value + " nicht gespeichert!", 'danger');
