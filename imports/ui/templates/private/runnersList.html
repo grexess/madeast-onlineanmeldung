@@ -12,8 +12,8 @@
         <div class="rTable">
             <div class="rTableRow">
                 <div class="rTableHead"></div>
-                <div class="rTableHead">Vorname</div>
-                <div class="rTableHead">Nachname</div>
+                <div class="rTableHead">Vorname<i class="sort fa fa-sort" data-target="firstName" style="padding-left:2px" ></i></div>
+                <div class="rTableHead">Nachname<i class="sort fa fa-sort" data-target="lastNameName" style="padding-left:2px" ></i></div>
                 <div class="rTableHead">eMail</div>
                 <div class="rTableHead">Club</div>
                 <div class="rTableHead">Geburtstag</div>
@@ -54,7 +54,9 @@
                         <option value="3" {{formatValue event "3"}}>MAD Nachwuchs</option>
                         <option value="4" {{formatValue event "4"}}>MAD Crosscountry</option>
                         <option value="5" {{formatValue event "5"}}>MAD Enduro + MAD HALL4X</option>
+                        <!--
                         <option value="5" {{formatValue event "5"}}>MAD 4er Team</option>
+                        -->
                     </select>
                 </div>
                 <!--

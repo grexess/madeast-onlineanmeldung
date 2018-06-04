@@ -22,7 +22,7 @@ import '../imports/ui/templates/verify.html';
 import '../imports/ui/templates/birthday.html';
 import '../imports/ui/templates/register.html';
 import '../imports/ui/templates/registerlist.html';
-import '../imports/ui/templates/results.html';
+
 import '../imports/ui/templates/private/runnersList.html';
 import '../imports/ui/templates/private/login.html';
 import '../imports/ui/templates/private/runnersList.js';

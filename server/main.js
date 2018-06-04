@@ -91,6 +91,18 @@ Meteor.methods({
     return teamlist;
   },
 
+  getResults: function () {
+
+    var results = [
+      {
+        event: 'MAD 4er Team',
+        registr: Team.find().count(),
+        payed: Team.find({ payed: true }).count(),
+        teams: Team.find({ payed: true }).fetch(),
+      }
+    ];
+    return Runners.find({},{sort:{ time: 1}}).fetch();
+  },
 
   getRunners: function () {
 

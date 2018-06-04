@@ -85,6 +85,12 @@ if (Meteor.isClient) {
             $("#newRecord").remove();
         },
 
+        'click .sort'(event) {
+            event.preventDefault();
+            alert(event.currentTarget.dataset.target);
+            
+            runners =  Runners.find({},{sort: { firstName: 1 }}).fetch();
+            }
     });
 }
 
@@ -152,7 +158,7 @@ function saveRunner(selID) {
             email: selRow.find("input")[3].value,
             team: selRow.find("input")[4].value,
             birthday: selRow.find("input")[5].value,
-            gender: selRow.find("select option:selected").text(),
+            gender: selRow.find("select option:selected")[0].value,
             //verified: $(selRow.find(":checkbox")[0])[0].checked,
             payed: $(selRow.find(":checkbox")[0])[0].checked
         },

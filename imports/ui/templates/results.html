@@ -1,5 +1,10 @@
 <template name="results">
 
-    <H1>Hello Results</H1>
+    <H1>MadEast Ergebnisse</H1>
+
+    {{#each results}}
+<div>{{firstName}}</div>
+<div>{{time}}</div>
+    {{/each}}
 
 </template>
