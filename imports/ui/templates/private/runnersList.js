@@ -88,9 +88,20 @@ if (Meteor.isClient) {
         'click .sort'(event) {
             event.preventDefault();
             alert(event.currentTarget.dataset.target);
-            
-            runners =  Runners.find({},{sort: { firstName: 1 }}).fetch();
+
+            runners = Runners.find({}, { sort: { firstName: 1 } }).fetch();
+        },
+
+        'focusout #time'() {
+
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (re.test(String($('#eMail').val()).toLowerCase())) {
+                //alert(true);
+            } else {
+                $('#errorMsg').text("Zeit hat kein gültiges Format");
+                $('#id02').show();
             }
+        }
     });
 }
 
@@ -126,7 +137,6 @@ function changeInput(selId, isInput) {
         }
     }
 
-
     if (isInput) {
         selRow.append($("<div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"save\" data-rowid=" + selId + "></i><i class=\"fa fa-trash w3-xlarge w3-padding-small actBtn\" data-action=\"delete\" data-rowid=" + selId + "></i></div>"));
     } else {
@@ -160,7 +170,9 @@ function saveRunner(selID) {
             birthday: selRow.find("input")[5].value,
             gender: selRow.find("select option:selected")[0].value,
             //verified: $(selRow.find(":checkbox")[0])[0].checked,
-            payed: $(selRow.find(":checkbox")[0])[0].checked
+            payed: $(selRow.find(":checkbox")[0])[0].checked,
+            startnumber: selRow.find("input")[7].value,
+            time: selRow.find("input")[8].value
         },
     }, function (error, result) {
         if (error) Bert.alert(selRow.find("input")[3].value + " nicht gespeichert!", 'danger');
@@ -189,7 +201,7 @@ function deleteRunner(selID) {
 
 
 function createNewRow() {
-    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input value=\"\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
+    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
     $(".rTable").append(newRow);
 }
 
@@ -219,7 +231,8 @@ function createRunner() {
             createdAt: new Date(),
             //verified: $("#newRecord").find(":checkbox")[0].checked,
             payed: $("#newRecord").find(":checkbox")[0].checked,
-            startnumber: htmlEscape($("#newRecord").find("input")[6].value),
+            startnumber: htmlEscape($("#newRecord").find("input")[7].value),
+            time: htmlEscape($("#newRecord").find("input")[8].value),
             token: "0"
         }, function (error, result) {
             if (error) {

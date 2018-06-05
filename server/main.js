@@ -91,17 +91,13 @@ Meteor.methods({
     return teamlist;
   },
 
+  /* get sorted result list per event*/
   getResults: function () {
-
-    var results = [
-      {
-        event: 'MAD 4er Team',
-        registr: Team.find().count(),
-        payed: Team.find({ payed: true }).count(),
-        teams: Team.find({ payed: true }).fetch(),
-      }
-    ];
-    return Runners.find({},{sort:{ time: 1}}).fetch();
+    var results = [];
+    results[0] = {eventName:"MadEnduro", list: Runners.find({event:1, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+    results[1]= {eventName:"MadCross", list: Runners.find({event:4, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+    results[2]= {eventName:"MadNachwuchs", list:Runners.find({event:3, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+    return results;
   },
 
   getRunners: function () {

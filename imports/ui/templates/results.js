@@ -6,4 +6,12 @@ Template.results.helpers({
         var x = ReactiveMethod.call("getResults");
         return x;
     }
+
+})
+
+Template.event.helpers({
+
+    getPlace(value) {
+        return value + 1;
+    }
 })
