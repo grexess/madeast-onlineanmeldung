@@ -1,0 +1,171 @@
+<template name="teamListTemplate">
+
+    {{#if currentUser}}
+
+    <H1>Anmeldeliste Teams</H1>
+
+    <div class="w3-container buttonRow">
+            <button id="saveBtn" class="w3-bar-item w3-button w3-teal actBtn" data-action="new">
+                    <i class="fa fa-new w3-xlarge w3-padding-small "></i>Neues Team anlegen</button>
+    </div>
+
+    <div class="rTableBox">
+        <div class="rTable">
+            <div class="rTableRow">
+                <div class="rTableHead"></div>
+                <div class="rTableHead">Teamname
+                    <i class="sort fa fa-sort" data-target="firstName" style="padding-left:2px"></i>
+                </div>
+                <div class="rTableHead">TeamEmail
+                    <i class="sort fa fa-sort" data-target="lastNameName" style="padding-left:2px"></i>
+                </div>
+                <div class="rTableHead">Starter 1</div>
+                <div class="rTableHead">Starter 2</div>
+                <div class="rTableHead">Starter 3</div>
+                <div class="rTableHead">Starter 4</div>
+                <div class="rTableHead">Überwiesen</div>
+                <div class="rTableHead">Startnummer</div>
+                <div class="rTableHead">Zielzeit</div>
+                <div class="rTableHead"></div>
+            </div>
+
+            {{#each team}}
+
+            <div class="rTableRow" id="{{_id}}">
+                <div class="rTableCell rFirstCell">
+                    <input class="selRowBtn" type="radio" name="nTeam" data-target="{{_id}}">
+                </div>
+                <div class="rTableCell" id="teamname">{{teamname}}</div>
+                <div class="rTableCell" id="teamemail">{{teamemail}}</div>
+                <div class="rTableCell" id="starter1">{{starter1}}</div>
+                <div class="rTableCell" id="starter2">{{starter2}}</div>
+                <div class="rTableCell" id="starter3">{{starter3}}</div>
+                <div class="rTableCell" id="starter4">{{starter4}}</div>
+                <div class="rTableCell">
+                    <input class="w3-check" type="checkbox" id="payed" {{formatBoolean payed}} disabled>
+                </div>
+                <div class="rTableCell" id="startnumber">{{startnumber}}</div>
+                <div class="rTableCell" id="time">{{time}}</div>
+            </div>
+
+            {{/each}}
+        </div>
+    </div>
+
+
+    <div id="logout" class="prvCntDiv" style="display:none">logout</div>
+
+    {{else}}
+    <div class="privBox">{{> loginButtons}}</div>
+
+
+    <!-- wrongloginform
+        <div class="privLoginBox">{{> login}}</div>-->
+
+    {{/if}}
+
+
+    <!-- Edit Window -->
+
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container w3-teal">
+                <!-- <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span> -->
+                <h2>
+                        <span id="headerTitle"></span>
+                    <b>
+                        <span id="teamheader"></span>
+                    </b>
+                </h2>
+            </header>
+            <div class="w3-container">
+                <ul class="w3-ul">
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>TeamName</b>
+                        </label>
+                        <input class="w3-input w3-border" name="teamname" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Überwiesen</b>
+                        </label>
+                        <input class="w3-check" type="checkbox" name="payed">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Team Email</b>
+                        </label>
+                        <input class="w3-input w3-border" name="teamemail" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Startnummer</b>
+                        </label>
+                        <input class="w3-input w3-border" name="startnumber" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Zeit</b>
+                        </label>
+                        <input class="w3-input w3-border" name="time" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Starter 1</b>
+                        </label>
+                        <input class="w3-input w3-border" name="starter1" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Starter 2</b>
+                        </label>
+                        <input class="w3-input w3-border" name="starter2" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Starter 3</b>
+                        </label>
+                        <input class="w3-input w3-border" name="starter3" type="text">
+                    </li>
+                    <li>
+                        <label class="w3-text-blue">
+                            <b>Starter 4</b>
+                        </label>
+                        <input class="w3-input w3-border" name="starter4" type="text">
+                    </li>
+                </ul>
+            </div>
+            <footer class="w3-container w3-teal">
+                <div class="w3-bar">
+                    <button id="saveBtn" class="w3-bar-item w3-button w3-teal actBtn" data-action="save">
+                        <i class="fa fa-save w3-xlarge w3-padding-small "></i>Speichern</button>
+                    <button class="w3-bar-item w3-button w3-teal actBtn" data-action="cancel">
+                        <i class="fa fa-save w3-xlarge w3-padding-small"></i>Abbrechen</button>
+                        <button id="deleteBtn" class="w3-bar-item w3-button w3-red w3-right actBtn" data-action="delete">
+                                <i class="fa fa-save w3-xlarge w3-padding-small"></i>Löschen</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+    <!-- ErrorMessage-->
+
+    <div id="id02" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 ">
+            <header class="w3-container w3-red ">
+                <span onclick="document.getElementById( 'id02').style.display='none' " class="w3-button w3-display-topright ">&times;</span>
+                <h2>Fehler</h2>
+            </header>
+            <div class="w3-container ">
+                <p id="errorMsg"></p>
+            </div>
+            <footer class="w3-container w3-red ">
+                <p>Bitte nochmal versuchen</p>
+            </footer>
+        </div>
+    </div>
+
+
+</template>

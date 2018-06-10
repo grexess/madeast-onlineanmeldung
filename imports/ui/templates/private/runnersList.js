@@ -94,11 +94,11 @@ if (Meteor.isClient) {
 
         'focusout #time'() {
 
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (re.test(String($('#eMail').val()).toLowerCase())) {
+            var re = /^([0-2][0-3]):([0-5][0-9]):([0-5][0-9])$/;
+            if (re.test(String($('#time').val()).toLowerCase())) {
                 //alert(true);
             } else {
-                $('#errorMsg').text("Zeit hat kein gültiges Format");
+                $('#errorMsg').text("Zeit hat kein gültiges Format (00:00:00)");
                 $('#id02').show();
             }
         }
@@ -131,7 +131,11 @@ function changeInput(selId, isInput) {
     //additional input
     for (i = 9; i <= 10; i++) {
         if (isInput) {
-            createInput(selRow.find("div")[i]);
+            if (i = 10) {
+                createInput(selRow.find("div")[i], "time", "00:00:00");
+            } else {
+                createInput(selRow.find("div")[i]);
+            }
         } else {
             removeInput(selRow.find("div")[i]);
         }
@@ -151,8 +155,16 @@ function removeInput(parent) {
 }
 
 
-function createInput(parent) {
-    var $inp = $("<input value='" + $(parent).text() + "'>");
+function createInput(parent, id, placeholder) {
+
+    var $inp = $("<input value='" + $(parent).text() + "'> id='" + id + "'");
+    if (id) {
+        $inp.attr("id", id);
+    }
+    if (placeholder) {
+        $inp.attr("placeholder", placeholder);
+    }
+
     $(parent).text("");
     parent.append($inp[0]);
 }
@@ -201,7 +213,7 @@ function deleteRunner(selID) {
 
 
 function createNewRow() {
-    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
+    var newRow = $("<div class=\"rTableRow\" id=\"newRecord\"><div class=\"rTableCell rFirstCell\"><input type=\"radio\" checked=\"checked\" name=\"nRunner\" value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"gender\"><option value=\"Mädchen\">Mädchen</option><option value=\"Junge\">Junge</option></select></div><div class=\"rTableCell\"><select class=\"w3-select\" name=\"event\"><option value=\"1\">MAD Enduro</option><option value=\"5\">MAD Enduro + MAD HALL4X</option><option value=\"3\">MAD Nachwuchs</option><option value=\"4\">MAD Crosscountry</option></select></div><div class=\"rTableCell\"><input class=\"w3-check\" type=\"checkbox\"></div><div class=\"rTableCell\"><input value=\"\"></div><div class=\"rTableCell\"><input id=\"time\" placeholder=\"00:00:00\" value=\"\"></div><div id=\"action\" class=\"rTableCell\"><i class=\"fa fa-save w3-xlarge w3-padding-small actBtn\" data-action=\"create\" data-rowid=\"\"></div></div>");
     $(".rTable").append(newRow);
 }
 

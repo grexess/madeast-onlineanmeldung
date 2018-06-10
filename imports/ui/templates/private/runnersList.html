@@ -32,7 +32,7 @@
 
             <div class="rTableRow" id="{{_id}}">
                 <div class="rTableCell rFirstCell">
-                    <input type="radio" name="nRunner" value="{{_id}}">
+                    <input class="selRowBtn" type="radio" name="nRunner" value="{{_id}}">
                 </div>
                 <div class="rTableCell">{{firstName}}</div>
                 <div class="rTableCell">{{lastName}}</div>
@@ -88,6 +88,20 @@
     {{/if}}
 
 
+    <div id="id02" class="w3-modal">
+        <div class="w3-modal-content w3-card-4">
+          <header class="w3-container w3-red">
+            <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>Fehler</h2>
+          </header>
+          <div class="w3-container">
+            <p id="errorMsg"></p>
+          </div>
+          <footer class="w3-container w3-red">
+            <p>Bitte nochmal versuchen</p>
+          </footer>
+        </div>
+      </div>
 
 
 </template>

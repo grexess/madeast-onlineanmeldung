@@ -26,6 +26,7 @@ import '../imports/ui/templates/registerlist.html';
 import '../imports/ui/templates/private/runnersList.html';
 import '../imports/ui/templates/private/login.html';
 import '../imports/ui/templates/private/runnersList.js';
+import '../imports/ui/templates/private/teamList.js';
 import '../imports/ui/templates/registerlist.js';
 import '../imports/ui/templates/register.js';
 import '../imports/ui/templates/results.js';
@@ -67,6 +68,11 @@ Template.emailVerification.onCreated(function () {
 Template.runnersListTemplate.onCreated(function () {
   console.log("List Page created");
   Meteor.subscribe('runners');
+});
+
+Template.teamListTemplate.onCreated(function () {
+  console.log("Team List Page created");
+  Meteor.subscribe('team');
 });
 
 Template.registerform.events({
@@ -453,6 +459,16 @@ FlowRouter.route('/listrunners/', {
   name: 'List',
   action() {
     BlazeLayout.render('runnersListTemplate', {
+      main: 'List_Page'
+    });
+  }
+});
+
+
+FlowRouter.route('/listteams/', {
+  name: 'TeamList',
+  action() {
+    BlazeLayout.render('teamListTemplate', {
       main: 'List_Page'
     });
   }

@@ -1,16 +1,22 @@
 <template name="results">
-    <ul>
+
+    <ul class="w3-ul">
         {{#each results}}
-        <li>
-            {{>event}}
-        </li>
-        {{/each}}
+        <li>{{>event}}</li> {{/each}}
+        <li>{{>teamresult}}</li>
     </ul>
+
 </template>
 
 <template name="event">
-        <H2>{{ eventName }}</H2>
-    <table class="w3-table">
+
+    <div id="{{ eventName }}" class="navBtn w3-button w3-margin-top w3-margin-bottom">
+        <i id="ic{{ eventName }}" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
+                vertical-align: middle;"></i>
+        <span style="vertical-align: middle;">{{ eventName }}</span>
+    </div>
+
+    <table id="tab{{ eventName }}" class="w3-table w3-hide">
         <tr>
             <th>Platz</th>
             <th>Startnummer</th>
@@ -29,3 +35,29 @@
         {{/each}}
     </table>
 </template>
+
+<template name="teamresult">
+
+        <div id="teamresult" class="navBtn w3-button w3-margin-top w3-margin-bottom">
+            <i id="icteamresult" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
+                    vertical-align: middle;"></i>
+            <span style="vertical-align: middle;">MadTeam</span>
+        </div>
+    
+        <table id="tabteamresult" class="w3-table w3-hide">
+            <tr>
+                <th>Platz</th>
+                <th>Startnummer</th>
+                <th>Zeit</th>
+                <th>Teamname</th>
+            </tr>
+            {{#each teamresults}}
+            <tr>
+                <td>{{getPlace @index}}</td>
+                <td>{{startnumber}}</td>
+                <td>{{time}}</td>
+                <td>{{teamname}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </template>
