@@ -131,7 +131,7 @@ function changeInput(selId, isInput) {
     //additional input
     for (i = 9; i <= 10; i++) {
         if (isInput) {
-            if (i = 10) {
+            if (i == 10) {
                 createInput(selRow.find("div")[i], "time", "00:00:00");
             } else {
                 createInput(selRow.find("div")[i]);

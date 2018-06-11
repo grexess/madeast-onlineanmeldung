@@ -1,3 +1,11 @@
+.mytop{
+  background-color: #fff;
+}
+
+.content{
+  margin-top:80px !important;
+}
+
 .me-font{
   font-family: 'PT Sans', sans-serif !important;
   color: #212333;

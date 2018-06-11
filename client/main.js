@@ -47,12 +47,12 @@ Template.registerform.onCreated(function helloOnCreated() {
 Template.registerform.onRendered(function () {
   /* Check if maximum of registrations are exceeded */
   Meteor.call('getEventStatus', function (error, result) {
-    if (result[0][0] > maxMadENDURO) {
+    if ((result[0][0] + result[1][0]) >= maxMadENDURO) {
       $('#event option[value=1]').attr('disabled', 'disabled');
       $('#max1Cnt').text(maxMadENDURO);
       $('#max1').show();
     }
-    if (result[1][0] > maxMadENDUROHALL4X) {
+    if (result[1][0] >= maxMadENDUROHALL4X) {
       $('#event option[value=5]').attr('disabled', 'disabled');
       $('#max5Cnt').text(maxMadENDUROHALL4X);
       $('#max5').show();
@@ -451,6 +451,15 @@ FlowRouter.route('/verify/', {
   action() {
     BlazeLayout.render('emailVerification', {
       main: 'Verification_Page'
+    });
+  }
+});
+
+FlowRouter.route('/results/', {
+  name: 'Results',
+  action() {
+    BlazeLayout.render('results', {
+      main: 'Result_Page'
     });
   }
 });
