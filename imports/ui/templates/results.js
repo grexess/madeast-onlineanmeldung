@@ -45,6 +45,20 @@ Template.results.events({
             //x.prev().removeClass("w3-theme-d4").addClass("w3-theme-d1");
             y.removeClass("fa-caret-right").addClass("fa-caret-down");
         }
+    },
+
+    'click .genderBtn'(event) {
+        event.preventDefault();
+        var x = $("#" + event.currentTarget.dataset.target);
+        var y = $("#" + event.currentTarget.dataset.opposite);
+
+        if(x.hasClass("w3-hide")){
+            x.removeClass("w3-hide").addClass("w3-show");
+            y.removeClass("w3-show").addClass("w3-hide");
+        }else{
+           
+        }
+
     }
 })
 

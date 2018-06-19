@@ -15,25 +15,54 @@
                 vertical-align: middle;"></i>
         <span style="vertical-align: middle;">{{ eventName }}</span>
     </div>
+   
+    <div id="tab{{ eventName }}" class="w3-hide">
+        <div class="w3-bar w3-border w3-light-grey">
+            <a href="#" class="genderBtn w3-bar-item w3-button w3-hover-green" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</a>
+            <a href="#" class="genderBtn w3-bar-item w3-button w3-hover-green" data-target="tab{{ eventName }}_male" data-opposite="tab{{ eventName }}_female">Jungs</a>
+        </div>
 
-    <table id="tab{{ eventName }}" class="w3-table w3-hide">
-        <tr>
-            <th>Platz</th>
-            <th>Startnummer</th>
-            <th>Zeit</th>
-            <th>Vorname</th>
-            <th>Nachname</th>
-        </tr>
-        {{#each list}}
-        <tr>
-            <td>{{getPlace @index}}</td>
-            <td>{{startnumber}}</td>
-            <td>{{time}}</td>
-            <td>{{firstName}}</td>
-            <td>{{lastName}}</td>
-        </tr>
-        {{/each}}
-    </table>
+        <!-- Mädchen -->
+        <table id="tab{{ eventName }}_female" class="w3-table w3-show">
+            <tr>
+                <th>Mädchen Platz</th>
+                <th>Startnummer</th>
+                <th>Zeit</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+            </tr>
+            {{#each female}}
+            <tr>
+                <td>{{getPlace @index}}</td>
+                <td>{{startnumber}}</td>
+                <td>{{time}}</td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <!-- Jungs -->
+        <table  id="tab{{ eventName }}_male" class="w3-table w3-hide" >
+            <tr>
+                <th>Jungens Platz</th>
+                <th>Startnummer</th>
+                <th>Zeit</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+            </tr>
+            {{#each male}}
+            <tr>
+                <td>{{getPlace @index}}</td>
+                <td>{{startnumber}}</td>
+                <td>{{time}}</td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+
 </template>
 
 <template name="teamresult">

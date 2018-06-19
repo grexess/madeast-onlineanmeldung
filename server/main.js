@@ -94,10 +94,18 @@ Meteor.methods({
   /* get sorted result list per event*/
   getResults: function () {
     var results = [];
-    results[0] = {eventName:"MadEnduro", list: Runners.find({event:1, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+
+    
+
+  /*   results[0] = {eventName:"MadEnduro", list: Runners.find({event:1, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
     results[1]= {eventName:"MadCross", list: Runners.find({event:4, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
-    results[2]= {eventName:"MadNachwuchs", list:Runners.find({event:3, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+    results[2]= {eventName:"MadNachwuchs", list:Runners.find({event:3, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()}; */
     //results[3]= {eventName:"MadTeam", list:Team.find({event:3, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+
+    results[0] = {eventName:"MadEnduro", female: Runners.find({event:1, gender: "female", time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch(), male: Runners.find({event:1, gender: "male", time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+    results[1]= {eventName:"MadCross", female: Runners.find({event:4, gender: "female", time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch(), male: Runners.find({event:4, gender: "male", time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+    results[2]= {eventName:"MadNachwuchs", female:Runners.find({event:3, gender: "female", time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch(),male: Runners.find({event:3, gender: "male", time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+
     return results;
   },
 
