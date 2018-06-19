@@ -89,7 +89,12 @@ if (Meteor.isClient) {
             event.preventDefault();
             alert(event.currentTarget.dataset.target);
 
-            runners = Runners.find({}, { sort: { firstName: 1 } }).fetch();
+            //var sort = ReactiveMethod.call('sortRunners', event.currentTarget.dataset.target);
+
+           /*  runners() {
+                return Runners.find({}, { sort: { firstName: 1 } }).fetch();
+            }, */
+            //runners = Runners.find({}, { sort: { firstName: 1 } }).fetch();
         },
 
         'focusout #time'() {

@@ -1,5 +1,7 @@
 <template name="results">
 
+    <div class="w3-container w3-card w3-margin"><h2>MADEast 2018 - Ergebnisse</h2></div>
+
     <ul class="w3-ul">
         {{#each results}}
         <li>{{>event}}</li> {{/each}}
@@ -16,16 +18,16 @@
         <span style="vertical-align: middle;">{{ eventName }}</span>
     </div>
    
-    <div id="tab{{ eventName }}" class="w3-hide">
-        <div class="w3-bar w3-border w3-light-grey">
-            <a href="#" class="genderBtn w3-bar-item w3-button w3-hover-green" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</a>
-            <a href="#" class="genderBtn w3-bar-item w3-button w3-hover-green" data-target="tab{{ eventName }}_male" data-opposite="tab{{ eventName }}_female">Jungs</a>
+    <div id="tab{{ eventName }}" class="w3-container w3-hide">
+        <div class="w3-bar">
+                <button class="genderBtn w3-button w3-border w3-border-blue w3-hover w3-blue" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</button>
+                <button class="genderBtn w3-button w3-border w3-border-blue w3-hover" data-target="tab{{ eventName }}_male" data-opposite="tab{{ eventName }}_female">Jungs</button>
         </div>
 
         <!-- Mädchen -->
-        <table id="tab{{ eventName }}_female" class="w3-table w3-show">
-            <tr>
-                <th>Mädchen Platz</th>
+        <table id="tab{{ eventName }}_female" class="w3-margin w3-table w3-show">
+            <tr class="w3-blue">
+                <th>Platz</th>
                 <th>Startnummer</th>
                 <th>Zeit</th>
                 <th>Vorname</th>
@@ -43,9 +45,9 @@
         </table>
 
         <!-- Jungs -->
-        <table  id="tab{{ eventName }}_male" class="w3-table w3-hide" >
-            <tr>
-                <th>Jungens Platz</th>
+        <table  id="tab{{ eventName }}_male" class="w3-margin w3-table w3-hide" >
+            <tr class="w3-blue">
+                <th>Platz</th>
                 <th>Startnummer</th>
                 <th>Zeit</th>
                 <th>Vorname</th>
@@ -73,8 +75,8 @@
             <span style="vertical-align: middle;">MadTeam</span>
         </div>
     
-        <table id="tabteamresult" class="w3-table w3-hide">
-            <tr>
+        <table id="tabteamresult" class="w3-margin w3-table w3-hide w3-container">
+            <tr class="w3-blue">
                 <th>Platz</th>
                 <th>Startnummer</th>
                 <th>Zeit</th>
