@@ -10,35 +10,51 @@
 
     <div class="w3-container buttonRow">
         <button class="w3-button w3-green evtBtn" data-target="createR">Create Runner</button>
+        <button class="w3-button w3-green evtBtn" data-target="downloadExcel">Create Excel</button>
     </div>
 
     <div class="rTableBox">
         <div class="rTable">
-            <div class="rTableRow">
+            <div class="rTableRow w3-center">
                 <div class="rTableHead"></div>
-                <div class="rTableHead">Vorname
+                <div class="rTableHead">Vorname</div>
+                <div class="rTableHead">Nachname</div>
+                <div class="rTableHead">eMail</div>
+                <div class="rTableHead">Team</div>
+                <div class="rTableHead">Geburtstag</div>
+                <div class="rTableHead">Geschlecht</div>
+                <div class="rTableHead">Event</div>
+                <div class="rTableHead">Überwiesen</div>
+                <div class="rTableHead">Startnummer</div>
+                <div class="rTableHead">Zielzeit</div>
+                <div class="rTableHead"></div>
+            </div>
+
+            <div class="rTableRow w3-center">
+                <div class="rTableHead"></div>
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="firstName" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">Nachname
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="lastName" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">eMail
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="email" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">Club
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="team" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">Geburtstag
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="birthday" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">
-                        <select class="zselect" data-target="gender">
-                                <option value="0">m/w</option>
-                                <option value="female">Mädchen</option>
-                                <option value="male">Junge</option>
-                            </select>
+                <div class="rTableHead w3-text-blue">
+                    <select class="zselect" data-target="gender">
+                        <option value="0">m/w</option>
+                        <option value="female">Mädchen</option>
+                        <option value="male">Junge</option>
+                    </select>
                 </div>
-                <div class="rTableHead">
+                <div class="rTableHead w3-text-blue">
                     <select class="zselect" data-target="event">
                         <option value="0">Alle Events</option>
                         <option value="1">MAD Enduro</option>
@@ -50,13 +66,13 @@
                 <!--
                 <div class="rTableHead">Bestätigt</div>
                 -->
-                <div class="rTableHead">Überwiesen
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="payed" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">Startnummer
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="startnumber" style="padding-left:2px"></i>
                 </div>
-                <div class="rTableHead">Zielzeit
+                <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="time" style="padding-left:2px"></i>
                 </div>
                 <div class="rTableHead"></div>
@@ -71,7 +87,7 @@
                 <div class="rTableCell">{{firstName}}</div>
                 <div class="rTableCell">{{lastName}}</div>
                 <div class="rTableCell">{{email}}</div>
-                <div class="rTableCell">{{team}}</div>
+                <div class="rTableCell w3-center">{{team}}</div>
                 <div class="rTableCell">{{birthday}}</div>
                 <div class="rTableCell">
                     <select class="w3-select" name="gender" disabled>
@@ -98,10 +114,10 @@
                     <input class="w3-check" type="checkbox" {{formatBoolean verified}} disabled>
                 </div>
             -->
-                <div class="rTableCell">
+                <div class="rTableCell w3-center">
                     <input class="w3-check" type="checkbox" {{formatBoolean payed}} disabled>
                 </div>
-                <div class="rTableCell">{{startnumber}}</div>
+                <div class="rTableCell w3-center">{{startnumber}}</div>
                 <div class="rTableCell">{{time}}</div>
             </div>
 

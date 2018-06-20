@@ -64,6 +64,12 @@
     display: table-cell;
     color: green;
   }
+
+  .rTableHeadBlue{
+    padding: 0px 5px;
+    display: table-cell;
+    color: #2196F3;
+  }
   
   .buttonRow{
    margin-top: 5%
@@ -106,7 +112,7 @@
 .zselect{
   padding: 0px 5px;
   display: table-cell;
-  color: green;
+  color: #2196F3;
   border: none;
 }
   

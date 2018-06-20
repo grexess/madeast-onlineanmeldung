@@ -1,5 +1,7 @@
 import './runnersList.html';
 
+import { Excel } from 'meteor/nicolaslopezj:excel-export';
+
 import {
     Runners
 } from '../../../api/runners.js';
@@ -55,7 +57,7 @@ if (Meteor.isClient) {
 
     Template.runnersListTemplate.events({
 
-        'click .actBtn' (event) {
+        'click .actBtn'(event) {
             event.preventDefault();
 
             switch (event.currentTarget.dataset.action) {
@@ -73,7 +75,7 @@ if (Meteor.isClient) {
             }
         },
 
-        'click .evtBtn' (event) {
+        'click .evtBtn'(event) {
             event.preventDefault();
 
             var selId = ($('input[name=nRunner]:checked', '.rTable').val());
@@ -87,10 +89,40 @@ if (Meteor.isClient) {
                 // enable save button if anything is filled
 
                 //save the record
-            }
+            };
+
+            if (action === "downloadExcel") {
+
+                var data = Runners.find().fetch();
+                var fields = [
+                    {
+                        key: 'id',
+                        title: 'URL'
+                    },
+                    {
+                        key: 'message',
+                        title: 'Message'
+                    },
+                    {
+                        key: 'viewsCount',
+                        title: 'Views',
+                        type: 'number'
+                    }
+                ];
+
+                var title = 'Runners';
+                var file = Excel.export(title, fields, data);
+                var headers = {
+                    'Content-type': 'application/vnd.openxmlformats',
+                    'Content-Disposition': 'attachment; filename=' + title + '.xlsx'
+                };
+
+                this.response.writeHead(200, headers);
+                this.response.end(file, 'binary');
+            };
         },
 
-        'change input[type=radio][name=nRunner]' (event) {
+        'change input[type=radio][name=nRunner]'(event) {
             event.preventDefault();
 
             if (prevClick) {
@@ -106,7 +138,7 @@ if (Meteor.isClient) {
         },
 
         /* Sort Icon on Table column header clicked*/
-        'click .sort' (event) {
+        'click .sort'(event) {
             event.preventDefault();
 
             sortOrder = 1;
@@ -132,13 +164,18 @@ if (Meteor.isClient) {
         },
 
         /* Filter select on Table column header clicked*/
-        'change .zselect' (event) {
+        'change .zselect'(event) {
             event.preventDefault();
 
-            if (event.currentTarget.value != 0) {
-                var filterObject = {};
+            var selVal = event.currentTarget.value;
 
-                var val  = isNaN(parseInt(event.currentTarget.value)) ? event.currentTarget.value : parseInt(event.currentTarget.value)
+            $(".zselect").val(0);
+            $(event.currentTarget).val(selVal);
+
+            if (selVal != 0) {
+
+                var filterObject = {};
+                var val = isNaN(parseInt(selVal)) ? selVal : parseInt(selVal)
 
                 filterObject[event.currentTarget.dataset.target] = val;
                 Session.set('filter', filterObject);
@@ -147,7 +184,7 @@ if (Meteor.isClient) {
             }
         },
 
-        'focusout #time' () {
+        'focusout #time'() {
 
             var re = /^([0-2][0-3]):([0-5][0-9]):([0-5][0-9])$/;
             if (re.test(String($('#time').val()).toLowerCase())) {
@@ -186,7 +223,7 @@ function changeInput(selId, isInput) {
     //additional input
     for (i = 9; i <= 10; i++) {
         if (isInput) {
-            if (i = 10) {
+            if (i == 10) {
                 createInput(selRow.find("div")[i], "time", "00:00:00");
             } else {
                 createInput(selRow.find("div")[i]);
@@ -271,7 +308,7 @@ function createNewRow() {
     $(".rTable").append(newRow);
 }
 
-function verifyNewInput() {}
+function verifyNewInput() { }
 
 function createRunner() {
 

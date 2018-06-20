@@ -10,6 +10,7 @@
     "chart": "^0.1.2",
     "chart.js": "^2.7.2",
     "meteor-node-stubs": "^0.3.2",
+    "node-excel-export": "^1.4.4",
     "random-token": "0.0.8"
   }
 }
