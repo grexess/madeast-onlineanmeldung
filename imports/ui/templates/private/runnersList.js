@@ -10,32 +10,52 @@ if (Meteor.isClient) {
 
     Template.runnersListTemplate.helpers({
 
+        /*
         runners() {
             return Runners.find({});
         },
+        */
 
         formatBoolean(value) {
             if (value) {
                 return "checked";
-            } else { return ""; }
+            } else {
+                return "";
+            }
         },
 
         formatValue(value, check) {
             if (value == check) {
                 return "selected";
-            } else { return ""; }
-        }
+            } else {
+                return "";
+            }
+        },
 
-    });
+        runners: function () {
 
-    Template.runnersListTemplate.onCreated(function () {
+            //check sort event  
+            var sort = Session.get('sort');
+            var filter = Session.get('filter');
+
+            filter = (filter ? filter : {});
+
+            //check if session has been set(by sort event) if not show all runners
+            if (sort) {
+                return Runners.find(filter, {
+                    sort: sort
+                }).fetch();
+            }
+
+            return Runners.find(filter);
+        },
 
     });
 
 
     Template.runnersListTemplate.events({
 
-        'click .actBtn'(event) {
+        'click .actBtn' (event) {
             event.preventDefault();
 
             switch (event.currentTarget.dataset.action) {
@@ -53,7 +73,7 @@ if (Meteor.isClient) {
             }
         },
 
-        'click .evtBtn'(event) {
+        'click .evtBtn' (event) {
             event.preventDefault();
 
             var selId = ($('input[name=nRunner]:checked', '.rTable').val());
@@ -70,7 +90,7 @@ if (Meteor.isClient) {
             }
         },
 
-        'change input[type=radio][name=nRunner]'(event) {
+        'change input[type=radio][name=nRunner]' (event) {
             event.preventDefault();
 
             if (prevClick) {
@@ -85,14 +105,49 @@ if (Meteor.isClient) {
             $("#newRecord").remove();
         },
 
-        'click .sort'(event) {
+        /* Sort Icon on Table column header clicked*/
+        'click .sort' (event) {
             event.preventDefault();
-            alert(event.currentTarget.dataset.target);
 
-            runners = Runners.find({}, { sort: { firstName: 1 } }).fetch();
+            sortOrder = 1;
+
+            if ($(event.currentTarget).hasClass("fa-sort-amount-asc")) {
+                sortOrder = -1;
+            }
+
+            //reset other sort columns
+            $(".fa-sort-amount-asc").addClass("fa-sort").removeClass("fa-sort-amount-asc");
+            $(".fa-sort-amount-desc").addClass("fa-sort").removeClass("fa-sort-amount-desc");
+            //set variable to get sort field
+
+            if (sortOrder == 1) {
+                $(event.currentTarget).removeClass("fa-sort").addClass("fa-sort-amount-asc");
+            } else {
+                $(event.currentTarget).removeClass("fa-sort").addClass("fa-sort-amount-desc");
+            }
+
+            var sortObject = {};
+            sortObject[event.currentTarget.dataset.target] = sortOrder;
+            Session.set('sort', sortObject);
         },
 
-        'focusout #time'() {
+        /* Filter select on Table column header clicked*/
+        'change .zselect' (event) {
+            event.preventDefault();
+
+            if (event.currentTarget.value != 0) {
+                var filterObject = {};
+
+                var val  = isNaN(parseInt(event.currentTarget.value)) ? event.currentTarget.value : parseInt(event.currentTarget.value)
+
+                filterObject[event.currentTarget.dataset.target] = val;
+                Session.set('filter', filterObject);
+            } else {
+                Session.set('filter');
+            }
+        },
+
+        'focusout #time' () {
 
             var re = /^([0-2][0-3]):([0-5][0-9]):([0-5][0-9])$/;
             if (re.test(String($('#time').val()).toLowerCase())) {
@@ -201,13 +256,12 @@ function deleteRunner(selID) {
 
     var selRow = $("#" + selID);
 
-    Runners.remove(selID
-        , function (error, result) {
-            if (error) Bert.alert(selRow.find("input")[3].value + " nicht gelöscht!", 'danger');
-            if (result) {
-                Bert.alert("Teilnehmer gelöscht", 'success');
-            };
-        });
+    Runners.remove(selID, function (error, result) {
+        if (error) Bert.alert(selRow.find("input")[3].value + " nicht gelöscht!", 'danger');
+        if (result) {
+            Bert.alert("Teilnehmer gelöscht", 'success');
+        };
+    });
     prevClick = null;
 }
 
@@ -217,8 +271,7 @@ function createNewRow() {
     $(".rTable").append(newRow);
 }
 
-function verifyNewInput() {
-}
+function verifyNewInput() {}
 
 function createRunner() {
 

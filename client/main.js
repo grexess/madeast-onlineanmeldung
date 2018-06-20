@@ -31,9 +31,6 @@ import '../imports/ui/templates/registerlist.js';
 import '../imports/ui/templates/register.js';
 import '../imports/ui/templates/results.js';
 
-import '../imports/ui/templates/statistics.js';
-import '../imports/ui/templates/statistics.html';
-
 import '../imports/startup/accounts-config.js';
 
 Template.registerform.onCreated(function helloOnCreated() {
