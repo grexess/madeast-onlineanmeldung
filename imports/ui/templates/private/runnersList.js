@@ -1,7 +1,5 @@
 import './runnersList.html';
 
-import { Excel } from 'meteor/nicolaslopezj:excel-export';
-
 import {
     Runners
 } from '../../../api/runners.js';
@@ -11,12 +9,6 @@ prevClick = null;
 if (Meteor.isClient) {
 
     Template.runnersListTemplate.helpers({
-
-        /*
-        runners() {
-            return Runners.find({});
-        },
-        */
 
         formatBoolean(value) {
             if (value) {
@@ -44,11 +36,21 @@ if (Meteor.isClient) {
 
             //check if session has been set(by sort event) if not show all runners
             if (sort) {
-                return Runners.find(filter, {
+
+                var runnersList = Runners.find(filter, {
                     sort: sort
                 }).fetch();
-            }
 
+                if (sort.hasOwnProperty('birthday')) {
+                    runnersList = sortBirthday(runnersList, sort.birthday);
+                }
+
+                if (sort.hasOwnProperty('startnumber')) {
+                    runnersList = sortStartNumber(runnersList, sort.startnumber);
+                }
+
+                return runnersList;
+            }
             return Runners.find(filter);
         },
 
@@ -57,7 +59,7 @@ if (Meteor.isClient) {
 
     Template.runnersListTemplate.events({
 
-        'click .actBtn'(event) {
+        'click .actBtn' (event) {
             event.preventDefault();
 
             switch (event.currentTarget.dataset.action) {
@@ -75,7 +77,7 @@ if (Meteor.isClient) {
             }
         },
 
-        'click .evtBtn'(event) {
+        'click .evtBtn' (event) {
             event.preventDefault();
 
             var selId = ($('input[name=nRunner]:checked', '.rTable').val());
@@ -91,38 +93,27 @@ if (Meteor.isClient) {
                 //save the record
             };
 
-            if (action === "downloadExcel") {
+            /*    if (action === "downloadExcel") {
+                   csv = json2csv(Runners.find().fetch(), true, true)
+                 /*   event.currentTarget.href = "data:text/csv;charset=utf-8," + escape(csv)
+                   event.currentTarget.download = "runnerslist.csv";
+                   $(event.currentTarget).click(); 
 
-                var data = Runners.find().fetch();
-                var fields = [
-                    {
-                        key: 'id',
-                        title: 'URL'
-                    },
-                    {
-                        key: 'message',
-                        title: 'Message'
-                    },
-                    {
-                        key: 'viewsCount',
-                        title: 'Views',
-                        type: 'number'
-                    }
-                ];
+                   var downloadLink = document.createElement("a");
+                   var blob = new Blob(["\ufeff", csv]);
+                   var url = URL.createObjectURL(blob);
+                   downloadLink.href = url;
+                   downloadLink.download = "runnersList.csv";
 
-                var title = 'Runners';
-                var file = Excel.export(title, fields, data);
-                var headers = {
-                    'Content-type': 'application/vnd.openxmlformats',
-                    'Content-Disposition': 'attachment; filename=' + title + '.xlsx'
-                };
+                   document.body.appendChild(downloadLink);
+                   downloadLink.click();
+                   document.body.removeChild(downloadLink);
 
-                this.response.writeHead(200, headers);
-                this.response.end(file, 'binary');
-            };
+                   //window.location.href = "data:text/csv;charset=utf-8," + escape(csv);
+               } */
         },
 
-        'change input[type=radio][name=nRunner]'(event) {
+        'change input[type=radio][name=nRunner]' (event) {
             event.preventDefault();
 
             if (prevClick) {
@@ -138,7 +129,7 @@ if (Meteor.isClient) {
         },
 
         /* Sort Icon on Table column header clicked*/
-        'click .sort'(event) {
+        'click .sort' (event) {
             event.preventDefault();
 
             sortOrder = 1;
@@ -164,7 +155,7 @@ if (Meteor.isClient) {
         },
 
         /* Filter select on Table column header clicked*/
-        'change .zselect'(event) {
+        'change .zselect' (event) {
             event.preventDefault();
 
             var selVal = event.currentTarget.value;
@@ -184,14 +175,46 @@ if (Meteor.isClient) {
             }
         },
 
-        'focusout #time'() {
+        'focusout #time' () {
 
             var re = /^([0-2][0-3]):([0-5][0-9]):([0-5][0-9])$/;
-            if (re.test(String($('#time').val()).toLowerCase())) {
-                //alert(true);
-            } else {
-                $('#errorMsg').text("Zeit hat kein gültiges Format (00:00:00)");
-                $('#id02').show();
+
+            var val = String($('#time').val()).toLowerCase();
+
+            if (val.length > 0 ) {
+                if (re.test(val)) {
+                    //alert(true);
+                } else {
+                    $('#errorMsg').text("Zeit hat kein gültiges Format (00:00:00)");
+                    $('#id02').show();
+                    $('#id02').data("elem", "#time");
+                }
+            }
+        },
+
+        'focusout #halltime' () {
+
+            var re = /^([0-2][0-3]):([0-5][0-9]):([0-5][0-9])$/;
+
+            var val = String($('#halltime').val()).toLowerCase();
+
+            if (val.length > 0 ) {
+                if (re.test(val)) {
+                    //alert(true);
+                } else {
+                    $('#errorMsg').text("Zeit hat kein gültiges Format (00:00:00)");
+                    $('#id02').show();
+                    $('#id02').data("elem", "#halltime");
+                }
+            }
+        },
+
+        'click #close' (event) {
+            event.preventDefault();
+            $('#id02').hide();
+
+            if ($('#id02').data("elem")) {
+                $($('#id02').data("elem")).focus();
             }
         }
     });
@@ -218,19 +241,28 @@ function changeInput(selId, isInput) {
         }
     }
     selRow.find(":checkbox").prop("disabled", !isInput)
-    selRow.find("select").prop("disabled", !isInput)
+    selRow.find("select[name=gender]").prop("disabled", !isInput)
 
     //additional input
-    for (i = 9; i <= 10; i++) {
-        if (isInput) {
-            if (i == 10) {
-                createInput(selRow.find("div")[i], "time", "00:00:00");
-            } else {
-                createInput(selRow.find("div")[i]);
-            }
-        } else {
+
+    if (isInput) {
+        createInput(selRow.find("div")[9]);
+        createInput(selRow.find("div")[10], "time", "00:00:00");
+        if (selRow.find('select[name=event] option:selected')[0].value == 5) {
+            //Mad4Hall
+            createInput(selRow.find("div")[11], "halltime", "00:00:00");
+        }
+
+    } else {
+        for (i = 9; i <= 10; i++) {
             removeInput(selRow.find("div")[i]);
         }
+
+        if (selRow.find('select[name=event] option:selected')[0].value == 5) {
+            //Mad4Hall
+            removeInput(selRow.find("div")[11]);
+        }
+
     }
 
     if (isInput) {
@@ -265,19 +297,26 @@ function saveRunner(selID) {
 
     var selRow = $("#" + selID);
 
+
+    var runnerObject = {
+        firstName: selRow.find("input")[1].value,
+        lastName: selRow.find("input")[2].value,
+        email: selRow.find("input")[3].value,
+        team: selRow.find("input")[4].value,
+        birthday: selRow.find("input")[5].value,
+        gender: selRow.find("select option:selected")[0].value,
+        //verified: $(selRow.find(":checkbox")[0])[0].checked,
+        payed: $(selRow.find(":checkbox")[0])[0].checked,
+        startnumber: selRow.find("input")[7].value,
+        time: selRow.find("input")[8].value
+    }
+
+    if (selRow.find('select[name=event] option:selected')[0].value == 5) {
+        runnerObject.halltime = selRow.find("input")[9].value
+    }
+
     Runners.update(selID, {
-        $set: {
-            firstName: selRow.find("input")[1].value,
-            lastName: selRow.find("input")[2].value,
-            email: selRow.find("input")[3].value,
-            team: selRow.find("input")[4].value,
-            birthday: selRow.find("input")[5].value,
-            gender: selRow.find("select option:selected")[0].value,
-            //verified: $(selRow.find(":checkbox")[0])[0].checked,
-            payed: $(selRow.find(":checkbox")[0])[0].checked,
-            startnumber: selRow.find("input")[7].value,
-            time: selRow.find("input")[8].value
-        },
+        $set: runnerObject,
     }, function (error, result) {
         if (error) Bert.alert(selRow.find("input")[3].value + " nicht gespeichert!", 'danger');
         if (result) {
@@ -308,7 +347,7 @@ function createNewRow() {
     $(".rTable").append(newRow);
 }
 
-function verifyNewInput() { }
+function verifyNewInput() {}
 
 function createRunner() {
 
@@ -348,4 +387,49 @@ function createRunner() {
             }
         });
     };
+}
+
+
+/* sort birthday field */
+function sortBirthday(array, sorting) {
+
+    //sort birthday
+    array.sort(function (a, b) {
+
+        var keyA = new Date(parseInt(a.birthday.substring(6, 10)), parseInt(a.birthday.substring(3, 5)) - 1, parseInt(a.birthday.substring(0, 2)));
+        var keyB = new Date(parseInt(b.birthday.substring(6, 10)), parseInt(b.birthday.substring(3, 5)) - 1, parseInt(b.birthday.substring(0, 2)));
+
+        if (sorting == -1) {
+            if (keyA < keyB) return 1;
+            if (keyA > keyB) return -1;
+        } else {
+            if (keyA < keyB) return -1;
+            if (keyA > keyB) return 1;
+        }
+        return 0;
+    });
+
+    return array;
+}
+
+/* sort startnumber field */
+function sortStartNumber(array, sorting) {
+
+    //sort birthday
+    array.sort(function (a, b) {
+
+        var keyA = parseInt(a.startnumber);
+        var keyB = parseInt(b.startnumber);
+
+        if (sorting == -1) {
+            if (keyA < keyB) return 1;
+            if (keyA > keyB) return -1;
+        } else {
+            if (keyA < keyB) return -1;
+            if (keyA > keyB) return 1;
+        }
+        return 0;
+    });
+
+    return array;
 }

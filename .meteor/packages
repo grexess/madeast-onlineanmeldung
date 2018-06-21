@@ -28,12 +28,6 @@ accounts-password
 accounts-ui
 momentjs:moment
 simple:reactive-method
-
-
 chart:chart
-
-
-
-
 session
-nicolaslopezj:excel-export
+axw:json2csv

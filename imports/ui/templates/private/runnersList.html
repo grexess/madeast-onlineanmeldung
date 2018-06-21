@@ -10,7 +10,7 @@
 
     <div class="w3-container buttonRow">
         <button class="w3-button w3-green evtBtn" data-target="createR">Create Runner</button>
-        <button class="w3-button w3-green evtBtn" data-target="downloadExcel">Create Excel</button>
+        <!-- <button class="w3-button w3-green evtBtn" data-target="downloadExcel">Create CSV</button> -->
     </div>
 
     <div class="rTableBox">
@@ -27,6 +27,7 @@
                 <div class="rTableHead">Überwiesen</div>
                 <div class="rTableHead">Startnummer</div>
                 <div class="rTableHead">Zielzeit</div>
+                <div class="rTableHead">Hall4XZeit</div>
                 <div class="rTableHead"></div>
             </div>
 
@@ -75,6 +76,9 @@
                 <div class="rTableHead w3-text-blue">
                     <i class="sort fa fa-sort" data-target="time" style="padding-left:2px"></i>
                 </div>
+                <div class="rTableHead w3-text-blue">
+                    <i class="sort fa fa-sort" data-target="time" style="padding-left:2px"></i>
+                </div>
                 <div class="rTableHead"></div>
             </div>
 
@@ -96,7 +100,7 @@
                     </select>
                 </div>
                 <div class="rTableCell">
-                    <select class="w3-select" name="gender" disabled>
+                    <select class="w3-select" name="event" disabled>
                         <option value="1" {{formatValue event "1"}}>MAD Enduro</option>
                         <!--
                         <option value="2" {{formatValue event "2"}}>MAD Laufradrennen</option>
@@ -119,6 +123,7 @@
                 </div>
                 <div class="rTableCell w3-center">{{startnumber}}</div>
                 <div class="rTableCell">{{time}}</div>
+                <div class="rTableCell">{{halltime}}</div>
             </div>
 
             {{/each}}
@@ -141,7 +146,7 @@
     <div id="id02" class="w3-modal">
         <div class="w3-modal-content w3-card-4">
             <header class="w3-container w3-red">
-                <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <span id="close" class="w3-button w3-display-topright">&times;</span>
                 <h2>Fehler</h2>
             </header>
             <div class="w3-container">

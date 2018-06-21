@@ -4,6 +4,7 @@ accounts-ui@1.3.0
 accounts-ui-unstyled@1.4.1
 allow-deny@1.1.0
 autoupdate@1.4.0
+axw:json2csv@0.1.0
 babel-compiler@7.0.0
 babel-runtime@1.2.0
 base64@1.0.10
@@ -62,7 +63,6 @@ momentjs:moment@2.22.1
 mongo@1.4.2
 mongo-dev-server@1.1.0
 mongo-id@1.0.6
-nicolaslopezj:excel-export@1.0.0
 npm-bcrypt@0.9.3
 npm-mongo@2.2.33
 observe-sequence@1.0.16
