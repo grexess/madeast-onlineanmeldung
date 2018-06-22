@@ -1,114 +1,121 @@
 <template name="results">
 
-        <div class="w3-row w3-border w3-card w3-margin">
-                <div class="w3-container w3-half">
-                        <h2>MADEast 2018 - Ergebnisse</h2>
-                </div>
-                <div class="w3-container w3-half">
-                        <div class="points">
-                                <ul>
-                                  <li></li>
-                                  <li></li>
-                                  <li></li>
-                                  <li></li>
-                                  <li></li>
-                                </ul>
-                              </div>
-                </div>
-              </div>
-      
+    <div class="w3-row w3-border w3-card w3-margin w3-center">
+        <div class="w3-container">
+            <h3>MADEast 2018 - Ergebnisse</h3>
+        </div>
+    </div>
 
-    <ul class="w3-ul">
+    <!-- <div class="w3-row w3-center">
+        <div class="points w3-container">
+                <ul>
+                    <li>M</li>
+                    <li>A</li>
+                    <li>D</li>
+                    <li>C</li>
+                    <li>R</li>
+                    <li>O</li>
+                    <li>S</li>
+                    <li>S</li>
+                </ul>
+        </div>
+    </div> -->
+
+
+    <ul class="w3-ul w3-margin" id="zlist">
         {{#each results}}
-        <li>{{>event}}</li>{{/each}}
-        <li>{{>teamresult}}</li>
+        <li style="border:none">{{>event}}</li>{{/each}}
+        <li style="border:none">{{>teamresult}}</li>
     </ul>
 
 </template>
 
 <template name="event">
 
-    <div id="{{ eventName }}" class="navBtn w3-button w3-margin-top w3-margin-bottom">
-        <h3>
-        <i id="ic{{ eventName }}" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
-                vertical-align: middle;"></i>
-        <span style="vertical-align: middle;">{{ eventName }}</span>
-    </h3>
-    </div>
-   
-    <div id="tab{{ eventName }}" class="w3-container w3-hide">
-        <div class="w3-bar">
-                <button class="genderBtn w3-button w3-border w3-border-blue w3-hover w3-blue" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</button>
-                <button class="genderBtn w3-button w3-border w3-border-blue w3-hover" data-target="tab{{ eventName }}_male" data-opposite="tab{{ eventName }}_female">Jungs</button>
+    <div class="w3-card-4">
+        <header class="navBtn w3-container w3-blue" id="{{ eventName }}">
+            <h3>
+                <i id="ic{{ eventName }}" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
+                    vertical-align: middle;"></i> {{ eventName }}</h3>
+        </header>
+
+        <div id="tab{{ eventName }}" class="w3-container w3-hide">
+            <div class="w3-container w3-margin w3-center">
+                <div class="w3-bar">
+                    <button class="genderBtn w3-button w3-border w3-border-blue w3-hover w3-blue" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</button>
+                    <button class="genderBtn w3-button w3-border w3-border-blue w3-hover" data-target="tab{{ eventName }}_male" data-opposite="tab{{ eventName }}_female">Jungs</button>
+                </div>
+            </div>
+            <!-- Mädchen -->
+            <div id="tab{{ eventName }}_female" class="table zshow">
+                <div class="row header">
+                    <div class="cell">Platz</div>
+                    <div class="cell">Startnummer</div>
+                    <div class="cell">Zeit</div>
+                    <div class="cell">Vorname</div>
+                    <div class="cell">Nachname</div>
+                </div>
+                {{#each female}}
+                <div class="row">
+                    <div class="cell" data-title="Platz">{{getPlace @index}}</div>
+                    <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+                    <div class="cell" data-title="Zeit">{{time}}</div>
+                    <div class="cell" data-title="Vorname">{{firstName}}</div>
+                    <div class="cell" data-title="Nachname">{{lastName}}</div>
+                </div>
+                {{/each}}
+            </div>
+
+            <!-- Jungs -->
+            <div id="tab{{ eventName }}_male" class="table zhide">
+                <div class="row header">
+                    <div class="cell">Platz</div>
+                    <div class="cell">Startnummer</div>
+                    <div class="cell">Zeit</div>
+                    <div class="cell">Vorname</div>
+                    <div class="cell">Nachname</div>
+                </div>
+                {{#each male}}
+                <div class="row">
+                    <div class="cell" data-title="Platz">{{getPlace @index}}</div>
+                    <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+                    <div class="cell" data-title="Zeit">{{time}}</div>
+                    <div class="cell" data-title="Vorname">{{firstName}}</div>
+                    <div class="cell" data-title="Nachname">{{lastName}}</div>
+                </div>
+                {{/each}}
+            </div>
         </div>
-
-        <!-- Mädchen -->
-        <table id="tab{{ eventName }}_female" class="w3-margin w3-table w3-show">
-            <tr class="w3-blue">
-                <th>Platz</th>
-                <th>Startnummer</th>
-                <th>Zeit</th>
-                <th>Vorname</th>
-                <th>Nachname</th>
-            </tr>
-            {{#each female}}
-            <tr>
-                <td>{{getPlace @index}}</td>
-                <td>{{startnumber}}</td>
-                <td>{{time}}</td>
-                <td>{{firstName}}</td>
-                <td>{{lastName}}</td>
-            </tr>
-            {{/each}}
-        </table>
-
-        <!-- Jungs -->
-        <table  id="tab{{ eventName }}_male" class="w3-margin w3-table w3-hide" >
-            <tr class="w3-blue">
-                <th>Platz</th>
-                <th>Startnummer</th>
-                <th>Zeit</th>
-                <th>Vorname</th>
-                <th>Nachname</th>
-            </tr>
-            {{#each male}}
-            <tr>
-                <td>{{getPlace @index}}</td>
-                <td>{{startnumber}}</td>
-                <td>{{time}}</td>
-                <td>{{firstName}}</td>
-                <td>{{lastName}}</td>
-            </tr>
-            {{/each}}
-        </table>
     </div>
-
 </template>
 
 <template name="teamresult">
-
-        <div id="teamresult" class="navBtn w3-button w3-margin-top w3-margin-bottom">
+    <div class="w3-card-4">
+        <header class="navBtn w3-container w3-blue" id="teamresult">
             <h3>
-            <i id="icteamresult" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
-                    vertical-align: middle;"></i>
-            <span style="vertical-align: middle;">MadTeam</span>
-        </h3>
+                <i id="icteamresult" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
+                            vertical-align: middle;"></i>MadTeam</h3>
+        </header>
+
+        <div id="tabteamresult" class="w3-container w3-hide">
+
+            <div class="table" style="margin-top:32px">
+                <div class="row header">
+                    <div class="cell">Platz</div>
+                    <div class="cell">Startnummer</div>
+                    <div class="cell">Zeit</div>
+                    <div class="cell">Teamname</div>
+                </div>
+                {{#each teamresults}}
+                <div class="row">
+                    <div class="cell" data-title="Platz">{{getPlace @index}}</div>
+                    <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+                    <div class="cell" data-title="Zeit">{{time}}</div>
+                    <div class="cell" data-title="Teamname">{{teamname}}</div>
+                </div>
+                {{/each}}
+            </div>
         </div>
-    
-        <table id="tabteamresult" class="w3-margin w3-table w3-hide w3-container">
-            <tr class="w3-blue">
-                <th>Platz</th>
-                <th>Startnummer</th>
-                <th>Zeit</th>
-                <th>Teamname</th>
-            </tr>
-            {{#each teamresults}}
-            <tr>
-                <td>{{getPlace @index}}</td>
-                <td>{{startnumber}}</td>
-                <td>{{time}}</td>
-                <td>{{teamname}}</td>
-            </tr>
-            {{/each}}
-        </table>
-    </template>
+    </div>
+
+</template>

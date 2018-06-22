@@ -52,17 +52,28 @@ Template.results.events({
         var x = $("#" + event.currentTarget.dataset.target);
         var y = $("#" + event.currentTarget.dataset.opposite);
 
-        if(x.hasClass("w3-hide")){
-            x.removeClass("w3-hide").addClass("w3-show");
-            y.removeClass("w3-show").addClass("w3-hide");
-            $("[data-target='"+ event.currentTarget.dataset.target+"']").addClass("w3-blue");
-            $("[data-target='"+ event.currentTarget.dataset.opposite+"']").removeClass("w3-blue");
-        }else{
-           
+        if (x.hasClass("zhide")) {
+            x.removeClass("zhide").addClass("zshow");
+            y.removeClass("zshow").addClass("zhide");
+            $("[data-target='" + event.currentTarget.dataset.target + "']").addClass("w3-blue");
+            $("[data-target='" + event.currentTarget.dataset.opposite + "']").removeClass("w3-blue");
+        } else {
+
         }
 
     }
 })
+
+// Template.event.onRendered(function () {
+//     setInterval(function() { 
+//         $("#zlist").find('li')[0]
+//           .animate({ backgroundColor: "#9a5342" }, 3000)
+//           .animate({ backgroundColor: "#fffc0c" }, 3000)
+//           .animate({ backgroundColor: "#e46d00" }, 3000)
+//           .animate({ backgroundColor: "#ff3506" }, 3000);
+//   },100);
+// })
+
 
 function toggleElement(id) {
 
