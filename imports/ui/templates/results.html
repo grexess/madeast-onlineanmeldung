@@ -1,8 +1,26 @@
 <template name="results">
 
+        <div class="w3-row w3-border w3-card w3-margin">
+                <div class="w3-container w3-half">
+                        <h2>MADEast 2018 - Ergebnisse</h2>
+                </div>
+                <div class="w3-container w3-half">
+                        <div class="points">
+                                <ul>
+                                  <li></li>
+                                  <li></li>
+                                  <li></li>
+                                  <li></li>
+                                  <li></li>
+                                </ul>
+                              </div>
+                </div>
+              </div>
+      
+
     <ul class="w3-ul">
         {{#each results}}
-        <li>{{>event}}</li> {{/each}}
+        <li>{{>event}}</li>{{/each}}
         <li>{{>teamresult}}</li>
     </ul>
 
@@ -11,41 +29,74 @@
 <template name="event">
 
     <div id="{{ eventName }}" class="navBtn w3-button w3-margin-top w3-margin-bottom">
+        <h3>
         <i id="ic{{ eventName }}" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
                 vertical-align: middle;"></i>
         <span style="vertical-align: middle;">{{ eventName }}</span>
+    </h3>
+    </div>
+   
+    <div id="tab{{ eventName }}" class="w3-container w3-hide">
+        <div class="w3-bar">
+                <button class="genderBtn w3-button w3-border w3-border-blue w3-hover w3-blue" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</button>
+                <button class="genderBtn w3-button w3-border w3-border-blue w3-hover" data-target="tab{{ eventName }}_male" data-opposite="tab{{ eventName }}_female">Jungs</button>
+        </div>
+
+        <!-- Mädchen -->
+        <table id="tab{{ eventName }}_female" class="w3-margin w3-table w3-show">
+            <tr class="w3-blue">
+                <th>Platz</th>
+                <th>Startnummer</th>
+                <th>Zeit</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+            </tr>
+            {{#each female}}
+            <tr>
+                <td>{{getPlace @index}}</td>
+                <td>{{startnumber}}</td>
+                <td>{{time}}</td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <!-- Jungs -->
+        <table  id="tab{{ eventName }}_male" class="w3-margin w3-table w3-hide" >
+            <tr class="w3-blue">
+                <th>Platz</th>
+                <th>Startnummer</th>
+                <th>Zeit</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+            </tr>
+            {{#each male}}
+            <tr>
+                <td>{{getPlace @index}}</td>
+                <td>{{startnumber}}</td>
+                <td>{{time}}</td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+            </tr>
+            {{/each}}
+        </table>
     </div>
 
-    <table id="tab{{ eventName }}" class="w3-table w3-hide">
-        <tr>
-            <th>Platz</th>
-            <th>Startnummer</th>
-            <th>Zeit</th>
-            <th>Vorname</th>
-            <th>Nachname</th>
-        </tr>
-        {{#each list}}
-        <tr>
-            <td>{{getPlace @index}}</td>
-            <td>{{startnumber}}</td>
-            <td>{{time}}</td>
-            <td>{{firstName}}</td>
-            <td>{{lastName}}</td>
-        </tr>
-        {{/each}}
-    </table>
 </template>
 
 <template name="teamresult">
 
         <div id="teamresult" class="navBtn w3-button w3-margin-top w3-margin-bottom">
+            <h3>
             <i id="icteamresult" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
                     vertical-align: middle;"></i>
             <span style="vertical-align: middle;">MadTeam</span>
+        </h3>
         </div>
     
-        <table id="tabteamresult" class="w3-table w3-hide">
-            <tr>
+        <table id="tabteamresult" class="w3-margin w3-table w3-hide w3-container">
+            <tr class="w3-blue">
                 <th>Platz</th>
                 <th>Startnummer</th>
                 <th>Zeit</th>

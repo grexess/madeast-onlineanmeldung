@@ -57,6 +57,13 @@ Team.allow({
 });
 
 Meteor.methods({
+
+
+  sortRunners: function (element) {
+    return Runners.find({}, { sort: { "firstName": 1 } }).fetch();
+  },
+
+
   sendEmail: function (type, to, from, subject, oRunner) {
 
     // Let other method calls from the same client start running,
@@ -94,17 +101,18 @@ Meteor.methods({
   /* get sorted result list per event*/
   getResults: function () {
     var results = [];
-    results[0] = {eventName:"MadEnduro", list: Runners.find({event:1, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
-    results[1]= {eventName:"MadCross", list: Runners.find({event:4, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
-    results[2]= {eventName:"MadNachwuchs", list:Runners.find({event:3, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
-    //results[3]= {eventName:"MadTeam", list:Team.find({event:3, time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch()};
+
+    results[0] = { eventName: "MadEnduro", female: Runners.find({ event: 1, gender: "female", time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch(), male: Runners.find({ event: 1, gender: "male", time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch() };
+    results[1] = { eventName: "MadHall4X", female: Runners.find({ event: 5, gender: "female", halltime: { $exists: true }, $where: "this.halltime.length > 0" }, { sort: { halltime: 1 } }).fetch(), male: Runners.find({ event: 5, gender: "male", halltime: { $exists: true }, $where: "this.halltime.length > 0" }, { sort: { halltime: 1 } }).fetch() };
+    results[2] = { eventName: "MadCross", female: Runners.find({ event: 4, gender: "female", time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch(), male: Runners.find({ event: 4, gender: "male", time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch() };
+    results[3] = { eventName: "MadNachwuchs", female: Runners.find({ event: 3, gender: "female", time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch(), male: Runners.find({ event: 3, gender: "male", time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch() };
     return results;
   },
 
   /* get sorted result list per team*/
   getTeamResult: function () {
 
-    return Team.find({time: {$exists: true}, $where: "this.time.length > 0"},{sort:{ time: 1}}).fetch();
+    return Team.find({ time: { $exists: true }, $where: "this.time.length > 0" }, { sort: { time: 1 } }).fetch();
   },
 
   getRunners: function () {

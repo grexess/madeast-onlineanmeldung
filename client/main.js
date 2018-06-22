@@ -452,6 +452,15 @@ FlowRouter.route('/verify/', {
   }
 });
 
+FlowRouter.route('/results/', {
+  name: 'Results',
+  action() {
+    BlazeLayout.render('results', {
+      main: 'Result_Page'
+    });
+  }
+});
+
 FlowRouter.route('/listrunners/', {
   name: 'List',
   action() {
