@@ -24,10 +24,104 @@
 
     <ul class="w3-ul w3-margin" id="zlist">
         {{#each results}}
-        <li style="border:none">{{>event}}</li>{{/each}}
+        <li style="border:none">{{>event}}</li>
+        {{/each}}
+        <li style="border:none">{{>childrenTemplate}}</li>
+        <li style="border:none">{{>crosscountry}}</li>
         <li style="border:none">{{>teamresult}}</li>
     </ul>
 
+</template>
+
+<template name="childrenTemplate">
+
+    <div class="w3-card-4">
+        <header class="navBtn w3-container w3-blue" id="nachwuchs">
+            <h3>
+                <i id="icnachwuchs" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
+                            vertical-align: middle;"></i>MadNachwuchs</h3>
+        </header>
+    </div>
+    <div id="tabnachwuchs" class="w3-container w3-hide">
+        {{#each children}}
+        
+        <div class="w3-panel w3-blue">
+                <h4>{{ ak }}</h4>
+            </div>
+            <div class="table" style="margin-top:32px">
+                <div class="row header">
+                    <div class="cell">Platz</div>
+                    <div class="cell">Startnummer</div>
+                    <div class="cell">Zeit</div>
+                    <div class="cell">Vorname</div>
+                    <div class="cell">Nachname</div>
+                </div>
+        
+                {{#each coll}}
+                <div class="row">
+                    <div class="cell" data-title="Platz">{{place}}</div>
+                    <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+                    <div class="cell" data-title="Zeit">{{time}}</div>
+                    <div class="cell" data-title="Vorname">{{firstName}}</div>
+                    <div class="cell" data-title="Nachname">{{lastName}}</div>
+                </div>
+                {{/each}}
+            </div>
+        
+        {{/each}}
+    </div>
+
+</template>
+
+<template name="femaleTemplate">
+
+    <div class="w3-panel w3-blue">
+        <h4>{{ ak }} Mädchen</h4>
+    </div>
+    <div class="table" style="margin-top:32px">
+        <div class="row header">
+            <div class="cell">Platz</div>
+            <div class="cell">Startnummer</div>
+            <div class="cell">Zeit</div>
+            <div class="cell">Vorname</div>
+            <div class="cell">Nachname</div>
+        </div>
+
+        {{#each female}}
+        <div class="row">
+            <div class="cell" data-title="Platz">{{place}}</div>
+            <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+            <div class="cell" data-title="Zeit">{{time}}</div>
+            <div class="cell" data-title="Vorname">{{firstName}}</div>
+            <div class="cell" data-title="Nachname">{{lastName}}</div>
+        </div>
+        {{/each}}
+    </div>
+
+</template>
+
+<template name="maleTemplate">
+    <div class="w3-panel w3-blue">
+        <h4>{{ ak }} Jungs</h4>
+    </div>
+    <div class="table" style="margin-top:32px">
+        <div class="row header">
+            <div class="cell">Platz</div>
+            <div class="cell">Startnummer</div>
+            <div class="cell">Zeit</div>
+            <div class="cell">Vorname</div>
+            <div class="cell">Nachname</div>
+        </div>
+        {{#each male}}
+        <div class="row">
+            <div class="cell" data-title="Platz">{{place}}</div>
+            <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+            <div class="cell" data-title="Zeit">{{time}}</div>
+            <div class="cell" data-title="Vorname">{{firstName}}</div>
+            <div class="cell" data-title="Nachname">{{lastName}}</div>
+        </div>
+        {{/each}}
+    </div>
 </template>
 
 <template name="event">
@@ -39,7 +133,10 @@
                     vertical-align: middle;"></i> {{ eventName }}</h3>
         </header>
 
+       
+
         <div id="tab{{ eventName }}" class="w3-container w3-hide">
+                <a href="http://www.madcross.de/data/MadEnduro2018.xlsx" download class="w3-button w3-margin w3-blue">Download Excel mit Einzelzeiten</a>
             <div class="w3-container w3-margin w3-center">
                 <div class="w3-bar">
                     <button class="genderBtn w3-button w3-border w3-border-blue w3-hover w3-blue" data-target="tab{{ eventName }}_female" data-opposite="tab{{ eventName }}_male">Mädchen</button>
@@ -89,6 +186,39 @@
     </div>
 </template>
 
+<template name="crosscountry">
+        <div class="w3-card-4">
+            <header class="navBtn w3-container w3-blue" id="crosscountry">
+                <h3>
+                    <i id="iccrosscountry" class="fa fa-caret-right fa-fw w3-xxlarge w3-margin-right" style="
+                                vertical-align: middle;"></i>MadCrossCountry</h3>
+            </header>
+    
+            <div id="tabcrosscountry" class="w3-container w3-hide">
+    
+                <div class="table" style="margin-top:32px">
+                    <div class="row header">
+                        <div class="cell">Platz</div>
+                        <div class="cell">Startnummer</div>
+                        <div class="cell">Rundenanzahl</div>
+                        <div class="cell">Vorname</div>
+                        <div class="cell">Nachname</div>
+                    </div>
+                    {{#each crossresults}}
+                    <div class="row">
+                        <div class="cell" data-title="Platz">{{place}}</div>
+                        <div class="cell" data-title="Startnummer">{{startnumber}}</div>
+                        <div class="cell" data-title="Zeit">{{rounds}}</div>
+                        <div class="cell" data-title="Vorname">{{firstname}}</div>
+                        <div class="cell" data-title="Nachname">{{lastname}}</div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    
+    </template>
+
 <template name="teamresult">
     <div class="w3-card-4">
         <header class="navBtn w3-container w3-blue" id="teamresult">
@@ -103,14 +233,14 @@
                 <div class="row header">
                     <div class="cell">Platz</div>
                     <div class="cell">Startnummer</div>
-                    <div class="cell">Zeit</div>
+                    <div class="cell">Rundenanzahl</div>
                     <div class="cell">Teamname</div>
                 </div>
                 {{#each teamresults}}
                 <div class="row">
-                    <div class="cell" data-title="Platz">{{getPlace @index}}</div>
+                    <div class="cell" data-title="Platz">{{place}}</div>
                     <div class="cell" data-title="Startnummer">{{startnumber}}</div>
-                    <div class="cell" data-title="Zeit">{{time}}</div>
+                    <div class="cell" data-title="Zeit">{{rounds}}</div>
                     <div class="cell" data-title="Teamname">{{teamname}}</div>
                 </div>
                 {{/each}}
