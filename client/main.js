@@ -273,7 +273,7 @@ function saveTeam() {
   1,
   oTeam.teamemail,
   'madeast.registration@madcross.de',
-  'MadEast 2018 Online-Anmeldung',
+  'MadEast 2019 Online-Anmeldung',
   oTeam);
 
   $("#teamCount").text(countAll + 1);
@@ -330,7 +330,7 @@ function saveRunner() {
     0,
     oRunner.email,
     'madeast.registration@madcross.de',
-    'MadEast 2018 Online-Anmeldung',
+    'MadEast 2019 Online-Anmeldung',
     oRunner);
 
   $("#runnersCount").text(countAll + 1);
