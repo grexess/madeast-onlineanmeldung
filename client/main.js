@@ -3,6 +3,7 @@
 
 /*  GLOBAL VARIABLES */
 maxMadENDURO = 100;
+maxMadENDUROHALL4X = 32;
 
 import {
   Runners
