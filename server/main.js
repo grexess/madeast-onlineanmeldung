@@ -224,7 +224,7 @@ function buildEmailText(type, obj) {
   switch (obj.event) {
     case 1:
       event = "MAD Enduro"
-      cost = "25€";
+      cost = "20€";
       break;
     case 2:
       event = "MAD Laufradrennen"
@@ -240,7 +240,7 @@ function buildEmailText(type, obj) {
       break;
     case 5:
       event = "MAD Enduro + MAD HALL4X"
-      cost = "25€";
+      cost = "20€";
       break;
     case 6:
       event = "MAD 4er Team"
@@ -257,7 +257,7 @@ function buildEmailText(type, obj) {
       break;
 
     default:
-      text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus " + obj.firstname + ", vielen Dank f\u00FCr deine Anmeldung.\n\nStrecke: \u0009" + event + "\nStartgeld:\u0009" + cost + "\n\nVorname:\u0009" + obj.firstname + "\nName:\u0009\u0009" + obj.lastname + "\n\n\nEmail: \u0009\u0009" + obj.email + "\nGeschlecht:\u0009" + gender + "\n\nGeburtsdatum: \u0009" + obj.birthday + "\nTeam/Verein: \u0009" + obj.team + "\n\nBitte \u00FCberweise das Startgeld auf unser Bankkonto.\n\n\u00BB Mad East Challenge e.V.\n\u00BB Osts\u00E4chsische Sparkasse Dresden\n\u00BB IBAN: DE56 8505 0300 1225 2129 83\n\u00BB BIC: OSDDDE81XXX\n\u00BB Verwendungszweck: Startgeld, \"Gew\u00E4hlte Strecke\", Name, Vorname\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
+      text = "________________________________________________________________________\n \n MAD EAST ONLINEANMELDUNG\n________________________________________________________________________\n\nServus " + obj.firstname + ", vielen Dank f\u00FCr deine Anmeldung.\n\nStrecke: \u0009" + event + "\nStartgeld:\u0009" + cost + "\n\nVorname:\u0009" + obj.firstname + "\nName:\u0009\u0009" + obj.lastname + "\n\n\nEmail: \u0009\u0009" + obj.email + "\nGeschlecht:\u0009" + gender + "\n\nGeburtsdatum: \u0009" + obj.birthday + "\nTeam/Verein: \u0009" + obj.team + "\n\nBitte \u00FCberweise das Startgeld auf unser Bankkonto.\n\n\u00BB Massive Snowpark e.V.\n\u00BB Osts\u00E4chsische Sparkasse Dresden\n\u00BB IBAN: DE88 85050300 0221 0580 28\n\u00BB BIC: OSDDDE81XXX\n\u00BB Verwendungszweck: Startgeld, \"Gew\u00E4hlte Strecke\", Name, Vorname\n\n\n##### Pfandgeld #####\nBitte denke daran w\u00E4hrend der Veranstaltung Bargeld einzustecken, da wir bei der Essen- und Getr\u00E4nkeausgabe auf M\u00FCll verzichten wollen und Mehrweggeschirr nur gegen Pfand ausgeben!\n\nViele Gr\u00FC\u00DFe\nMad East Crew";
       break;
   }
 
