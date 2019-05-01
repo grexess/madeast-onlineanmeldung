@@ -34,6 +34,9 @@ import '../imports/ui/templates/results.js';
 import '../imports/ui/templates/statistics.js';
 import '../imports/ui/templates/statistics.html';
 
+import '../imports/ui/times/times.js';
+import '../imports/ui/times/results.js';
+
 import '../imports/startup/accounts-config.js';
 
 Template.registerform.onCreated(function helloOnCreated() {
@@ -478,6 +481,24 @@ FlowRouter.route('/listteams/', {
   name: 'TeamList',
   action() {
     BlazeLayout.render('teamListTemplate', {
+      main: 'List_Page'
+    });
+  }
+});
+
+FlowRouter.route('/timerpage/', {
+  name: 'TimerPage',
+  action() {
+    BlazeLayout.render('timerTemplate', {
+      main: 'List_Page'
+    });
+  }
+});
+
+FlowRouter.route('/resultpage/', {
+  name: 'ResultPage',
+  action() {
+    BlazeLayout.render('resultsTemplate', {
       main: 'List_Page'
     });
   }

@@ -1,0 +1,41 @@
+<template name="resultsTemplate">
+
+    <H1>ResultsPage</H1>
+
+    <H2>Aktuell fahren</H2>
+
+    <ul>
+        {{#each runnings}}
+        <li>{{startnumber}} {{firstname}} {{route}} {{currenttime}}</li>
+        {{/each}}
+    </ul>
+
+    <H2>Resultate</H2>
+
+    {{#each value in routes}}
+    <H3>{{value}}</H3>
+    
+    <ul>
+        {{#each finalized value}}
+        <li>{{startnumber}} {{firstname}} {{getTimeProperty this value}}</li>
+        {{/each}}
+    </ul>
+    
+    {{/each}}
+   
+
+    <H2>Ausstehend</H2>
+    <ul>
+        {{#each opens}}
+        <li>{{startnumber}} {{firstname}} {{time}}</li>
+        {{/each}}
+    </ul>
+
+    <H2>Ausgeschieden</H2>
+    <ul>
+        {{#each escaped}}
+        <li>{{startnumber}} {{firstname}}</li>
+        {{/each}}
+    </ul>
+
+</template>
