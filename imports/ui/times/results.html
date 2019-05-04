@@ -5,8 +5,8 @@
     <H2>Aktuell fahren</H2>
 
     <ul>
-        {{#each runnings}}
-        <li>{{startnumber}} {{firstname}} {{route}} {{currenttime}}</li>
+        {{#each value in runnings}}
+        <li>{{value.startnumber}} | {{value.firstName}} | {{value.lastName}} | {{value.currentWP}} | {{getStartTime value}} | {{getElapsedTime value}}</li>
         {{/each}}
     </ul>
 
@@ -14,27 +14,27 @@
 
     {{#each value in routes}}
     <H3>{{value}}</H3>
-    
+
     <ul>
         {{#each finalized value}}
-        <li>{{startnumber}} {{firstname}} {{getTimeProperty this value}}</li>
+        <li>{{startnumber}} | {{firstName}} | {{lastName}} | {{getStartTimeProperty value}} | {{getTotalTimeProperty this value}}</li>
         {{/each}}
     </ul>
-    
+
     {{/each}}
-   
+
 
     <H2>Ausstehend</H2>
     <ul>
         {{#each opens}}
-        <li>{{startnumber}} {{firstname}} {{time}}</li>
+        <li>{{startnumber}} {{firstName}} {{lastName}} {{time}}</li>
         {{/each}}
     </ul>
 
     <H2>Ausgeschieden</H2>
     <ul>
         {{#each escaped}}
-        <li>{{startnumber}} {{firstname}}</li>
+        <li>{{startnumber}} {{firstName}} {{lastName}}</li>
         {{/each}}
     </ul>
 

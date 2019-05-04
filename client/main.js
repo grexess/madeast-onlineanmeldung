@@ -486,10 +486,19 @@ FlowRouter.route('/listteams/', {
   }
 });
 
-FlowRouter.route('/timerpage/', {
-  name: 'TimerPage',
+FlowRouter.route('/starterpage/', {
+  name: 'StarterPage',
   action() {
-    BlazeLayout.render('timerTemplate', {
+    BlazeLayout.render('starterTemplate', {
+      main: 'List_Page'
+    });
+  }
+});
+
+FlowRouter.route('/stoperpage/', {
+  name: 'StopperPage',
+  action() {
+    BlazeLayout.render('stoperTemplate', {
       main: 'List_Page'
     });
   }
