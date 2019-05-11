@@ -232,7 +232,7 @@ function buildEmailText(type, obj) {
       break;
     case 3:
       event = "MAD Nachwuchs"
-      cost = "5€";
+      cost = "0€";
       break;
     case 4:
       event = "MAD Crosscountry"
