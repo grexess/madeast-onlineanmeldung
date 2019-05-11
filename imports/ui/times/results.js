@@ -11,6 +11,8 @@ const STATUS = {
     ESCAPED: 4
 };
 
+const aRoutes = ["WP1", "WP2", "WP3", "WP4", "WP5"];
+
 var timer = new Chronos.Timer(1000);
 
 Template.resultsTemplate.onCreated(function () {
@@ -25,7 +27,7 @@ Template.resultsTemplate.helpers({
     },
 
     getTotalTimeProperty(obj, wp) {
-        return moment().startOf('day').seconds(Math.round((obj[wp+ "stop"] - obj[wp+ "start"]) / 1000)).format('HH:mm:ss');
+        return moment().startOf('day').seconds(Math.round((obj[wp + "stop"] - obj[wp + "start"]) / 1000)).format('HH:mm:ss');
     },
 
     getStartTime(obj) {
@@ -33,39 +35,98 @@ Template.resultsTemplate.helpers({
     },
 
     getElapsedTime(obj) {
-       return moment().startOf('day').seconds(Math.round((timer.time.get().valueOf() - obj[obj.currentWP + "start"]) / 1000)).format('HH:mm:ss');
+        return moment().startOf('day').seconds(Math.round((timer.time.get().valueOf() - obj[obj.currentWP + "start"]) / 1000)).format('HH:mm:ss');
     },
 
     routes() {
-        return ["WP1", "WP2", "WP3", "WP4", "WP5"];
+        return aRoutes;
     },
 
-    opens() {
-        return Runners.find({
-            status: STATUS.OPEN
+    getCurrStarterPerRoute(wp) {
+        let runner = Runners.findOne({
+            [wp + "status"]: STATUS.RUNNING
         });
+        return runner;
+    },
+
+    getCurrRunTimePerStarter(wp, starter) {
+        return Math.round((timer.time.get().valueOf() - starter[wp + "start"]) / 1000);
+    },
+
+    getFinisherPerRoute(wp) {
+
+        return Runners.find({
+            [wp + "status"]: STATUS.FINISHED
+        }).fetch().sort(function compareTimes(runnerA, runnerB) {
+
+            let timeRunnerA = Math.round((runnerA[wp + "stop"] - runnerA[wp + "start"]) / 1000);
+            let timeRunnerB = Math.round((runnerB[wp + "stop"] - runnerB[wp + "start"]) / 1000);
+
+            if (timeRunnerA < timeRunnerB) {
+                return -1;
+            }
+            if (timeRunnerA > timeRunnerB) {
+                return 1;
+            }
+            return 0;
+        });
+    },
+
+    getPostion(idx) {
+        return idx + 1;
+    },
+
+    getFinishedTimePerStarter(wp, starter) {
+        return Math.round((starter[wp + "stop"] - starter[wp + "start"]) / 1000);
+    },
+
+    getFinisherAllRoutes() {
+
+        let finishers = Runners.find({
+            WP1status: STATUS.FINISHED,
+            WP2status: STATUS.FINISHED,
+            WP3status: STATUS.FINISHED,
+            WP4status: STATUS.FINISHED,
+            WP5status: STATUS.FINISHED,
+        }).fetch();
+
+        finishers.forEach(function (finisher) {
+            finisher.total = sumAllWPTimes(finisher);
+        });
+
+        return finishers;
+
     },
 
     escaped() {
         return Runners.find({
-            status: STATUS.ESCAPED
-        });
-    },
-
-    runnings() {
-        return Runners.find({
-            status: STATUS.RUNNING
+            [Session.get("WP") + status]: STATUS.ESCAPED
         });
     },
 
     finalized(wp) {
 
-        return Runners.find({
-            status: STATUS.FINISHED,
+        let finisher = Runners.find({
+            [wp + "status"]: STATUS.FINISHED,
             [wp + "stop"]: {
                 $exists: true
             }
         });
+
+        return finisher;
+
     },
 
 });
+
+function sumAllWPTimes(starter) {
+
+    let total = 0;
+
+    aRoutes.forEach(function (wp) {
+        total = total +Math.round((starter[wp + "stop"] - starter[wp + "start"]) / 1000);
+    });
+
+    return total;
+
+}

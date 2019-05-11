@@ -72,10 +72,7 @@ Template.starterTemplate.helpers({
 
         return Runners.find({
             event: EVENTS.ENDURO,
-            status: {
-                $exists: false
-            },
-            [Session.get("WP") + "stop"]: {
+            [Session.get("WP") +"status"]: {
                 $exists: false
             }
         });
@@ -92,17 +89,16 @@ Template.starterTemplate.helpers({
         return Session.get("starter");
     },
 
+    //check if a starter is running on cuurent route
     isStarted() {
 
         let starter = Runners.findOne({
-            status: STATUS.RUNNING,
-            currentWP: Session.get("WP")
+            [Session.get("WP") +"status"]: STATUS.RUNNING,
         });
 
-        if (starter && starter.status && starter.status === STATUS.RUNNING) {
+        if (starter) {
             return true;
         }
-
         return false;
     }
 
@@ -114,8 +110,7 @@ Template.stoperTemplate.helpers({
     starter() {
 
         let starter = Runners.findOne({
-            status: STATUS.RUNNING,
-            currentWP: Session.get("WP")
+            [Session.get("WP") + "status"]: STATUS.RUNNING,
         });
         Session.set("starter", starter);
 
@@ -135,11 +130,8 @@ Template.passedStarters.helpers({
 
         let aRunners = Runners.find({
             event: EVENTS.ENDURO,
-            status: {
+            [Session.get("WP") + "status"]: {
                 $gt: 1
-            },
-            [Session.get("WP") + "start"]: {
-                $exists: true
             }
         });
 
@@ -263,8 +255,8 @@ Template.stoperTemplate.events({
 
 function saveTime(time, status) {
 
-    let set = {
-        status: status
+    let set = {  
+        [Session.get("WP") + "status"] : status 
     };
     let unset = {
         dummy: ""
@@ -272,15 +264,12 @@ function saveTime(time, status) {
 
     switch (status) {
         case STATUS.RUNNING:
-            set.currentWP = Session.get("WP");
             set[Session.get("WP") + "start"] = time;
             break;
         case STATUS.FINISHED:
             set[Session.get("WP") + "stop"] = time;
-            unset.currentWP = ""; //remove currentWP field indicating active run
             break;
         case STATUS.ESCAPED:
-            unset.currentWP = ""; //remove currentWP field indicating active run
             break;
     }
 
@@ -301,7 +290,7 @@ function resetStarter(id) {
         $unset: {
             [Session.get("WP") + "start"]: "",
             [Session.get("WP") + "stop"]: "",
-            status: ""
+            [Session.get("WP") + "status"]: ""
         },
     }, function (error, result) {
         if (error) {

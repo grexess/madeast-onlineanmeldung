@@ -1,35 +1,88 @@
 <template name="resultsTemplate">
 
-    <H1>ResultsPage</H1>
+    <H1>Livetabelle MadEnduro 2019</H1>
 
-    <H2>Aktuell fahren</H2>
+    <div class="w3-row w3-container">
+        <H2>Aktuell fahren</H2>
+        <div class="w3-row">
+            {{#each wp in routes}}
+            {{#with getCurrStarterPerRoute wp}}
+            <div class="w3-col m2 w3-center">
+                <div class="w3-card-4 w3-margin">
+                    <header class="w3-container w3-blue">
+                        <h3>{{wp}}</h3>
+                    </header>
+                    <div class="w3-container">
+                        <h5>{{this.startnumber}}</h5>
+                        <hr>
+                        <p>{{this.firstName}} {{this.lastName}}</p>
+                    </div>
+                    <footer class="w3-container w3-blue">
+                        <h5><b>{{ getCurrRunTimePerStarter wp this}}</b> s</h5>
+                    </footer>
+                </div>
+            </div>
+            {{/with}}
+            {{/each}}
+        </div>
+    </div>
 
-    <ul>
-        {{#each value in runnings}}
-        <li>{{value.startnumber}} | {{value.firstName}} | {{value.lastName}} | {{value.currentWP}} | {{getStartTime value}} | {{getElapsedTime value}}</li>
+    <div class="w3-row w3-container">
+        <H2>Resultate pro WP</H2>
+        <div class="w3-row">
+            {{#each wp in routes}}
+            <div class="w3-col m2 w3-center">
+                <div class="w3-card-4 w3-margin">
+                    <header class="w3-container w3-blue">
+                        <h3>{{wp}}</h3>
+                    </header>
+                    <table class="w3-table w3-striped w3-bordered w3-tiny">
+                        {{#each finisher in getFinisherPerRoute wp}}
+                        <tr>
+                            <td><span class="w3-badge w3-green">{{getPostion @index}}</span></td>
+                            <td><span><b>{{finisher.startnumber}}</b></span><br>
+                                <span>{{getFinishedTimePerStarter wp finisher}} s</span></td>
+                            <td> <span>{{finisher.lastName}}</span><br>
+                                <span>{{finisher.firstName}}</span></td>
+                        </tr>
+                        {{/each}}
+                    </table>
+                </div>
+            </div>
+
+            {{/each}}
+        </div>
+    </div>
+
+    <H2>Gesamt</H2>
+    <table class="w3-table w3-striped w3-bordered w3-tiny">
+        <tr>
+            <th>Platz</th>
+            <th>Startnummer</th>
+            <th>Nachname</th>
+            <th>Vorname</th>
+            <th>Gesamtzeit</th>
+            {{#each wp in routes}}
+            <th>{{wp}} Zeit</th>
+            <th>{{wp}} Platz</th>
+            {{/each}}
+        </tr>
+
+        {{#each finisher in getFinisherAllRoutes}}
+        <tr>
+            <td>{{getPostion @index}}</td>
+            <td>{{finisher.startnumber}}</td>
+            <td>{{finisher.lastName}}</td>
+            <td>{{finisher.firstName}}</td>
+            <td>{{finisher.total}}</td>
+            {{#each wp in routes}}
+            <td>{{getFinishedTimePerStarter wp finisher}} s</td>
+            <td>Platz {{wp}}</td>
+            {{/each}}
+        </tr>
         {{/each}}
-    </ul>
 
-    <H2>Resultate</H2>
-
-    {{#each value in routes}}
-    <H3>{{value}}</H3>
-
-    <ul>
-        {{#each finalized value}}
-        <li>{{startnumber}} | {{firstName}} | {{lastName}} | {{getStartTimeProperty value}} | {{getTotalTimeProperty this value}}</li>
-        {{/each}}
-    </ul>
-
-    {{/each}}
-
-
-    <H2>Ausstehend</H2>
-    <ul>
-        {{#each opens}}
-        <li>{{startnumber}} {{firstName}} {{lastName}} {{time}}</li>
-        {{/each}}
-    </ul>
+    </table>
 
     <H2>Ausgeschieden</H2>
     <ul>
