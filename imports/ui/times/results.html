@@ -77,7 +77,7 @@
             <td>{{finisher.total}}</td>
             {{#each wp in routes}}
             <td>{{getFinishedTimePerStarter wp finisher}} s</td>
-            <td>Platz {{wp}}</td>
+            <td>{{getFinishedPlacePerStarter wp finisher}}</td>
             {{/each}}
         </tr>
         {{/each}}

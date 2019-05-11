@@ -55,7 +55,7 @@ Template.resultsTemplate.helpers({
 
     getFinisherPerRoute(wp) {
 
-        return Runners.find({
+        let list = Runners.find({
             [wp + "status"]: STATUS.FINISHED
         }).fetch().sort(function compareTimes(runnerA, runnerB) {
 
@@ -70,6 +70,8 @@ Template.resultsTemplate.helpers({
             }
             return 0;
         });
+        Session.set("list" + wp, list);
+        return Session.get("list" + wp);
     },
 
     getPostion(idx) {
@@ -78,6 +80,16 @@ Template.resultsTemplate.helpers({
 
     getFinishedTimePerStarter(wp, starter) {
         return Math.round((starter[wp + "stop"] - starter[wp + "start"]) / 1000);
+    },
+
+    getFinishedPlacePerStarter(wp, starter) {
+
+        let idx = Session.get("list" + wp).findIndex(function (element, starter) {
+            return element._id == this._id;
+        }, starter);
+
+        return idx + 1
+
     },
 
     getFinisherAllRoutes() {
@@ -95,7 +107,6 @@ Template.resultsTemplate.helpers({
         });
 
         return finishers;
-
     },
 
     escaped() {
@@ -120,13 +131,9 @@ Template.resultsTemplate.helpers({
 });
 
 function sumAllWPTimes(starter) {
-
     let total = 0;
-
     aRoutes.forEach(function (wp) {
-        total = total +Math.round((starter[wp + "stop"] - starter[wp + "start"]) / 1000);
+        total = total + Math.round((starter[wp + "stop"] - starter[wp + "start"]) / 1000);
     });
-
     return total;
-
 }
