@@ -74,7 +74,8 @@ Template.starterTemplate.helpers({
             event: EVENTS.ENDURO,
             [Session.get("WP") +"status"]: {
                 $exists: false
-            }
+            },
+            payed: true
         });
     },
 
@@ -234,6 +235,11 @@ Template.starterTemplate.events({
 });
 
 Template.stoperTemplate.events({
+
+    'click #logoutBtn'(event) {
+        event.preventDefault();
+        Meteor.logout();
+    },
 
     'click #stopButton'(event) {
         event.preventDefault();

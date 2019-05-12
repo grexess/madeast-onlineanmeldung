@@ -5,7 +5,7 @@ Accounts.ui.config({
 });
 
 Accounts.config({
-  forbidClientAccountCreation: false,
+  forbidClientAccountCreation: true,
   sendVerificationEmail: false
 });
 

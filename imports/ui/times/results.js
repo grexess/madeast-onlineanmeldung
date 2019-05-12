@@ -111,7 +111,17 @@ Template.resultsTemplate.helpers({
 
     escaped() {
         return Runners.find({
-            [Session.get("WP") + status]: STATUS.ESCAPED
+            $or: [{
+                WP1status: STATUS.ESCAPED
+            }, {
+                WP2status: STATUS.ESCAPED
+            }, {
+                WP3status: STATUS.ESCAPED
+            }, {
+                WP4status: STATUS.ESCAPED
+            }, {
+                WP5status: STATUS.ESCAPED
+            }]
         });
     },
 
