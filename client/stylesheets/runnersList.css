@@ -1,5 +1,6 @@
 .rTableBox{
   padding: 2%;
+  overflow-x: auto;
 }
 
 .rTable { display: block; }
