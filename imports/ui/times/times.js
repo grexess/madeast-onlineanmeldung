@@ -34,15 +34,15 @@ var commonHelpers = {
     wp() {
         switch (Meteor.user().username) {
             case "WP1":
-                return "WP1 - Irgendwo";
+                return "Wertungspunkt 1";
             case "WP2":
-                return "WP2 - Irgendwo";
+                return "Wertungspunkt 2";
             case "WP3":
-                return "WP3 - Irgendwo";
+                return "Wertungspunkt 3";
             case "WP4":
-                return "WP4 - Irgendwo";
+                return "Wertungspunkt 4";
             case "WP5":
-                return "WP5 - Irgendwo";
+                return "Wertungspunkt 5";
             default:
                 return "User keinem WP zugeordnet";
         }
@@ -72,7 +72,7 @@ Template.starterTemplate.helpers({
 
         return Runners.find({
             event: EVENTS.ENDURO,
-            [Session.get("WP") +"status"]: {
+            [Session.get("WP") + "status"]: {
                 $exists: false
             },
             payed: true
@@ -94,7 +94,7 @@ Template.starterTemplate.helpers({
     isStarted() {
 
         let starter = Runners.findOne({
-            [Session.get("WP") +"status"]: STATUS.RUNNING,
+            [Session.get("WP") + "status"]: STATUS.RUNNING,
         });
 
         if (starter) {
@@ -143,7 +143,7 @@ Template.passedStarters.helpers({
             let localStarterID = Session.get("starter")._id;
             var result = array.findIndex(obj => obj._id === localStarterID);
 
-            if(result != -1){
+            if (result != -1) {
                 /*local starter was stopped by another client */
                 Bert.alert("Startnummer " + Session.get("starter").startnumber + " hat Rennen beendet!", 'success');
                 //reset the starter selection
@@ -184,6 +184,7 @@ Template.starterTemplate.events({
             Bert.alert("Starter hat schon Resultat für " + Session.get("WP"), 'danger');
             Session.set("starter", null);
         } else {
+            //TODO set dropdown to startnummer
             Session.set("starter", starter);
         }
 
@@ -200,15 +201,21 @@ Template.starterTemplate.events({
 
     'click #startButton'(event) {
         event.preventDefault();
-        let startTime = new Date().valueOf();
-        timer = new Chronos.Timer(1000);
-        timer.start();
-        saveTime(startTime, STATUS.RUNNING);
-        Session.set("time", startTime);
+
+        if ($(event.currentTarget).hasClass('w3-disabled')) {
+            return;
+        } else {
+            let startTime = new Date().valueOf();
+            timer = new Chronos.Timer(1000);
+            timer.start();
+            saveTime(startTime, STATUS.RUNNING);
+            Session.set("time", startTime);
+            $('#resetButton').removeClass('w3-disabled');
+        }
     },
 
 
-    'click #stopButton'(event) {
+    'click #resetButton'(event) {
         event.preventDefault();
         timer.stop();
 
@@ -261,8 +268,8 @@ Template.stoperTemplate.events({
 
 function saveTime(time, status) {
 
-    let set = {  
-        [Session.get("WP") + "status"] : status 
+    let set = {
+        [Session.get("WP") + "status"]: status
     };
     let unset = {
         dummy: ""
