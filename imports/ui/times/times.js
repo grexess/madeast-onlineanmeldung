@@ -2,6 +2,7 @@ import './starterpage.html';
 import './stoperpage.html';
 import './components/topnavigation.html';
 import './components/passedStarters.html';
+import './components/currentRunnings.html';
 
 import {
     Runners
@@ -54,6 +55,7 @@ Template.starterTemplate.onCreated(function () {
 
     Meteor.subscribe('runners');
     Session.set("time", 0);
+    Session.set("starterSelected", "");
 });
 
 Template.stoperTemplate.onCreated(function () {
@@ -61,6 +63,12 @@ Template.stoperTemplate.onCreated(function () {
     Meteor.subscribe('runners');
     timer.start();
 
+});
+
+Template.currentRunnings.onCreated(function () {
+
+    Meteor.subscribe('runners');
+    timer.start();
 });
 
 Template.starterTemplate.helpers(commonHelpers);
@@ -79,84 +87,92 @@ Template.starterTemplate.helpers({
         });
     },
 
-
-
-    duration() {
-        let time = Math.round((timer.time.get().valueOf() - Session.get("time")) / 1000);
-        return time;
+    //check if a starter is selected
+    isStarterSelected() {
+        return (Session.get("starterSelected").length > 0);
     },
 
-    starter() {
-        return Session.get("starter");
-    },
-
-    //check if a starter is running on cuurent route
-    isStarted() {
-
-        let starter = Runners.findOne({
-            [Session.get("WP") + "status"]: STATUS.RUNNING,
+    starterSelected() {
+        let runner = Runners.findOne({
+            _id: Session.get("starterSelected")
         });
-
-        if (starter) {
-            return true;
+        if (runner) {
+            return runner.startnumber;
         }
-        return false;
     }
-
 });
 
 Template.stoperTemplate.helpers({
 
-    //check if there is a starter with status running
-    starter() {
+    currentRunnings() {
 
-        let starter = Runners.findOne({
-            [Session.get("WP") + "status"]: STATUS.RUNNING,
-        });
-        Session.set("starter", starter);
+        Session.get("starterSelected");
 
-        return Session.get("starter");
-    },
-
-    duration() {
-        let startTime = Session.get("starter")[Session.get("WP") + "start"];
-        return Math.round((timer.time.get().valueOf() - startTime) / 1000);
-    }
-
-});
-
-Template.passedStarters.helpers({
-
-    alreadyStarted() {
-
-        let aRunners = Runners.find({
+        let currRunners = Runners.find({
             event: EVENTS.ENDURO,
-            [Session.get("WP") + "status"]: {
-                $gt: 1
+            [Session.get("WP") + "status"]: STATUS.RUNNING,
+            payed: true
+        }, {
+            sort: {
+                [Session.get("WP") + "start"]: -1
             }
-        });
+        }).fetch();
 
-        //check if the current starter is now in the finished starter list so UI can be reset
-        let array = aRunners.fetch();
-
-        if (Session.get("starter")) {
-            let localStarterID = Session.get("starter")._id;
-            var result = array.findIndex(obj => obj._id === localStarterID);
-
-            if (result != -1) {
-                /*local starter was stopped by another client */
-                Bert.alert("Startnummer " + Session.get("starter").startnumber + " hat Rennen beendet!", 'success');
-                //reset the starter selection
-                $("#starterSelect").val("");
-                Session.set("starter", null);
-            }
-
-        }
-
-        return aRunners;
-
+        return currRunners;
     },
+
+  /*   getHeight() {
+
+        let currRunnersCount = Runners.find({
+            event: EVENTS.ENDURO,
+            [Session.get("WP") + "status"]: STATUS.RUNNING,
+            payed: true
+        }, {
+            sort: {
+                [Session.get("WP") + "start"]: -1
+            }
+        }).fetch().length;
+
+        let gridH = ($('.grid').height()) + "vh";
+        console.log(gridH);
+        return gridH;
+    } */
+
 });
+
+
+Template.currentRunnings.helpers({
+
+        currentRunnings() {
+
+            Session.get("starterSelected");
+
+            let currRunners = Runners.find({
+                event: EVENTS.ENDURO,
+                [Session.get("WP") + "status"]: STATUS.RUNNING,
+                payed: true
+            }, {
+                sort: {
+                    [Session.get("WP") + "start"]: -1
+                }
+            }).fetch();
+
+            return currRunners;
+        },
+
+        duration(id) {
+
+            let starter = Runners.findOne({
+                _id: id
+            });
+            let startTime = starter[Session.get("WP") + "start"];
+            return Math.round((timer.time.get().valueOf() - startTime) / 1000);
+        }
+    }),
+
+    Template.passedStarters.helpers({
+
+    });
 
 
 Template.starterTemplate.events({
@@ -165,6 +181,16 @@ Template.starterTemplate.events({
     'click #logoutBtn'(event) {
         event.preventDefault();
         Meteor.logout();
+    },
+
+    'input #startnumber': function (event, template) {
+
+        if (Number(event.currentTarget.value) != NaN) {
+            $("#searchButton").css("color", "green");
+        } else {
+            Bert.alert("Startnummer ist keine Zahl!", 'danger');
+            $("#searchButton").css("color", "gray");
+        }
     },
 
     'click #searchButton'(event) {
@@ -176,27 +202,31 @@ Template.starterTemplate.events({
 
         if (!starter) {
             Bert.alert("Startnummer existiert nicht!", 'danger');
-            Session.set("starter", null);
+            Session.set("starterSelected", "");
             return;
         }
 
         if (starter[Session.get("WP") + "time"]) {
             Bert.alert("Starter hat schon Resultat für " + Session.get("WP"), 'danger');
-            Session.set("starter", null);
+            Session.set("starterSelected", "");
         } else {
-            //TODO set dropdown to startnummer
-            Session.set("starter", starter);
+            Session.set("starterSelected", starter._id);
         }
 
         $("#startnumber").val("");
+        $("#starterSelect").val("");
+        $("#searchButton").css("color", "gray");
     },
 
+    /*startnumber selected from dropdown list */
     'change #starterSelect'(event) {
         event.preventDefault();
         let starter = Runners.findOne({
             startnumber: $("#starterSelect").children("option:selected").val()
         });
-        Session.set("starter", starter);
+        Session.set("starterSelected", starter._id);
+        $("#startnumber").val("");
+        $("#starterSelect").val("");
     },
 
     'click #startButton'(event) {
@@ -210,10 +240,12 @@ Template.starterTemplate.events({
             timer.start();
             saveTime(startTime, STATUS.RUNNING);
             Session.set("time", startTime);
-            $('#resetButton').removeClass('w3-disabled');
+
+            $("#startnumber").val("");
+            $("#starterSelect").val("");
+            Session.set("starterSelected", "");
         }
     },
-
 
     'click #resetButton'(event) {
         event.preventDefault();
@@ -221,7 +253,7 @@ Template.starterTemplate.events({
 
         //let time = Math.round((timer.time.get().valueOf() - Session.get("time")) / 1000);
         saveTime(new Date().valueOf(), STATUS.FINISHED);
-        Session.set("starter", null);
+        // Session.set("starter", null);
         Session.set("time", 0);
     },
 
@@ -230,7 +262,7 @@ Template.starterTemplate.events({
         timer.stop();
 
         saveTime(-1, STATUS.ESCAPED);
-        Session.set("starter", null);
+        // Session.set("starter", null);
     },
 
     //delete race status of starter
@@ -254,7 +286,7 @@ Template.stoperTemplate.events({
 
         //let time = Math.round((timer.time.get().valueOf() - Session.get("time")) / 1000);
         saveTime(new Date().valueOf(), STATUS.FINISHED);
-        Session.set("starter", null);
+        // Session.set("starter", null);
         Session.set("time", 0);
     },
 
@@ -286,7 +318,7 @@ function saveTime(time, status) {
             break;
     }
 
-    Runners.update(Session.get("starter")._id, {
+    Runners.update(Session.get("starterSelected"), {
         $set: set,
         $unset: unset
     }, function (error, result) {
@@ -299,20 +331,32 @@ function saveTime(time, status) {
 
 function resetStarter(id) {
 
-    Runners.update(id, {
-        $unset: {
-            [Session.get("WP") + "start"]: "",
-            [Session.get("WP") + "stop"]: "",
-            [Session.get("WP") + "status"]: ""
-        },
-    }, function (error, result) {
-        if (error) {
-            console.log(error);
-        };
-        if (result) {};
+    new Confirmation({
+        message: "Nochmal starten lassen?",
+        title: "Starter zurücksetzen?",
+        cancelText: "Nein",
+        okText: "Ist okay!",
+        success: true, // whether the button should be green or red
+        focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
+    }, function (ok) {
+        if (ok) {
+            Runners.update(id, {
+                $unset: {
+                    [Session.get("WP") + "start"]: "",
+                    [Session.get("WP") + "stop"]: "",
+                    [Session.get("WP") + "status"]: ""
+                },
+            }, function (error, result) {
+                if (error) {
+                    console.log(error);
+                };
+                if (result) {};
+            });
+
+            //reset the starter selection
+            $("#starterSelect").val("");
+        }
     });
 
-    //reset the starter selection
-    $("#starterSelect").val("");
 
 }

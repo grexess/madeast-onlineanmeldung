@@ -1,0 +1,20 @@
+<template name="currentRunnings">
+
+    <div style="width:90%;margin:auto; max-width: 500px;">
+        <div class="w3-cell-row w3-padding">
+        <ul class="w3-ul w3-card-4 w3-cell w3-mobile w3-cell-middle">
+            {{#each currentRunnings}}
+            <li class="w3-bar">
+                <span class="resetStarter w3-bar-item w3-btn w3-red w3-hover-green w3-round-large w3-right"
+                    data-starterID={{_id}}>Reset starter</span>
+                <div class="w3-badge w3-blue w3-bar-item">{{startnumber}}</div>
+                <div class="w3-bar-item">
+                    <span class="w3-large">{{duration _id}} s</span>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    </div>
+
+</template>
