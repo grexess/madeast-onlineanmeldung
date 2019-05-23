@@ -10,12 +10,19 @@
       <h3 class="w3-center">Starterseite <br><b>{{wp}}</b></h3>
     </div>
 
-    <div class="grid">
-      {{#each currentRunnings}}
-      <div class="gridDiv w3-large w3-center">{{startnumber}}</div>
-      {{/each}}
+    <div class="" style="width:90%; margin:auto; max-width: 900px;">
+      <div class="grid">
+        {{#each currentRunnings}}
+        <div class="gridDiv">
+          <div class="w3-center w3-margin">
+            <button class="w3-btn w3-blue" style="width:8em">
+              <span class="w3-xxlarge  w3-padding-32">{{startnumber}}</span>
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </div>
     </div>
-
     {{else}}
     <div class="privBox">{{> loginButtons}}</div>
     {{/if}}
